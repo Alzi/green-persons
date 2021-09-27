@@ -1,4 +1,4 @@
-# green-persons V0.01
+# green-persons
 
 __This is work in progress.__
 
