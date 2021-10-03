@@ -1,133 +1,115 @@
-# Blank WordPress Pot
-# Copyright 2014 ...
-# This file is distributed under the GNU General Public License v3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Grüne Personen Pot v1.0.0\n"
-"Report-Msgid-Bugs-To: Marc Dietz <technik@gruene-rlp.de>\n"
-"POT-Creation-Date: 2021-10-03 13:52+0200\n"
-"PO-Revision-Date: \n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2021-10-03 15:51+0200\n"
+"PO-Revision-Date: 2021-10-03 15:53+0200\n"
 "Last-Translator: \n"
-"Language-Team: Your Team <translations@example.com>\n"
+"Language-Team: \n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Textdomain-Support: yesX-Generator: Poedit 1.6.4\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html_x:1,2c;esc_html__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;"
-"_nx_noop:4c,1,2;_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;"
-"__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
-"X-Poedit-Basepath: ..\n"
 "X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: templates/single-grlp_person.php\n"
 
-#: grlp-gruene-personen-en.php:40 grlp-gruene-personen.php:40
+#: grlp-green-persons.php:41
 msgctxt "post type general name"
 msgid "Persons"
 msgstr "Personen"
 
-#: grlp-gruene-personen-en.php:41 grlp-gruene-personen.php:41
+#: grlp-green-persons.php:42
 msgctxt "post type singular name"
 msgid "Person"
 msgstr "Person"
 
-#: grlp-gruene-personen-en.php:42 grlp-gruene-personen.php:42
+#: grlp-green-persons.php:43
 msgctxt "person"
 msgid "Add new"
 msgstr "Erstellen"
 
-#: grlp-gruene-personen-en.php:43 grlp-gruene-personen.php:43
+#: grlp-green-persons.php:44
 msgid "Add new person"
-msgstr "Neue Person erstellenjkj"
+msgstr "Neue Person erstellen"
 
-#: grlp-gruene-personen-en.php:44 grlp-gruene-personen.php:44
+#: grlp-green-persons.php:45
 msgid "Edit person"
 msgstr "Person bearbeiten"
 
-#: grlp-gruene-personen-en.php:45 grlp-gruene-personen.php:45
+#: grlp-green-persons.php:46
 msgid "New person"
 msgstr "Neue Person"
 
-#: grlp-gruene-personen-en.php:46 grlp-gruene-personen.php:46
+#: grlp-green-persons.php:47
 msgid "View person"
 msgstr "Person anschauen"
 
-#: grlp-gruene-personen-en.php:47 grlp-gruene-personen.php:47
+#: grlp-green-persons.php:48
 msgid "Search person"
 msgstr "Person suchen"
 
-#: grlp-gruene-personen-en.php:48 grlp-gruene-personen.php:48
+#: grlp-green-persons.php:49
 msgid "No person found"
 msgstr "Keine Person gefunden"
 
-#: grlp-gruene-personen-en.php:49 grlp-gruene-personen.php:49
+#: grlp-green-persons.php:50
 msgid "No person found in trash"
 msgstr "Keine Person im Papierkorb gefunden"
 
-#: grlp-gruene-personen-en.php:50 grlp-gruene-personen.php:50
+#: grlp-green-persons.php:51
 msgid "All persons"
 msgstr "Alle Personen"
 
-#: grlp-gruene-personen-en.php:71 grlp-gruene-personen.php:71
+#: grlp-green-persons.php:72
 msgctxt "taxonomy general name"
 msgid "Divisions"
 msgstr "Abteilungen"
 
-#: grlp-gruene-personen-en.php:72 grlp-gruene-personen.php:72
+#: grlp-green-persons.php:73
 msgctxt "taxonomy singular name"
 msgid "Division"
 msgstr "Abteilung"
 
-#: grlp-gruene-personen-en.php:73 grlp-gruene-personen.php:73
+#: grlp-green-persons.php:74
 msgid "Search division"
 msgstr "Abteilung suchen"
 
-#: grlp-gruene-personen-en.php:74 grlp-gruene-personen.php:74
+#: grlp-green-persons.php:75
 msgid "All divisions"
 msgstr "Alle Abteilungen"
 
-#: grlp-gruene-personen-en.php:75 grlp-gruene-personen.php:75
+#: grlp-green-persons.php:76
 msgid "Parent division"
 msgstr "Übergeordnete Abteilung"
 
-#: grlp-gruene-personen-en.php:76 grlp-gruene-personen.php:76
+#: grlp-green-persons.php:77
 msgid "Parent division:"
 msgstr "Übergeordnete Abteilung:"
 
-#: grlp-gruene-personen-en.php:77 grlp-gruene-personen.php:77
+#: grlp-green-persons.php:78
 msgid "Edit division"
 msgstr "Abteilung bearbeiten"
 
-#: grlp-gruene-personen-en.php:78 grlp-gruene-personen.php:78
+#: grlp-green-persons.php:79
 msgid "Update division"
 msgstr "Abteilung aktualisieren"
 
-#: grlp-gruene-personen-en.php:79 grlp-gruene-personen.php:79
+#: grlp-green-persons.php:80
 msgid "Add new division"
 msgstr "Neue Abteilung hinzufügen"
 
-#: grlp-gruene-personen-en.php:80 grlp-gruene-personen.php:80
+#: grlp-green-persons.php:81
 msgid "Name of division"
 msgstr "Name der Abteilung"
 
-#: grlp-gruene-personen-en.php:81 grlp-gruene-personen.php:81
+#: grlp-green-persons.php:82
 msgctxt "menu name"
 msgid "Divisions"
 msgstr "Abteilungen"
 
-#: grlp-gruene-personen-en.php:86 grlp-gruene-personen.php:86
+#: grlp-green-persons.php:87
 msgid "You can build groups of people inside divisions."
 msgstr "Mit Abteilungen können Gruppen von Personen gebildet werden."
-
-#~ msgid "previous"
-#~ msgstr "vorherige"
-
-#~ msgid "next"
-#~ msgstr "nächste"
-
-#~ msgid "Mit Abteilungen können Gruppen von Personen gebildet werden."
-#~ msgstr "Mit Abteilungen können Gruppen von Personen gebildet werden."

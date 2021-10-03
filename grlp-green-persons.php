@@ -1,13 +1,11 @@
 <?php
-
 /**
  * Plugin Name: Grüne Personen 
  * Description: Ein Plugin zur Verwaltung von Personen auf GRÜNEN Webseiten. Es ermöglicht Personen anzulegen und sie in Abteilungen zu gruppieren. Sie können dann in verschiedenen Kontexten (Team, Landesliste...) dargestellt werden. Das Plugin arbeitet sehr direkt mit dem <a href="http://sunflower-theme.de">Sunflower-Theme</a> zusammen und basiert auf der Idee der Personen Verwaltung im <a href="https://github.com/kre8tiv/Joseph-knows-best">JKB-Theme</a>.
  * Version: 1.0
  * Author: Marc Dietz 
  * Author URI: mailto:technik@gruene-rlp.de
- * Author E-Mail: technik@gruene-rlp.de
- * Text Domain: grlp_gp_td
+ * Text Domain: green-persons
  */
 
 defined('ABSPATH') || exit;
@@ -17,7 +15,7 @@ add_action('plugins_loaded', 'grlp_gp_load_textdomain');
 function grlp_gp_load_textdomain()
 {
   load_plugin_textdomain(
-    'grlp_gp_td',
+    'green_persons',
     false,
     dirname(plugin_basename(__FILE__)) . '/languages'
   );
@@ -38,17 +36,17 @@ class GRLP_GruenePersonen
   {
     $labels = array(
       'menu_position' => 5,
-      'name'                => _x('Persons', 'post type general name', 'grlp_gp_td'),
-      'singular_name'       => _x('Person', 'post type singular name', 'grlp_gp_td'),
-      'add_new'             => _x('Add new', 'person', 'grlp_gp_td'),
-      'add_new_item'        => __('Add new person', 'grlp_gp_td'),
-      'edit_item'           => __('Edit person', 'grlp_gp_td'),
-      'new_item'            => __('New person', 'grlp_gp_td'),
-      'view_item'           => __('View person', 'grlp_gp_td'),
-      'search_items'        => __('Search person', 'grlp_gp_td'),
-      'not_found'           => __('No person found', 'grlp_gp_td'),
-      'not_found_in_trash'  => __('No person found in trash', 'grlp_gp_td'),
-      'all_items'           => __('All persons', 'grlp_gp_td'),
+      'name'                => _x('Persons', 'post type general name', 'green_persons'),
+      'singular_name'       => _x('Person', 'post type singular name', 'green_persons'),
+      'add_new'             => _x('Add new', 'person', 'green_persons'),
+      'add_new_item'        => __('Add new person', 'green_persons'),
+      'edit_item'           => __('Edit person', 'green_persons'),
+      'new_item'            => __('New person', 'green_persons'),
+      'view_item'           => __('View person', 'green_persons'),
+      'search_items'        => __('Search person', 'green_persons'),
+      'not_found'           => __('No person found', 'green_persons'),
+      'not_found_in_trash'  => __('No person found in trash', 'green_persons'),
+      'all_items'           => __('All persons', 'green_persons'),
       'parent_item_colon'   => '',
     );
     $supports = array('title', 'editor', 'revisions', 'thumbnail');
@@ -69,22 +67,22 @@ class GRLP_GruenePersonen
   public function create_taxonomy_person()
   {
     $labels = array(
-      'name'              => _x('Divisions', 'taxonomy general name', 'grlp_gp_td'),
-      'singular_name'     => _x('Division', 'taxonomy singular name', 'grlp_gp_td'),
-      'search_items'      => __('Search division', 'grlp_gp_td'),
-      'all_items'         => __('All divisions', 'grlp_gp_td'),
-      'parent_item'       => __('Parent division', 'grlp_gp_td'),
-      'parent_item_colon' => __('Parent division:', 'grlp_gp_td'),
-      'edit_item'         => __('Edit division', 'grlp_gp_td'),
-      'update_item'       => __('Update division', 'grlp_gp_td'),
-      'add_new_item'      => __('Add new division', 'grlp_gp_td'),
-      'new_item_name'     => __('Name of division', 'grlp_gp_td'),
-      'menu_name'         => _x('Divisions', 'menu name', 'grlp_gp_td'),
+      'name'              => _x('Divisions', 'taxonomy general name', 'green_persons'),
+      'singular_name'     => _x('Division', 'taxonomy singular name', 'green_persons'),
+      'search_items'      => __('Search division', 'green_persons'),
+      'all_items'         => __('All divisions', 'green_persons'),
+      'parent_item'       => __('Parent division', 'green_persons'),
+      'parent_item_colon' => __('Parent division:', 'green_persons'),
+      'edit_item'         => __('Edit division', 'green_persons'),
+      'update_item'       => __('Update division', 'green_persons'),
+      'add_new_item'      => __('Add new division', 'green_persons'),
+      'new_item_name'     => __('Name of division', 'green_persons'),
+      'menu_name'         => _x('Divisions', 'menu name', 'green_persons'),
     );
 
     $args = array(
       'labels'       => $labels,
-      'description'  => __('You can build groups of people inside divisions.', 'grlp_gp_td'),
+      'description'  => __('You can build groups of people inside divisions.', 'green_persons'),
       'hierarchical' => true,
       'show_ui'      => true,
       'show_in_rest' => true,
