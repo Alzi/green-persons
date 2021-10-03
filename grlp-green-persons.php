@@ -15,7 +15,7 @@ add_action('plugins_loaded', 'grlp_gp_load_textdomain');
 function grlp_gp_load_textdomain()
 {
   load_plugin_textdomain(
-    'green_persons',
+    'green-persons',
     false,
     dirname(plugin_basename(__FILE__)) . '/languages'
   );
@@ -36,17 +36,17 @@ class GRLP_GruenePersonen
   {
     $labels = array(
       'menu_position' => 5,
-      'name'                => _x('Persons', 'post type general name', 'green_persons'),
-      'singular_name'       => _x('Person', 'post type singular name', 'green_persons'),
-      'add_new'             => _x('Add new', 'person', 'green_persons'),
-      'add_new_item'        => __('Add new person', 'green_persons'),
-      'edit_item'           => __('Edit person', 'green_persons'),
-      'new_item'            => __('New person', 'green_persons'),
-      'view_item'           => __('View person', 'green_persons'),
-      'search_items'        => __('Search person', 'green_persons'),
-      'not_found'           => __('No person found', 'green_persons'),
-      'not_found_in_trash'  => __('No person found in trash', 'green_persons'),
-      'all_items'           => __('All persons', 'green_persons'),
+      'name'                => _x('Persons', 'post type general name', 'green-persons'),
+      'singular_name'       => _x('Person', 'post type singular name', 'green-persons'),
+      'add_new'             => _x('Add new', 'person', 'green-persons'),
+      'add_new_item'        => __('Add new person', 'green-persons'),
+      'edit_item'           => __('Edit person', 'green-persons'),
+      'new_item'            => __('New person', 'green-persons'),
+      'view_item'           => __('View person', 'green-persons'),
+      'search_items'        => __('Search person', 'green-persons'),
+      'not_found'           => __('No person found', 'green-persons'),
+      'not_found_in_trash'  => __('No person found in trash', 'green-persons'),
+      'all_items'           => __('All persons', 'green-persons'),
       'parent_item_colon'   => '',
     );
     $supports = array('title', 'editor', 'revisions', 'thumbnail');
@@ -67,22 +67,22 @@ class GRLP_GruenePersonen
   public function create_taxonomy_person()
   {
     $labels = array(
-      'name'              => _x('Divisions', 'taxonomy general name', 'green_persons'),
-      'singular_name'     => _x('Division', 'taxonomy singular name', 'green_persons'),
-      'search_items'      => __('Search division', 'green_persons'),
-      'all_items'         => __('All divisions', 'green_persons'),
-      'parent_item'       => __('Parent division', 'green_persons'),
-      'parent_item_colon' => __('Parent division:', 'green_persons'),
-      'edit_item'         => __('Edit division', 'green_persons'),
-      'update_item'       => __('Update division', 'green_persons'),
-      'add_new_item'      => __('Add new division', 'green_persons'),
-      'new_item_name'     => __('Name of division', 'green_persons'),
-      'menu_name'         => _x('Divisions', 'menu name', 'green_persons'),
+      'name'              => _x('Divisions', 'taxonomy general name', 'green-persons'),
+      'singular_name'     => _x('Division', 'taxonomy singular name', 'green-persons'),
+      'search_items'      => __('Search division', 'green-persons'),
+      'all_items'         => __('All divisions', 'green-persons'),
+      'parent_item'       => __('Parent division', 'green-persons'),
+      'parent_item_colon' => __('Parent division:', 'green-persons'),
+      'edit_item'         => __('Edit division', 'green-persons'),
+      'update_item'       => __('Update division', 'green-persons'),
+      'add_new_item'      => __('Add new division', 'green-persons'),
+      'new_item_name'     => __('Name of division', 'green-persons'),
+      'menu_name'         => _x('Divisions', 'menu name', 'green-persons'),
     );
 
     $args = array(
       'labels'       => $labels,
-      'description'  => __('You can build groups of people inside divisions.', 'green_persons'),
+      'description'  => __('You can build groups of people inside divisions.', 'green-persons'),
       'hierarchical' => true,
       'show_ui'      => true,
       'show_in_rest' => true,
