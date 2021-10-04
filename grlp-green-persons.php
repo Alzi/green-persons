@@ -8,14 +8,54 @@
  * Text Domain: green-persons
  */
 
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
-// Init textdomain
+/**
+ * Create GRLP settings menu
+ * 
+ * Register the settings menu only for admins
+ * 
+ * @return None
+ * 
+ */
+add_action('admin_menu', 'grlp_add_menu_item');
+function grlp_add_menu_item()
+{
+  add_menu_page('GRLP Settings Page', 'GRLP Settings',
+    'manage_options', 'grlp-options', 'grlp_settings_page',
+    'dashicons-smiley', 99 );
+}
+
+/**
+ * HTML page of GRLP settings menu
+ * 
+ * @todo This is just for learning - maybe we don't need 
+ *       a settings page, or at least not in this plugin :)
+ * 
+ * @return None
+ * 
+ */
+function grlp_settings_page()
+{
+  echo "<h1>Grüne Personen Einstellungen</h1>";
+  echo '<p>Hier kann ich ganz cool irgendwelche Testvariablen oder ähnliches ausgeben, was sehr praktisch ist. :)</p>';
+  echo '<p>In Zukunft kann das dann eine Seite werden, auf der z.B. auch Tutorials zur Verwendung von unserem Wordpress verlinkt sein könnten.</p>';
+  echo '<h2>Überschrift zweiten Grades.</h2>';
+}
+
+/**
+ * Load textdomain
+ * 
+ * We write the source in english and provide a german
+ * translation file.
+ * 
+ * @return None
+ */
 add_action('plugins_loaded', 'grlp_gp_load_textdomain');
 function grlp_gp_load_textdomain()
 {
   load_plugin_textdomain(
-    'green-persons',
+    'green_persons',
     false,
     dirname(plugin_basename(__FILE__)) . '/languages'
   );
@@ -36,17 +76,17 @@ class GRLP_GruenePersonen
   {
     $labels = array(
       'menu_position' => 5,
-      'name'                => _x('Persons', 'post type general name', 'green-persons'),
-      'singular_name'       => _x('Person', 'post type singular name', 'green-persons'),
-      'add_new'             => _x('Add new', 'person', 'green-persons'),
-      'add_new_item'        => __('Add new person', 'green-persons'),
-      'edit_item'           => __('Edit person', 'green-persons'),
-      'new_item'            => __('New person', 'green-persons'),
-      'view_item'           => __('View person', 'green-persons'),
-      'search_items'        => __('Search person', 'green-persons'),
-      'not_found'           => __('No person found', 'green-persons'),
-      'not_found_in_trash'  => __('No person found in trash', 'green-persons'),
-      'all_items'           => __('All persons', 'green-persons'),
+      'name'                => _x('Persons', 'post type general name', 'green_persons'),
+      'singular_name'       => _x('Person', 'post type singular name', 'green_persons'),
+      'add_new'             => _x('Add new', 'person', 'green_persons'),
+      'add_new_item'        => __('Add new person', 'green_persons'),
+      'edit_item'           => __('Edit person', 'green_persons'),
+      'new_item'            => __('New person', 'green_persons'),
+      'view_item'           => __('View person', 'green_persons'),
+      'search_items'        => __('Search person', 'green_persons'),
+      'not_found'           => __('No person found', 'green_persons'),
+      'not_found_in_trash'  => __('No person found in trash', 'green_persons'),
+      'all_items'           => __('All persons', 'green_persons'),
       'parent_item_colon'   => '',
     );
     $supports = array('title', 'editor', 'revisions', 'thumbnail');
@@ -67,22 +107,22 @@ class GRLP_GruenePersonen
   public function create_taxonomy_person()
   {
     $labels = array(
-      'name'              => _x('Divisions', 'taxonomy general name', 'green-persons'),
-      'singular_name'     => _x('Division', 'taxonomy singular name', 'green-persons'),
-      'search_items'      => __('Search division', 'green-persons'),
-      'all_items'         => __('All divisions', 'green-persons'),
-      'parent_item'       => __('Parent division', 'green-persons'),
-      'parent_item_colon' => __('Parent division:', 'green-persons'),
-      'edit_item'         => __('Edit division', 'green-persons'),
-      'update_item'       => __('Update division', 'green-persons'),
-      'add_new_item'      => __('Add new division', 'green-persons'),
-      'new_item_name'     => __('Name of division', 'green-persons'),
-      'menu_name'         => _x('Divisions', 'menu name', 'green-persons'),
+      'name'              => _x('Divisions', 'taxonomy general name', 'green_persons'),
+      'singular_name'     => _x('Division', 'taxonomy singular name', 'green_persons'),
+      'search_items'      => __('Search division', 'green_persons'),
+      'all_items'         => __('All divisions', 'green_persons'),
+      'parent_item'       => __('Parent division', 'green_persons'),
+      'parent_item_colon' => __('Parent division:', 'green_persons'),
+      'edit_item'         => __('Edit division', 'green_persons'),
+      'update_item'       => __('Update division', 'green_persons'),
+      'add_new_item'      => __('Add new division', 'green_persons'),
+      'new_item_name'     => __('Name of division', 'green_persons'),
+      'menu_name'         => _x('Divisions', 'menu name', 'green_persons'),
     );
 
     $args = array(
       'labels'       => $labels,
-      'description'  => __('You can build groups of people inside divisions.', 'green-persons'),
+      'description'  => __('You can build groups of people inside divisions.', 'green_persons'),
       'hierarchical' => true,
       'show_ui'      => true,
       'show_in_rest' => true,
@@ -167,7 +207,10 @@ add_action('add_meta_boxes', 'grlp_add');
 function grlp_add()
 {
   global $post;
-  $pageTemplate = get_post_meta($post->ID, '_wp_page_template', true);
+  // The following is only relevant if we want to add different meta
+  // boxes with different page-templates. 
+  // $pageTemplate = get_post_meta($post->ID, '_wp_page_template', true);
+
   add_meta_box('grlp_person_contact', 'Kontaktdaten', 'grlp_person_contact_view', 'grlp_person', 'normal', 'high');
   add_meta_box('grlp_person_position', 'Infos & Ämter', 'grlp_person_position_view', 'grlp_person', 'normal', 'high');
 }
