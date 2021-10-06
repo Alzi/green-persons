@@ -21,9 +21,15 @@ defined( 'ABSPATH' ) || exit;
 add_action('admin_menu', 'grlp_add_menu_item');
 function grlp_add_menu_item()
 {
-  add_menu_page('GRLP Settings Page', 'GRLP Settings',
-    'manage_options', 'grlp-options', 'grlp_settings_page',
-    'dashicons-smiley', 99 );
+  add_menu_page(
+    'GRLP Settings Page',
+    'GRLP Settings',
+    'manage_options',
+    'grlp-options',
+    'grlp_settings_page',
+    'dashicons-smiley',
+    99
+  );
 }
 
 /**
@@ -50,6 +56,7 @@ function grlp_settings_page()
  * translation file.
  * 
  * @return None
+ *
  */
 add_action('plugins_loaded', 'grlp_gp_load_textdomain');
 function grlp_gp_load_textdomain()
@@ -62,93 +69,103 @@ function grlp_gp_load_textdomain()
 }
 
 
-class GRLP_GruenePersonen
+/**
+ * Create 'grlp_person' custom post type
+ * 
+ * @return None
+ *
+ */
+add_action('init', 'grlp_create_person_post_type');
+function grlp_create_person_post_type()
 {
-  public function __construct()
-  {
-    add_action('init', array($this, 'create_custom_post_type'));
-    add_action('init', array($this, 'create_taxonomy_person'));
-    add_filter('single_template', 'GRLP_GruenePersonen::load_person_template');
-    flush_rewrite_rules();
-  }
+  $labels = array(
+    'menu_position' => 5,
+    'name'                => _x('Persons', 'post type general name', 'green_persons'),
+    'singular_name'       => _x('Person', 'post type singular name', 'green_persons'),
+    'add_new'             => _x('Add new', 'person', 'green_persons'),
+    'add_new_item'        => __('Add new person', 'green_persons'),
+    'edit_item'           => __('Edit person', 'green_persons'),
+    'new_item'            => __('New person', 'green_persons'),
+    'view_item'           => __('View person', 'green_persons'),
+    'search_items'        => __('Search person', 'green_persons'),
+    'not_found'           => __('No person found', 'green_persons'),
+    'not_found_in_trash'  => __('No person found in trash', 'green_persons'),
+    'all_items'           => __('All persons', 'green_persons'),
+    'parent_item_colon'   => '',
+  );
+  $supports = array('title', 'editor', 'revisions', 'thumbnail');
 
-  public function create_custom_post_type()
-  {
-    $labels = array(
-      'menu_position' => 5,
-      'name'                => _x('Persons', 'post type general name', 'green_persons'),
-      'singular_name'       => _x('Person', 'post type singular name', 'green_persons'),
-      'add_new'             => _x('Add new', 'person', 'green_persons'),
-      'add_new_item'        => __('Add new person', 'green_persons'),
-      'edit_item'           => __('Edit person', 'green_persons'),
-      'new_item'            => __('New person', 'green_persons'),
-      'view_item'           => __('View person', 'green_persons'),
-      'search_items'        => __('Search person', 'green_persons'),
-      'not_found'           => __('No person found', 'green_persons'),
-      'not_found_in_trash'  => __('No person found in trash', 'green_persons'),
-      'all_items'           => __('All persons', 'green_persons'),
-      'parent_item_colon'   => '',
-    );
-    $supports = array('title', 'editor', 'revisions', 'thumbnail');
-
-    register_post_type(
-      'grlp_person',
-      array(
-        'labels'       => $labels,
-        'public'       => true,
-        'menu_icon'    => 'dashicons-id-alt',
-        'supports'     => $supports,
-        'rewrite'      => array('slug' => 'person'),
-        'show_in_rest' => true,
-      )
-    );
-  }
-
-  public function create_taxonomy_person()
-  {
-    $labels = array(
-      'name'              => _x('Divisions', 'taxonomy general name', 'green_persons'),
-      'singular_name'     => _x('Division', 'taxonomy singular name', 'green_persons'),
-      'search_items'      => __('Search division', 'green_persons'),
-      'all_items'         => __('All divisions', 'green_persons'),
-      'parent_item'       => __('Parent division', 'green_persons'),
-      'parent_item_colon' => __('Parent division:', 'green_persons'),
-      'edit_item'         => __('Edit division', 'green_persons'),
-      'update_item'       => __('Update division', 'green_persons'),
-      'add_new_item'      => __('Add new division', 'green_persons'),
-      'new_item_name'     => __('Name of division', 'green_persons'),
-      'menu_name'         => _x('Divisions', 'menu name', 'green_persons'),
-    );
-
-    $args = array(
+  register_post_type(
+    'grlp_person',
+    array(
       'labels'       => $labels,
-      'description'  => __('You can build groups of people inside divisions.', 'green_persons'),
-      'hierarchical' => true,
-      'show_ui'      => true,
+      'public'       => true,
+      'menu_icon'    => 'dashicons-id-alt',
+      'supports'     => $supports,
+      'rewrite'      => array('slug' => 'alzipopalzi'),
       'show_in_rest' => true,
-      // 'show_admin_column' => true,
-      // 'query_var'         => true,
-    );
-    register_taxonomy('abteilung', array('grlp_person'), $args);
-  }
-
-  public static function load_person_template($template)
-  {
-    global $post;
-
-    if ('grlp_person' === $post->post_type && locate_template(array('grlp_person')) !== $template) {
-      return plugin_dir_path(__FILE__) . '/templates/single-grlp_person.php';
-    }
-    return $template;
-  }
+    )
+  );
 }
 
-new GRLP_GruenePersonen;
+
+/**
+ * Create taxonomy for 'grlp_persons'
+ *
+ * @return None
+ *
+ */
+add_action('init', 'grlp_create_person_taxonomy');
+function grlp_create_person_taxonomy()
+{
+  $labels = array(
+    'name'              => _x('Divisions', 'taxonomy general name', 'green_persons'),
+    'singular_name'     => _x('Division', 'taxonomy singular name', 'green_persons'),
+    'search_items'      => __('Search division', 'green_persons'),
+    'all_items'         => __('All divisions', 'green_persons'),
+    'parent_item'       => __('Parent division', 'green_persons'),
+    'parent_item_colon' => __('Parent division:', 'green_persons'),
+    'edit_item'         => __('Edit division', 'green_persons'),
+    'update_item'       => __('Update division', 'green_persons'),
+    'add_new_item'      => __('Add new division', 'green_persons'),
+    'new_item_name'     => __('Name of division', 'green_persons'),
+    'menu_name'         => _x('Divisions', 'menu name', 'green_persons'),
+  );
+
+  $args = array(
+    'labels'       => $labels,
+    'description'  => __('You can build groups of people inside divisions.', 'green_persons'),
+    'hierarchical' => true,
+    'show_ui'      => true,
+    'show_in_rest' => true,
+    // 'show_admin_column' => true,
+    // 'query_var'         => true,
+  );
+  register_taxonomy('abteilung', array('grlp_person'), $args);
+}
 
 
+/**
+ * Load a custom template for displaying the detailed person site
+ *
+ * @return None
+ *
+ */
+add_filter('single_template', 'grlp_load_single_person_template');
+function grlp_load_single_person_template($template)
+{
+  global $post;
 
-/* TODO: Be consistent: either OOP-Style or procedural. <25-09-21, Marc> */
-/* --------------------------------------------------------------------- */
+  if ('grlp_person' === $post->post_type && locate_template(array('grlp_person')) !== $template) {
+    return plugin_dir_path(__FILE__) . '/templates/single-grlp_person.php';
+  }
+  return $template;
+}
+
+// TODO: learn about this function and how to really use it
+// flush_rewrite_rules();
+
+
 function grlp_person_anzeigen($atts, $content, $shortcode_tag)
 {
   $o = '';
