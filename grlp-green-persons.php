@@ -165,6 +165,17 @@ function grlp_load_single_person_template($template)
 // TODO: learn about this function and how to really use it
 // flush_rewrite_rules();
 
+/**
+ * Add shortcodes
+ *
+ * @return None
+ *
+ */
+add_action('init', 'grlp_shortcodes_init');
+function grlp_shortcodes_init()
+{
+    add_shortcode('person-anzeigen', 'grlp_person_anzeigen');
+}
 
 function grlp_person_anzeigen($atts, $content, $shortcode_tag)
 {
@@ -195,13 +206,7 @@ function grlp_person_anzeigen($atts, $content, $shortcode_tag)
   return $o;
 }
 
-function grlp_shortcodes_init()
-{
-  add_shortcode('person-anzeigen', 'grlp_person_anzeigen');
-}
-add_action('init', 'grlp_shortcodes_init');
-
-
+//TODO: move to uninstall.php
 function grlp_uninstall_plugin()
 {
   $args = array(
