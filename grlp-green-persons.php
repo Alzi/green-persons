@@ -157,10 +157,32 @@ function grlp_load_single_person_template($template)
 {
     global $post;
 
+<<<<<<< Updated upstream
     if ('grlp_person' === $post->post_type && locate_template(array('grlp_person')) !== $template) {
         return plugin_dir_path(__FILE__) . '/templates/single-grlp_person.php';
     }
     return $template;
+=======
+<<<<<<< Updated upstream
+  if ('grlp_person' === $post->post_type && locate_template(array('grlp_person')) !== $template) {
+    return plugin_dir_path(__FILE__) . '/templates/single-grlp_person.php';
+  }
+  return $template;
+=======
+    /* Checks for single template by post type */
+    if ( $post->post_type == 'grlp_person' ) {
+        if ( file_exists( plugin_dir_path(__FILE__ ) . 'templates/single-grlp_person.php' ) ) {
+            return plugin_dir_path(__FILE__) . 'templates/single-grlp_person.php';
+        }
+    }
+    return $template;
+
+    // if ('grlp_person' === $post->post_type && locate_template(array('grlp_person')) !== $template) {
+    //     return plugin_dir_path(__FILE__) . '/templates/single-grlp_person.php';
+    // }
+    // return $template;
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 }
 
 // TODO: learn about this function and how to really use it
@@ -238,6 +260,18 @@ register_uninstall_hook(__FILE__, 'grlp_uninstall_plugin');
 add_action('add_meta_boxes_grlp_person', 'grlp_add_meta_boxes');
 function grlp_add_meta_boxes($post)
 {
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+  global $post;
+  // The following is only relevant if we want to add different meta
+  // boxes with different page-templates. 
+  // $pageTemplate = get_post_meta($post->ID, '_wp_page_template', true);
+
+  add_meta_box('grlp_person_contact', 'Kontaktdaten', 'grlp_person_contact_view', 'grlp_person', 'normal', 'high');
+  add_meta_box('grlp_person_position', 'Infos & Ämter', 'grlp_person_position_view', 'grlp_person', 'normal', 'high');
+=======
+>>>>>>> Stashed changes
     add_meta_box('grlp_person_contact', __('Kontaktdaten'), 'grlp_person_contact_view', 'grlp_person', 'normal', 'high');
     add_meta_box('grlp_person_info', __('Infos & Ämter'), 'grlp_person_position_view', 'grlp_person', 'normal', 'high');
 
@@ -254,7 +288,11 @@ function grlp_add_meta_boxes($post)
 
     register_post_meta('grlp_person', 'grlp_person_contact_www', [
         'type'              => 'string',
+<<<<<<< Updated upstream
         'description'       => __('URL der Website der Person (inklusive http...)'),
+=======
+        'description'       => __('URL der Website der Person (inklusive http...)', 'green_person'),
+>>>>>>> Stashed changes
         'single'            => true,
         'show_in_rest'      => true,
         'sanitize_callback' => function ( $value ) {
@@ -263,7 +301,11 @@ function grlp_add_meta_boxes($post)
     ]);
     
     register_post_meta('grlp_person', 'grlp_person_contact_email', [
+<<<<<<< Updated upstream
         'description'       => __('E-Mail Adresse der Person'),
+=======
+        'description'       => __('E-Mail Adresse der Person', 'green_person'),
+>>>>>>> Stashed changes
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -273,7 +315,11 @@ function grlp_add_meta_boxes($post)
     ]);
     
     register_post_meta('grlp_person', 'grlp_person_contact_twitter', [
+<<<<<<< Updated upstream
         'description'       => __('Twitter Name der Person (ohne @!)'),
+=======
+        'description'       => __('Twitter Name der Person (ohne @!)', 'green_person'),
+>>>>>>> Stashed changes
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -283,7 +329,11 @@ function grlp_add_meta_boxes($post)
     ]);
 
     register_post_meta('grlp_person', 'grlp_person_contact_facebook', [
+<<<<<<< Updated upstream
         'description'       => __('Vollstängiger Link zum Facebook Profil'),
+=======
+        'description'       => __('Vollstängiger Link zum Facebook Profil', 'green_person'),
+>>>>>>> Stashed changes
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -292,7 +342,11 @@ function grlp_add_meta_boxes($post)
         }
     ]);
     register_post_meta('grlp_person', 'grlp_person_contact_instagram', [
+<<<<<<< Updated upstream
         'description'       => __('Vollstängiger Link zum Instagram Profil'),
+=======
+        'description'       => __('Vollstängiger Link zum Instagram Profil', 'green_person'),
+>>>>>>> Stashed changes
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -302,7 +356,11 @@ function grlp_add_meta_boxes($post)
     ]);
 
     register_post_meta('grlp_person', 'grlp_person_contact_address', [
+<<<<<<< Updated upstream
         'description'       => __('Platz für Anschrift, Fax oder zusätzl. Tel'),
+=======
+        'description'       => __('Platz für Anschrift, Fax oder zusätzl. Tel', 'green_person'),
+>>>>>>> Stashed changes
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -312,7 +370,11 @@ function grlp_add_meta_boxes($post)
     ]);
 
     register_post_meta('grlp_person', 'grlp_person_contact_phone', [
+<<<<<<< Updated upstream
         'description'       => __('Telefonnummer Form: (06131) 89 243 00'),
+=======
+        'description'       => __('Telefonnummer Form: (06131) 89 243 00', 'green_person'),
+>>>>>>> Stashed changes
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -321,6 +383,7 @@ function grlp_add_meta_boxes($post)
         }
     ]);
 
+<<<<<<< Updated upstream
     register_post_meta('grlp_person', 'grlp_person_contact_mobile', [
         'description'       => __('Mobilfunk Nummer Form: (0176) 123 456 789'),
         'type'              => 'string',
@@ -330,6 +393,21 @@ function grlp_add_meta_boxes($post)
             return wp_strip_all_tags( $value );
         }
     ]);
+=======
+    // TODO: We may want to make this meta-key optional via the settings API
+    //       but for now we don't need it really.
+    //    
+    // register_post_meta('grlp_person', 'grlp_person_contact_mobile', [
+    //     'description'       => __('Mobilfunk Nummer Form: (0176) 123 456 789'),
+    //     'type'              => 'string',
+    //     'single'            => true,
+    //     'show_in_rest'      => true,
+    //     'sanitize_callback' => function ( $value ) {
+    //         return wp_strip_all_tags( $value );
+    //     }
+    // ]);
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 }
 
 /**
@@ -341,12 +419,33 @@ function grlp_add_meta_boxes($post)
  **/
 function grlp_person_contact_view($post)
 {
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+  // $post is already set, and contains an object: the WordPress post
+  global $post;
+  $values = get_post_custom($post->ID);
+  $www        = isset($values['grlp_person_contact_www']) ? esc_attr($values['grlp_person_contact_www'][0]) : '';
+  $email      = isset($values['grlp_person_contact_email']) ? esc_attr($values['grlp_person_contact_email'][0]) : '';
+  $facebook   = isset($values['grlp_person_contact_facebook']) ? esc_attr($values['grlp_person_contact_facebook'][0]) : '';
+  $twitter    = isset($values['grlp_person_contact_twitter']) ? esc_attr($values['grlp_person_contact_twitter'][0]) : '';
+  $instagram  = isset($values['grlp_person_contact_instagram']) ? esc_attr($values['grlp_person_contact_instagram'][0]) : '';
+  $anschrift  = isset($values['grlp_person_contact_anschrift']) ? esc_html($values['grlp_person_contact_anschrift'][0]) : '';
+  $telefon    = isset($values['grlp_person_contact_telefon']) ? esc_html($values['grlp_person_contact_telefon'][0]) : '';
+  $selected   = isset($values['my_meta_box_select']) ? esc_attr($values['my_meta_box_select'][0]) : '';
+  $check      = isset($values['my_meta_box_check']) ? esc_attr($values['my_meta_box_check'][0]) : '';
+
+  // We'll use this nonce field later on when saving.
+  wp_nonce_field('my_meta_box_nonce', 'meta_box_nonce');
+=======
+>>>>>>> Stashed changes
     $values = get_post_custom($post->ID);
     $www        = isset($values['grlp_person_contact_www']) ? esc_attr($values['grlp_person_contact_www'][0]) : '';
     $email      = isset($values['grlp_person_contact_email']) ? esc_attr($values['grlp_person_contact_email'][0]) : '';
     $facebook   = isset($values['grlp_person_contact_facebook']) ? esc_attr($values['grlp_person_contact_facebook'][0]) : '';
     $twitter    = isset($values['grlp_person_contact_twitter']) ? esc_attr($values['grlp_person_contact_twitter'][0]) : '';
     $instagram  = isset($values['grlp_person_contact_instagram']) ? esc_attr($values['grlp_person_contact_instagram'][0]) : '';
+<<<<<<< Updated upstream
     $anschrift  = isset($values['grlp_person_contact_anschrift']) ? esc_html($values['grlp_person_contact_anschrift'][0]) : '';
     $telefon    = isset($values['grlp_person_contact_telefon']) ? esc_html($values['grlp_person_contact_telefon'][0]) : '';
     $selected   = isset($values['my_meta_box_select']) ? esc_attr($values['my_meta_box_select'][0]) : '';
@@ -354,6 +453,17 @@ function grlp_person_contact_view($post)
 
     // We'll use this nonce field later on when saving.
     wp_nonce_field('my_meta_box_nonce', 'meta_box_nonce');
+=======
+    $anschrift  = isset($values['grlp_person_contact_address']) ? esc_html($values['grlp_person_contact_address'][0]) : '';
+    $telefon    = isset($values['grlp_person_contact_phone']) ? esc_html($values['grlp_person_contact_phone'][0]) : '';
+    
+    // $selected   = isset($values['my_meta_box_select']) ? esc_attr($values['my_meta_box_select'][0]) : '';
+    // $check      = isset($values['my_meta_box_check']) ? esc_attr($values['my_meta_box_check'][0]) : '';
+
+    // We'll use this nonce field later on when saving.
+    wp_nonce_field('my_meta_box_nonce', 'meta_box_nonce');
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 ?>
     <table class="form-table">
         <tbody>
@@ -594,4 +704,9 @@ function grlp_person_position_save($post_id)
             wp_kses($_POST['grlp_person_pos_sortierung'], $allowed)
         );
     }
+}
+
+function grlp_put_person()
+{
+    echo "<h1>Hi I'm a Person!";
 }
