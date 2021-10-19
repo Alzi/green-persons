@@ -9,6 +9,7 @@
 
 get_header();
 
+<<<<<<< Updated upstream
 $layout_width = @get_post_meta( $post->ID, '_sunflower_styled_layout')[0] ? '' : 'container-narrow';
 $metadata = @get_post_meta( $post->ID, '_sunflower_metadata')[0] ?: false;
 $styled_layout = @get_post_meta( $post->ID, '_sunflower_styled_layout')[0] ? 'styled-layout' : '';
@@ -75,6 +76,33 @@ $styled_layout = @get_post_meta( $post->ID, '_sunflower_styled_layout')[0] ? 'st
 		}
 	?>
 
+=======
+$layout_width = @get_post_meta($post->ID, '_sunflower_styled_layout')[0] ? '' : 'container-narrow';
+$metadata = @get_post_meta($post->ID, '_sunflower_metadata')[0] ?: false;
+$styled_layout = @get_post_meta($post->ID, '_sunflower_styled_layout')[0] ? 'styled-layout' : '';
+
+?>
+<div id="content" class="container <?php echo "$layout_width $styled_layout"; ?>">
+	<div class="row">
+		<div class="col-12">
+			<main id="primary" class="site-main">
+				<?php
+				while (have_posts()) :
+					the_post();
+                    
+                    require(plugin_dir_path(__FILE__).'partials/content-grlp_person.php');
+
+					// If comments are open or we have at least one comment, load up the comment template.
+					if (comments_open() || get_comments_number()) :
+						comments_template();
+					endif;
+
+				endwhile; // End of the loop.
+				?>
+			</main><!-- #main -->
+		</div>
+	</div>
+>>>>>>> Stashed changes
 </div>
 <?php
 get_sidebar();
