@@ -103,7 +103,7 @@ function grlp_create_person_post_type()
             'public'       => true,
             'menu_icon'    => 'dashicons-id-alt',
             'supports'     => $supports,
-            'rewrite'      => array('slug' => 'alzipopalzi'),
+            'rewrite'      => array('slug' => 'gruene-personen'),
             'show_in_rest' => true,
         )
     );
@@ -246,7 +246,7 @@ function grlp_add_meta_boxes($post)
     // $pageTemplate = get_post_meta($post->ID, '_wp_page_template', true);
 
     add_meta_box('grlp_person_contact', __('Kontaktdaten'), 'grlp_person_contact_view', 'grlp_person', 'normal', 'high');
-    add_meta_box('grlp_person_info', __('Infos & Ämter'), 'grlp_person_position_view', 'grlp_person', 'normal', 'high');
+    // add_meta_box('grlp_person_info', __('Infos & Ämter'), 'grlp_person_position_view', 'grlp_person', 'normal', 'high');
 
     // FIXME: this is a description of all allowed arguments for 'register_post_meta'
     //        We want to get rid of it at times.
@@ -337,18 +337,6 @@ function grlp_add_meta_boxes($post)
             return wp_strip_all_tags( $value );
         }
     ]);
-    // TODO: We may want to make this meta-key optional via the settings API
-    //       but for now we don't need it really.
-    //    
-    // register_post_meta('grlp_person', 'grlp_person_contact_mobile', [
-    //     'description'       => __('Mobilfunk Nummer Form: (0176) 123 456 789'),
-    //     'type'              => 'string',
-    //     'single'            => true,
-    //     'show_in_rest'      => true,
-    //     'sanitize_callback' => function ( $value ) {
-    //         return wp_strip_all_tags( $value );
-    //     }
-    // ]);
 }
 
 /**
@@ -361,7 +349,7 @@ function grlp_add_meta_boxes($post)
 function grlp_person_contact_view($post)
 {
     // $post is already set, and contains an object: the WordPress post
-    global $post;
+    // global $post;
     
     // We'll use this nonce field later on when saving.
     wp_nonce_field('my_meta_box_nonce', 'meta_box_nonce');
@@ -371,10 +359,11 @@ function grlp_person_contact_view($post)
     $facebook   = isset($values['grlp_person_contact_facebook']) ? esc_attr($values['grlp_person_contact_facebook'][0]) : '';
     $twitter    = isset($values['grlp_person_contact_twitter']) ? esc_attr($values['grlp_person_contact_twitter'][0]) : '';
     $instagram  = isset($values['grlp_person_contact_instagram']) ? esc_attr($values['grlp_person_contact_instagram'][0]) : '';
-    $anschrift  = isset($values['grlp_person_contact_anschrift']) ? esc_html($values['grlp_person_contact_anschrift'][0]) : '';
-    $telefon    = isset($values['grlp_person_contact_telefon']) ? esc_html($values['grlp_person_contact_telefon'][0]) : '';
-    $selected   = isset($values['my_meta_box_select']) ? esc_attr($values['my_meta_box_select'][0]) : '';
-    $check      = isset($values['my_meta_box_check']) ? esc_attr($values['my_meta_box_check'][0]) : '';
+    $address  = isset($values['grlp_person_contact_address']) ? esc_html($values['grlp_person_contact_address'][0]) : '';
+    $phone    = isset($values['grlp_person_contact_phone']) ? esc_html($values['grlp_person_contact_phone'][0]) : '';
+    $mobile    = isset($values['grlp_person_contact_mobile']) ? esc_html($values['grlp_person_contact_mobile'][0]) : '';
+    // $selected   = isset($values['my_meta_box_select']) ? esc_attr($values['my_meta_box_select'][0]) : '';
+    // $check      = isset($values['my_meta_box_check']) ? esc_attr($values['my_meta_box_check'][0]) : '';
 ?>
     <table class="form-table">
         <tbody>
@@ -400,12 +389,18 @@ function grlp_person_contact_view($post)
                 <td></td>
             </tr>
             <tr>
-                <th scope="row"><label for="grlp_person_contact_anschrift">Anschrift</label></th>
-                <td><textarea name="grlp_person_contact_anschrift" id="grlp_person_contact_anschrift"><?php echo $anschrift; ?></textarea><br><span class="description">Platz für Anschrift, Telefon, Fax, etc.</span></td>
-
-                <th scope="row"><label for="grlp_person_contact_telefon">Telefon</label></th>
-                <td><input type="text" name="grlp_person_contact_telefon" id="grlp_person_contact_telefon" value="<?php echo $telefon; ?>" /><br><span class="description">Telefonnummer, Form: +49 (211) 222 333 -11</span></td>
+                <th scope="row"><label for="grlp_person_contact_address">Anschrift</label></th>
+                <td><textarea name="grlp_person_contact_address" id="grlp_person_contact_address"><?php echo $address; ?></textarea><br><span class="description">Platz für Anschrift, Telefon, Fax, etc.</span></td>
             </tr>
+
+            <tr>
+                <th scope="row"><label for="grlp_person_contact_phone">Telefon</label></th>
+                <td><input type="text" name="grlp_person_contact_phone" id="grlp_person_contact_telefon" value="<?php echo $phone; ?>" /><br><span class="description">Telefonnummer, Form: (01234) 89 243 -99</span></td>
+                
+                <th scope="row"><label for="grlp_person_contact_mobile">Mobiltelefon</label></th>
+                <td><input type="text" name="grlp_person_contact_mobile" id="grlp_person_contact_mobile" value="<?php echo $mobile; ?>" /><br><span class="description">Mobilfunknummer, Form: (0179) 12 345 678</span></td>
+            </tr>
+
         </tbody>
     </table>
 <?php
@@ -475,21 +470,31 @@ function grlp_person_contact_save($post_id)
             )
         );
     }
-    if (isset($_POST['grlp_person_contact_telefon'])) {
+    if (isset($_POST['grlp_person_contact_phone'])) {
         update_post_meta(
             $post_id,
-            'grlp_person_contact_telefon',
+            'grlp_person_contact_phone',
             wp_kses(
-                $_POST['grlp_person_contact_telefon'],
+                $_POST['grlp_person_contact_phone'],
                 $allowed
             )
         );
     }
-    if (isset($_POST['grlp_person_contact_anschrift'])) {
+    if (isset($_POST['grlp_person_contact_mobile'])) {
         update_post_meta(
             $post_id,
-            'grlp_person_contact_anschrift',
-            esc_html($_POST['grlp_person_contact_anschrift'])
+            'grlp_person_contact_mobile',
+            wp_kses(
+                $_POST['grlp_person_contact_mobile'],
+                $allowed
+            )
+        );
+    }
+    if (isset($_POST['grlp_person_contact_address'])) {
+        update_post_meta(
+            $post_id,
+            'grlp_person_contact_address',
+            esc_html($_POST['grlp_person_contact_address'])
         );
     }
 }
