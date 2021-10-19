@@ -44,6 +44,31 @@ function grlp_add_menu_item()
  */
 function grlp_settings_page()
 {
+    $args = array(
+        'numberposts'   => -1,
+        'post_type'     => 'grlp_person',
+        'post_status'   => 'publish',
+        // 'abteilung'     => 'lgs',
+        'tax_query'     => array(
+            array(
+                'taxonomy'      => 'abteilung',
+                'field'         => 'slug',
+                'terms'         => 'lgs',
+            )
+            ),
+    );
+    
+    $my_posts = get_posts($args);
+
+
+    echo "<pre>";
+    echo "<h2>Team-LGS:</h2>";
+    foreach ($my_posts as $post) {
+        echo $post->post_title . " " . $post->ID . "\n";
+    }
+    
+    echo "</pre>";
+
     echo "<h1>Grüne Personen Einstellungen</h1>";
     echo '<p>Hier kann ich ganz cool irgendwelche Testvariablen oder ähnliches ausgeben, was sehr praktisch ist. :)</p>';
     echo '<p>In Zukunft kann das dann eine Seite werden, auf der z.B. auch Tutorials zur Verwendung von unserem Wordpress verlinkt sein könnten.</p>';
@@ -175,15 +200,35 @@ function grlp_load_single_person_template($template)
  * @return None
  *
  */
-add_action('init', 'grlp_shortcodes_init');
+add_action( 'init', 'grlp_shortcodes_init' );
 function grlp_shortcodes_init()
 {
-    add_shortcode('person-anzeigen', 'grlp_person_anzeigen');
+    add_shortcode( 'team', 'grlp_team_anzeigen' );
 }
 
-function grlp_person_anzeigen($atts, $content, $shortcode_tag)
+function grlp_team_anzeigen( $atts, $content, $shortcode_tag )
 {
+    $posts = array();
     $o = '';
+    if ( ! empty ( $atts ))
+    {
+        if ( isset( $atts['abteilung'] ))
+        {
+            $posts = get_posts(
+                array(
+                    'post_type'     => 'grlp_person',
+                    'numberposts'   => -1,
+                    'abteilung'     => $atts['abteilung'],
+                    // 'post_status'   => 'publish',
+                )
+            );
+        }
+    }
+    $o .= "<h1>Team " . strtoupper( $atts['abteilung'] ) . ":</h1>";
+    foreach ( $posts as $post )
+    {
+        $o .= "<p>" . $post->post_title . "</p>";
+    }
 
     // $o = '<pre style="background-color:#fff;">';
     // $o.= 'Test, 1.2';
@@ -198,15 +243,15 @@ function grlp_person_anzeigen($atts, $content, $shortcode_tag)
     // );
 
     // Person template file 
-    ob_start();
-    require_once('templates/partials/partial_person.php');
-    $o .= ob_get_clean();
+    // ob_start();
+    // require_once('templates/partials/partial_person.php');
+    // $o .= ob_get_clean();
 
-    // Handle enclosing shortcode tags
-    if (!is_null($content)) {
-        $o .= apply_filters('the_content', $content);
-        $o .= do_shortcode($content);
-    }
+    // // Handle enclosing shortcode tags
+    // if (!is_null($content)) {
+    //     $o .= apply_filters('the_content', $content);
+    //     $o .= do_shortcode($content);
+    // }
     return $o;
 }
 
