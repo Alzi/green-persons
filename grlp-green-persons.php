@@ -60,15 +60,25 @@ function grlp_settings_page()
     
     $my_posts = get_posts($args);
 
-
+    
+    
     echo "<pre>";
+    print_r($my_posts);
     echo "<h2>Team-LGS:</h2>";
     foreach ($my_posts as $post) {
         echo $post->post_title . " " . $post->ID . "\n";
     }
     
-    echo "</pre>";
+    $marcs_meta = get_post_meta( 5513 );
+    $marcs_www = get_post_meta( 5513, 'grlp_person_contact_www', true );
 
+    echo get_the_post_thumbnail(5513);
+    
+    print_r( $marcs_www );
+    print_r( $marcs_meta );
+
+    echo "</pre>";
+    
     echo "<h1>Grüne Personen Einstellungen</h1>";
     echo '<p>Hier kann ich ganz cool irgendwelche Testvariablen oder ähnliches ausgeben, was sehr praktisch ist. :)</p>';
     echo '<p>In Zukunft kann das dann eine Seite werden, auf der z.B. auch Tutorials zur Verwendung von unserem Wordpress verlinkt sein könnten.</p>';
@@ -224,10 +234,47 @@ function grlp_team_anzeigen( $atts, $content, $shortcode_tag )
             );
         }
     }
-    $o .= "<h1>Team " . strtoupper( $atts['abteilung'] ) . ":</h1>";
+
+    $count = 0;
+    $num_of_posts = sizeof($posts);
+    $num_of_columns = @absint( $atts['cols'] ) > 0 ? absint( $atts['cols'] ) : 3;
+    
+    $o .= '<div class="wp-block-columns mb-4">'."\n";
     foreach ( $posts as $post )
     {
-        $o .= "<p>" . $post->post_title . "</p>";
+        $o .= '<div class="wp-block-column">' . "\n";
+        $o .= '<div class="wp-block-media-text alignwide is-stacked-on-mobile person has-shadow">' . "\n";
+        $o .= '<figure class="wp-block-media-text__media">' . "\n";
+        $o .= get_the_post_thumbnail($post->ID);
+        $o .= '</figure>' . "\n";
+        $o .= '<div class="wp-block-media-text__content">' . "\n";
+        $o .= '<p class="person-name">' . $post->post_title . '</p>' . "\n";
+        // FIXME: just for testing we show the url here, but we want to show the persons function.
+        $o .= '<p class="person-description">' . get_post_meta( $post->ID, 'grlp_person_contact_www', true ) . '</p>' . "\n";
+        $o .= '<div class="wp-block-group d-flex p-0"><div class="wp-block-group__inner-container">' . "\n";
+        // $o .= '<a href="">E-Mail</a>' . "\n";
+        $o .= '</div></div>' . "\n";
+        $o .= '</div>';
+        $o .= '</div>';
+        $o .= '</div>' . "\n";
+
+        $count ++;
+        if ($count % $num_of_columns == 0)
+        {
+            $o .= '</div>' . "\n";
+            if ($count < $num_of_posts)
+            {
+                $o .= '<div class="wp-block-columns mb-4">' . "\n";
+            }
+        }
+    }
+    if ( $count % $num_of_columns != 0)
+    {
+        for ($i = $count % $num_of_columns; $i < $num_of_columns; $i++)
+        {
+            $o .= '<div class="wp-block-column"></div>' . "\n";
+        }
+        $o .= '</div>' . "\n";
     }
 
     // $o = '<pre style="background-color:#fff;">';
@@ -393,20 +440,21 @@ function grlp_add_meta_boxes($post)
  **/
 function grlp_person_contact_view($post)
 {
-    // $post is already set, and contains an object: the WordPress post
-    // global $post;
-    
     // We'll use this nonce field later on when saving.
-    wp_nonce_field('my_meta_box_nonce', 'meta_box_nonce');
+    wp_nonce_field('grlp_person_contact_view', 'grlp_nonce');
     $values = get_post_custom($post->ID);
+
+    // $www = get_post_meta
+
     $www        = isset($values['grlp_person_contact_www']) ? esc_attr($values['grlp_person_contact_www'][0]) : '';
     $email      = isset($values['grlp_person_contact_email']) ? esc_attr($values['grlp_person_contact_email'][0]) : '';
     $facebook   = isset($values['grlp_person_contact_facebook']) ? esc_attr($values['grlp_person_contact_facebook'][0]) : '';
     $twitter    = isset($values['grlp_person_contact_twitter']) ? esc_attr($values['grlp_person_contact_twitter'][0]) : '';
     $instagram  = isset($values['grlp_person_contact_instagram']) ? esc_attr($values['grlp_person_contact_instagram'][0]) : '';
-    $address  = isset($values['grlp_person_contact_address']) ? esc_html($values['grlp_person_contact_address'][0]) : '';
-    $phone    = isset($values['grlp_person_contact_phone']) ? esc_html($values['grlp_person_contact_phone'][0]) : '';
-    $mobile    = isset($values['grlp_person_contact_mobile']) ? esc_html($values['grlp_person_contact_mobile'][0]) : '';
+    $mobile     = isset($values['grlp_person_contact_mobile']) ? esc_attr($values['grlp_person_contact_mobile'][0]) : '';
+    $phone      = isset($values['grlp_person_contact_phone']) ? esc_attr($values['grlp_person_contact_phone'][0]) : '';
+
+    $address    = isset($values['grlp_person_contact_address']) ? esc_html($values['grlp_person_contact_address'][0]) : '';
     // $selected   = isset($values['my_meta_box_select']) ? esc_attr($values['my_meta_box_select'][0]) : '';
     // $check      = isset($values['my_meta_box_check']) ? esc_attr($values['my_meta_box_check'][0]) : '';
 ?>
@@ -459,7 +507,7 @@ function grlp_person_contact_save($post_id)
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
 
     // if our nonce isn't there, or we can't verify it, bail
-    if (!isset($_POST['meta_box_nonce']) || !wp_verify_nonce($_POST['meta_box_nonce'], 'my_meta_box_nonce')) return;
+    if (!isset($_POST['grlp_nonce']) || !wp_verify_nonce($_POST['grlp_nonce'], 'grlp_person_contact_view')) return;
 
     // if our current user can't edit this post, bail
     if (!current_user_can('edit_post', $post_id)) return;
