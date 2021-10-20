@@ -203,6 +203,7 @@ function grlp_load_single_person_template($template)
 // TODO: learn about this function and how to really use it
 // flush_rewrite_rules();
 
+
 /**
  * Add shortcodes
  *
@@ -213,6 +214,92 @@ add_action( 'init', 'grlp_shortcodes_init' );
 function grlp_shortcodes_init()
 {
     add_shortcode( 'team', 'grlp_team_anzeigen' );
+}
+
+function grlp_team_anzeigen( $atts, $content, $shortcode_tag )
+{
+    $posts = array();
+    $o = '';
+    if ( ! empty ( $atts ))
+    {
+        if ( isset( $atts['abteilung'] ))
+        {
+            $posts = get_posts(
+                array(
+                    'post_type'     => 'grlp_person',
+                    'numberposts'   => -1,
+                    'abteilung'     => $atts['abteilung'],
+                    // 'post_status'   => 'publish',
+                )
+            );
+        }
+    }
+
+    $count = 0;
+    $num_of_posts = sizeof($posts);
+    $num_of_columns = @absint( $atts['cols'] ) > 0 ? absint( $atts['cols'] ) : 3;
+    
+    $o .= '<div class="wp-block-columns mb-4">'."\n";
+    foreach ( $posts as $post )
+    {
+        $o .= '<div class="wp-block-column">' . "\n";
+        $o .= '<div class="wp-block-media-text alignwide is-stacked-on-mobile person has-shadow">' . "\n";
+        $o .= '<figure class="wp-block-media-text__media">' . "\n";
+        $o .= get_the_post_thumbnail($post->ID);
+        $o .= '</figure>' . "\n";
+        $o .= '<div class="wp-block-media-text__content">' . "\n";
+        $o .= '<p class="person-name">' . $post->post_title . '</p>' . "\n";
+        // FIXME: just for testing we show the url here, but we want to show the persons function.
+        $o .= '<p class="person-description">' . get_post_meta( $post->ID, 'grlp_person_contact_www', true ) . '</p>' . "\n";
+        $o .= '<div class="wp-block-group d-flex p-0"><div class="wp-block-group__inner-container">' . "\n";
+        // $o .= '<a href="">E-Mail</a>' . "\n";
+        $o .= '</div></div>' . "\n";
+        $o .= '</div>';
+        $o .= '</div>';
+        $o .= '</div>' . "\n";
+
+        $count ++;
+        if ($count % $num_of_columns == 0)
+        {
+            $o .= '</div>' . "\n";
+            if ($count < $num_of_posts)
+            {
+                $o .= '<div class="wp-block-columns mb-4">' . "\n";
+            }
+        }
+    }
+    if ( $count % $num_of_columns != 0)
+    {
+        for ($i = $count % $num_of_columns; $i < $num_of_columns; $i++)
+        {
+            $o .= '<div class="wp-block-column"></div>' . "\n";
+        }
+        $o .= '</div>' . "\n";
+    }
+
+    // $o = '<pre style="background-color:#fff;">';
+    // $o.= 'Test, 1.2';
+    // $o.= '</pre>';
+
+    // $posts_personen = get_posts(
+    //   array(
+    //   'post_type'=>'grlp_person',
+    //   'posts_per_page'=>-1,
+    //   'post_id' => $ID,
+    //   )
+    // );
+
+    // Person template file 
+    // ob_start();
+    // require_once('templates/partials/partial_person.php');
+    // $o .= ob_get_clean();
+
+    // // Handle enclosing shortcode tags
+    // if (!is_null($content)) {
+    //     $o .= apply_filters('the_content', $content);
+    //     $o .= do_shortcode($content);
+    // }
+    return $o;
 }
 
 //TODO: move to uninstall.php
