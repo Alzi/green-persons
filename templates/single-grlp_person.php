@@ -13,8 +13,6 @@ get_header();
 $layout_width = @get_post_meta($post->ID, '_sunflower_styled_layout')[0] ? '' : 'container-narrow';
 $metadata = @get_post_meta($post->ID, '_sunflower_metadata')[0] ?: false;
 $styled_layout = @get_post_meta($post->ID, '_sunflower_styled_layout')[0] ? 'styled-layout' : '';
-$person_name = isset($post->ID[0]) ? wp_unslash($post->ID[0]) : 'Claudia';
-var_dump($post->ID);
 
 ?>
 <div id="content" class="container <?php echo "$layout_width $styled_layout"; ?>">
@@ -22,10 +20,6 @@ var_dump($post->ID);
 		<div class="col-12">
 			<main id="primary" class="site-main">
 				<p class="h3 bereit">!! Plugin Template !!</p>
-				<?php if (! empty($person_name)) : ?>
-					<p class="h2"><?= $person_name; ?></p>
-				<?php endif; ?>
-
 				<?php
 				while (have_posts()) :
 					the_post();
