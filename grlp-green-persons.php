@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name: Grüne Personen 
  * Description: Ein Plugin zur Verwaltung von Personen auf GRÜNEN Webseiten. Es ermöglicht Personen anzulegen und sie in Abteilungen zu gruppieren. Sie können dann in verschiedenen Kontexten (Team, Landesliste...) dargestellt werden. Das Plugin arbeitet sehr direkt mit dem <a href="http://sunflower-theme.de">Sunflower-Theme</a> zusammen und basiert auf der Idee der Personen Verwaltung im <a href="https://github.com/kre8tiv/Joseph-knows-best">JKB-Theme</a>.
@@ -401,15 +400,15 @@ function grlp_register_meta_boxes( $post )
 
     // ------------- Person Detail ----------------------------------------
     
-    register_post_meta( 'grlp_person', 'grlp_person_detail_', [
-        'description'       => __( '' ),
-        'type'              => 'string',
-        'single'            => true,
-        'show_in_rest'      => true,
-        'sanitize_callback' => function ( $value ) {
-            return wp_strip_all_tags( $value );
-        }
-    ]);
+    // register_post_meta( 'grlp_person', 'grlp_person_detail_', [
+    //     'description'       => __( '' ),
+    //     'type'              => 'string',
+    //     'single'            => true,
+    //     'show_in_rest'      => true,
+    //     'sanitize_callback' => function ( $value ) {
+    //         return wp_strip_all_tags( $value );
+    //     }
+    // ]);
 
     // $job = isset($values['grlp_person_detail_job']) ? esc_attr($values['grlp_person_detail_job'][0]) : '';
     // $list_pos = isset($values['grlp_person_detail_list_pos']) ? esc_attr($values['grlp_person_detail_list_pos'][0]) : '';
@@ -430,7 +429,7 @@ function grlp_register_meta_boxes( $post )
 function grlp_person_contact_view( $post )
 {
     // We'll use this nonce field later on when saving.
-    wp_nonce_field( 'grlp_person_contact_view', 'grlp_nonce' );
+    wp_nonce_field( 'grlp_person_contact_view', 'grlp_nonce_contact' );
     $values = get_post_custom( $post->ID );
 
     $www        = isset( $values['grlp_person_contact_www'] ) ? esc_attr( $values['grlp_person_contact_www'][0] ) : '';
@@ -510,7 +509,7 @@ function grlp_person_contact_save( $post_id )
     } 
 
     // if our nonce isn't there, or we can't verify it, bail
-    if ( ! isset( $_POST['grlp_nonce'] ) || ! wp_verify_nonce( $_POST['grlp_nonce'], 'grlp_person_contact_view' ))
+    if ( ! isset( $_POST['grlp_nonce_contact'] ) || ! wp_verify_nonce( $_POST['grlp_nonce_contact'], 'grlp_person_contact_view' ))
     {
         return;
     }
@@ -532,6 +531,7 @@ function grlp_person_contact_save( $post_id )
 
     // Make sure your data is set before trying to save it
     if ( isset( $_POST['grlp_person_contact_www'] )) {
+        print_r($_POST['grlp_person_contact_www']);
         update_post_meta(
             $post_id,
             'grlp_person_contact_www',
@@ -620,7 +620,7 @@ function grlp_person_contact_save( $post_id )
 function grlp_person_detail_view( $post )
 {
     // We'll use this nonce field later on when saving.
-    wp_nonce_field( 'grlp_person_detail_view', 'grlp_nonce' );
+    wp_nonce_field( 'grlp_person_detail_view', 'grlp_nonce_view' );
     $values = get_post_custom( $post->ID );
     $job = isset( $values['grlp_person_detail_job'] ) ? esc_attr( $values['grlp_person_detail_job'][0] ) : '';
     $list_pos = isset( $values['grlp_person_detail_list_pos'] ) ? esc_attr( $values['grlp_person_detail_list_pos'][0] ) : '';
@@ -693,7 +693,7 @@ function grlp_person_detail_save( $post_id )
     } 
 
     // if our nonce isn't there, or we can't verify it, bail
-    if ( ! isset( $_POST['meta_box_nonce'] ) || !wp_verify_nonce( $_POST['meta_box_nonce'], 'my_meta_box_nonce' )) {
+    if ( ! isset( $_POST['grlp_nonce_view'] ) || ! wp_verify_nonce( $_POST['grlp_nonce_view'], 'grlp_person_detail_view' )) {
         return;  
     }
 
@@ -710,61 +710,52 @@ function grlp_person_detail_save( $post_id )
     );
 
     // Make sure your data is set before trying to save it
-    if ( isset( $_POST['grlp_person_excerpt'] )) {
+    if ( isset( $_POST['grlp_person_detail_job'] )) {
         update_post_meta(
             $post_id,
-            'grlp_person_excerpt',
-            esc_html( $_POST['grlp_person_excerpt'] )
+            'grlp_person_detail_job',
+            esc_html( $_POST['grlp_person_detail_job'] )
         );
     }
-    if ( isset( $_POST['grlp_person_motivation'] )) {
+    if ( isset( $_POST['grlp_person_detail_list_pos'] )) {
         update_post_meta(
             $post_id,
-            'grlp_person_motivation',
-            esc_html( $_POST['grlp_person_motivation'] )
+            'grlp_person_detail_list_pos',
+            intval( $_POST['grlp_person_detail_list_pos'] )
         );
     }
-    if ( isset( $_POST['grlp_person_pos_amt'] )) {
+    if ( isset( $_POST['grlp_person_detail_custom_order'] )) {
         update_post_meta(
             $post_id,
-            'grlp_person_pos_amt',
-            wp_kses(
-                $_POST['grlp_person_pos_amt'],
-                $allowed
-            )
+            'grlp_person_detail_custom_order',
+            intval( $_POST['grlp_person_detail_custom_order'] )
         );
     }
-    if ( isset( $_POST['grlp_person_pos_listenplatz'] )) {
+    if ( isset( $_POST['grlp_person_detail_constituency'] )) {
         update_post_meta(
             $post_id,
-            'grlp_person_pos_listenplatz',
-            wp_kses(
-                $_POST['grlp_person_pos_listenplatz'],
-                $allowed 
-            )
+            'grlp_person_detail_constituency',
+            esc_html( $_POST['grlp_person_detail_constituency'] )
         );
     }
-    if ( isset( $_POST['grlp_person_pos_wahlkreis'] )) {
+    if ( isset( $_POST['grlp_person_detail_constit_num'] )) {
         update_post_meta(
             $post_id,
-            'grlp_person_pos_wahlkreis',
-            wp_kses(
-                $_POST['grlp_person_pos_wahlkreis'],
-                $allowed
-            )
+            'grlp_person_detail_constit_num',
+            intval( $_POST['grlp_person_detail_constit_num'] )
         );
     }
-    if ( isset( $_POST['grlp_person_pos_details'] )) {
-        update_post_meta( $post_id, 'grlp_person_pos_details', 'yes' );
+    if ( isset( $_POST['grlp_person_detail_mandate'] )) {
+        update_post_meta(
+            $post_id,
+            'grlp_person_detail_mandate',
+            esc_html( $_POST['grlp_person_detail_mandate'] )
+        );
+    }
+    if ( isset( $_POST['grlp_person_detail_has_link'] )) {
+        update_post_meta( $post_id, 'grlp_person_detail_has_link', 'yes' );
     } else {
-        update_post_meta( $post_id, 'grlp_person_pos_details', 'no' );
-    }
-    if ( isset( $_POST['grlp_person_pos_sortierung'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_pos_sortierung',
-            wp_kses( $_POST['grlp_person_pos_sortierung'], $allowed )
-        );
+        update_post_meta( $post_id, 'grlp_person_detail_has_link', 'no' );
     }
 }
 
