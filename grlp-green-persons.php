@@ -177,6 +177,40 @@ function grlp_create_person_taxonomy()
     register_taxonomy( 'abteilung', array('grlp_person'), $args );
 }
 
+/**
+ * Change columns on admin-page of grlp_person
+ *
+ * Add column 'Abteilung' to show all custom taxonomies the person
+ * is part of. Rename 'title' column to 'Name of person'
+ *
+ * @return None
+ *
+ */
+add_filter( 'manage_grlp_person_posts_columns', function ( $columns ) { 
+    $columns['title'] = 'Name der Person';
+    return array_merge(
+        $columns, [
+            'abteilung' => __('Abteilung', 'green_persons'),
+        ]
+    );
+});
+
+add_action( 'manage_grlp_person_posts_custom_column', function( $column_key, $post_id ) {
+	if ( $column_key == 'abteilung' ) {
+        $term_obj_list = get_the_terms( $post_id, 'abteilung' );
+        $terms_string = "";
+        if ( ! empty( $term_obj_list )){
+            $terms_string = join( ', ', wp_list_pluck($term_obj_list, 'name' ));
+        }
+		echo ( ! empty( $terms_string )) ? $terms_string : __('keine Abteilung', 'green_persons');
+	}
+    if ( $column_key == 'person_name' )
+    {
+        $post = get_post( $post_id );
+        echo $post->post_title;
+    }
+}, 10, 2 );
+
 
 /**
  * Load a custom template for displaying the detailed person site
