@@ -374,7 +374,7 @@ function grlp_register_meta_boxes( $post )
         'single'            => true,
         'show_in_rest'      => true,
         'sanitize_callback' => function ( $value ) {
-            return wp_kses( $value, [ 'br' => [] ] );
+            return wp_strip_all_tags( $value );
         }
     ]);
 
@@ -439,7 +439,7 @@ function grlp_person_contact_view( $post )
     $instagram  = isset( $values['grlp_person_contact_instagram'] ) ? esc_attr( $values['grlp_person_contact_instagram'][0] ) : '';
     $mobile     = isset( $values['grlp_person_contact_mobile'] ) ? esc_attr( $values['grlp_person_contact_mobile'][0] ) : '';
     $phone      = isset( $values['grlp_person_contact_phone'] ) ? esc_attr( $values['grlp_person_contact_phone'][0] ) : '';
-    $address    = isset( $values['grlp_person_contact_address'] ) ? esc_html( $values['grlp_person_contact_address'][0] ) : '';
+    $address    = isset( $values['grlp_person_contact_address'] ) ? $values['grlp_person_contact_address'][0] : '';
 ?>
     <table class="form-table">
         <tbody>
@@ -520,92 +520,64 @@ function grlp_person_contact_save( $post_id )
         return;
     }
 
-    // now we can actually save the data
-    // allow a tags and only their href attribute
-
-    $allowed = array(
-        'a' => array(
-            'href' => array()
-        )
-    );
-
     // Make sure your data is set before trying to save it
     if ( isset( $_POST['grlp_person_contact_www'] )) {
-        print_r($_POST['grlp_person_contact_www']);
         update_post_meta(
             $post_id,
             'grlp_person_contact_www',
-            wp_kses(
-                $_POST['grlp_person_contact_www'],
-                $allowed
-            )
+            esc_url_raw( $_POST['grlp_person_contact_www'] )
         );
     }
     if ( isset( $_POST['grlp_person_contact_email'] )) {
         update_post_meta(
             $post_id,
             'grlp_person_contact_email',
-            wp_kses(
-                $_POST['grlp_person_contact_email'],
-                $allowed
-            )
+            sanitize_email( $_POST['grlp_person_contact_email'] )
         );
     }
     if ( isset( $_POST['grlp_person_contact_facebook'] )) {
         update_post_meta(
             $post_id,
             'grlp_person_contact_facebook',
-            wp_kses(
-                $_POST['grlp_person_contact_facebook'],
-                $allowed
-            )
+            esc_url_raw( $_POST['grlp_person_contact_facebook'] )
         );
     }
     if ( isset( $_POST['grlp_person_contact_twitter'] )) {
         update_post_meta(
             $post_id,
             'grlp_person_contact_twitter',
-            wp_kses(
-                $_POST['grlp_person_contact_twitter'],
-                $allowed
-            )
+            esc_url_raw ( $_POST['grlp_person_contact_twitter'] )
         );
     }
     if ( isset( $_POST['grlp_person_contact_instagram'] )) {
         update_post_meta(
             $post_id,
             'grlp_person_contact_instagram',
-            wp_kses(
-                $_POST['grlp_person_contact_instagram'],
-                $allowed
-            )
+            esc_url_raw( $_POST['grlp_person_contact_instagram'] )
         );
     }
     if ( isset( $_POST['grlp_person_contact_phone'] )) {
         update_post_meta(
             $post_id,
             'grlp_person_contact_phone',
-            wp_kses(
-                 $_POST['grlp_person_contact_phone'],
-                $allowed
-            )
+            wp_strip_all_tags( $_POST['grlp_person_contact_phone'] )
         );
     }
     if ( isset( $_POST['grlp_person_contact_mobile'] )) {
         update_post_meta(
             $post_id,
             'grlp_person_contact_mobile',
-            wp_kses(
-                $_POST['grlp_person_contact_mobile'],
-                $allowed
-            )
+            wp_strip_all_tags( $_POST['grlp_person_contact_mobile'] )
         );
     }
     if ( isset( $_POST['grlp_person_contact_address'] )) {
         update_post_meta(
             $post_id,
             'grlp_person_contact_address',
-            esc_html( $_POST['grlp_person_contact_address'])
+            wp_kses(
+                $_POST['grlp_person_contact_address'],
+                array ('a' => array('href'), 'br' => array())
+            )
         );
     }
 }
@@ -641,9 +613,7 @@ function grlp_person_detail_view( $post )
                 </td>
                 <th scope="row"><label for="grlp_person_detail_mandate">Mandat</label></th>
                 <td>
-                    <textarea type="text" name="grlp_person_detail_mandate" id="grlp_person_detail_mandate">
-                        <?php echo $grlp_mandate; ?>
-                    </textarea>
+                    <textarea type="text" name="grlp_person_detail_mandate" id="grlp_person_detail_mandate"><?php echo $grlp_mandate; ?></textarea>
                     <br /><span class="description">Mandat und Beschreibung, z.B. MdL, Sprecher für... [mandate]</span>
                 </td>
             </tr>
@@ -706,7 +676,8 @@ function grlp_person_detail_save( $post_id )
     $allowed = array(
         'a' => array( // on allow a tags
             'href' => array() // and those anchors can only have href attribute
-        )
+        ),
+        'br' => array()
     );
 
     // Make sure your data is set before trying to save it
@@ -749,7 +720,10 @@ function grlp_person_detail_save( $post_id )
         update_post_meta(
             $post_id,
             'grlp_person_detail_mandate',
-            esc_html( $_POST['grlp_person_detail_mandate'] )
+            wp_kses_post(
+                $_POST['grlp_person_detail_mandate'],
+                $allowed
+            )
         );
     }
     if ( isset( $_POST['grlp_person_detail_has_link'] )) {
