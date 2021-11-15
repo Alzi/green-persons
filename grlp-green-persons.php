@@ -306,7 +306,7 @@ function grlp_register_meta_boxes( $post )
     // boxes with different page-templates. 
     // $pageTemplate = get_post_meta($post->ID, '_wp_page_template', true);
 
-    // add_meta_box( 'grlp_person_contact', __( 'Kontaktdaten' ), 'grlp_persons_contact_view', 'grlp_person', 'normal', 'high' );
+    add_meta_box( 'grlp_person_contact', __( 'Kontaktdaten' ), 'grlp_person_contact_view', 'grlp_person', 'normal', 'high' );
     add_meta_box( 'grlp_person_detail', __( 'Infos & Ämter' ), 'grlp_person_detail_view', 'grlp_person', 'normal', 'high' );
 
     // FIXME: this is a description of all allowed arguments for 'register_post_meta'
@@ -669,7 +669,7 @@ function grlp_person_detail_view( $post )
                 <th scope="row"><label for="grlp_person_detail_custom_order">Sortierung</label></th>
                 <td>
                     <input type="text" name="grlp_person_detail_custom_order" id="grlp_person_detail_custom_order" value="<?php echo $custom_order; ?>" />
-                    <br /><span class="description">Vollständiger Link zum Instagram-Profil, inkl. http://</span>
+                    <br /><span class="description">Sortierreihenfolge [team],[mandate]</span>
                 </td>
                 <th scope="row"><label for="grlp_person_detail_has_link">Link zur Detailseite</label></th>
                 <td>
