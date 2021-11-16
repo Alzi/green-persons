@@ -195,20 +195,30 @@ add_filter( 'manage_grlp_person_posts_columns', function ( $columns ) {
     );
 });
 
+
+/**
+ * Print the terms as links. They GET all persons that belong to that
+ * particular taxonomy term. 
+ *
+ * @return None
+ *
+ */
 add_action( 'manage_grlp_person_posts_custom_column', function( $column_key, $post_id ) {
 	if ( $column_key == 'abteilung' ) {
         $term_obj_list = get_the_terms( $post_id, 'abteilung' );
-        $terms_string = "";
-        if ( ! empty( $term_obj_list )){
-            $terms_string = join( ', ', wp_list_pluck($term_obj_list, 'name' ));
+        $num_items = ! empty($term_obj_list) ? count($term_obj_list) : 0;
+        if ( $num_items > 0 ){
+            for( $i=0; $i < $num_items; $i++ ){
+                echo '<a href="/wp-admin/edit.php?abteilung='.$term_obj_list[$i]->slug.'&post_type=grlp_person">'.$term_obj_list[$i]->name.'</a>';
+                if ( $i < $num_items -1 ){
+                    echo', ';
+                }
+            }
         }
-		echo ( ! empty( $terms_string )) ? $terms_string : __('keine Abteilung', 'green_persons');
+        else {
+            echo 'keine Abteilung';
+        }
 	}
-    if ( $column_key == 'person_name' )
-    {
-        $post = get_post( $post_id );
-        echo $post->post_title;
-    }
 }, 10, 2 );
 
 
