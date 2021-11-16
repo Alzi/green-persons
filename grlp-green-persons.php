@@ -10,6 +10,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * A little debugging helper :)
+ *
+ * @return None
+ *
+ */
 function screen_out( $value, $and_die=true )
 {
     echo '<pre>' . print_r( $value, true ) . '</pre>';
@@ -27,6 +33,7 @@ function screen_out( $value, $and_die=true )
  * 
  */
 add_action( 'admin_menu', 'grlp_add_menu_item' );
+
 function grlp_add_menu_item()
 {
     add_menu_page(
@@ -85,10 +92,14 @@ function grlp_settings_page()
     echo "</pre>";
 
     echo "<h1>Grüne Personen Einstellungen</h1>";
-    echo '<p>Hier kann ich ganz cool irgendwelche Testvariablen oder ähnliches ausgeben, was sehr praktisch ist. :)</p>';
-    echo '<p>In Zukunft kann das dann eine Seite werden, auf der z.B. auch Tutorials zur Verwendung von unserem Wordpress verlinkt sein könnten.</p>';
+    echo '<p>Hier kann ich ganz cool irgendwelche Testvariablen oder "
+        . "ähnliches ausgeben, was sehr praktisch ist. :)</p>';
+    echo '<p>In Zukunft kann das dann eine Seite werden, auf der z.B. "
+        . "auch Tutorials zur Verwendung von unserem Wordpress verlinkt "
+        . "sein könnten.</p>';
     echo '<h2>Überschrift zweiten Grades.</h2>';
 }
+
 
 /**
  * Load textdomain
@@ -100,6 +111,7 @@ function grlp_settings_page()
  *
  */
 add_action( 'plugins_loaded', 'grlp_gp_load_textdomain' );
+
 function grlp_gp_load_textdomain()
 {
     load_plugin_textdomain(
@@ -117,21 +129,22 @@ function grlp_gp_load_textdomain()
  *
  */
 add_action( 'init', 'grlp_create_person_post_type' );
+
 function grlp_create_person_post_type()
 {
     $labels = array(
         'menu_position' => 5,
-        'name'                => _x('Persons', 'post type general name', 'green_persons'),
-        'singular_name'       => _x('Person', 'post type singular name', 'green_persons'),
-        'add_new'             => _x('Add new', 'person', 'green_persons'),
-        'add_new_item'        => __('Add new person', 'green_persons'),
-        'edit_item'           => __('Edit person', 'green_persons'),
-        'new_item'            => __('New person', 'green_persons'),
-        'view_item'           => __('View person', 'green_persons'),
-        'search_items'        => __('Search person', 'green_persons'),
-        'not_found'           => __('No person found', 'green_persons'),
-        'not_found_in_trash'  => __('No person found in trash', 'green_persons'),
-        'all_items'           => __('All persons', 'green_persons'),
+        'name'          => _x( 'Persons', 'general name', 'green_persons' ),
+        'singular_name' => _x( 'Person', 'singular name', 'green_persons' ),
+        'add_new'       => _x( 'Add new', 'person', 'green_persons' ),
+        'add_new_item'  => __( 'Add new person', 'green_persons' ),
+        'edit_item'     => __( 'Edit person', 'green_persons' ),
+        'new_item'      => __( 'New person', 'green_persons' ),
+        'view_item'     => __( 'View person', 'green_persons' ),
+        'search_items'        => __( 'Search person', 'green_persons' ),
+        'not_found'           => __( 'No person found', 'green_persons' ),
+        'not_found_in_trash'  => __( 'No person found in trash', 'green_persons' ),
+        'all_items'           => __( 'All persons', 'green_persons' ),
         'parent_item_colon'   => '',
     );
     
@@ -161,33 +174,38 @@ function grlp_create_person_post_type()
  *
  */
 add_action( 'init', 'grlp_create_person_taxonomy' );
+
 function grlp_create_person_taxonomy()
 {
     $labels = array(
-        'name'              => _x('Divisions', 'taxonomy general name', 'green_persons'),
-        'singular_name'     => _x('Division', 'taxonomy singular name', 'green_persons'),
-        'search_items'      => __('Search division', 'green_persons'),
-        'all_items'         => __('All divisions', 'green_persons'),
-        'parent_item'       => __('Parent division', 'green_persons'),
-        'parent_item_colon' => __('Parent division:', 'green_persons'),
-        'edit_item'         => __('Edit division', 'green_persons'),
-        'update_item'       => __('Update division', 'green_persons'),
-        'add_new_item'      => __('Add new division', 'green_persons'),
-        'new_item_name'     => __('Name of division', 'green_persons'),
-        'menu_name'         => _x('Divisions', 'menu name', 'green_persons'),
+        'name'              => _x( 'Divisions', 'general name', 'green_persons' ),
+        'singular_name'     => _x( 'Division', 'singular name', 'green_persons' ),
+        'search_items'      => __( 'Search division', 'green_persons' ),
+        'all_items'         => __( 'All divisions', 'green_persons' ),
+        'parent_item'       => __( 'Parent division', 'green_persons' ),
+        'parent_item_colon' => __( 'Parent division:', 'green_persons' ),
+        'edit_item'         => __( 'Edit division', 'green_persons' ),
+        'update_item'       => __( 'Update division', 'green_persons' ),
+        'add_new_item'      => __( 'Add new division', 'green_persons' ),
+        'new_item_name'     => __( 'Name of division', 'green_persons' ),
+        'menu_name'         => _x( 'Divisions', 'menu name', 'green_persons' ),
     );
 
     $args = array(
         'labels'       => $labels,
-        'description'  => __('You can build groups of people inside divisions.', 'green_persons'),
+        'description'  => __(
+            'You can build groups of people inside divisions.',
+            'green_persons'
+        ),
         'hierarchical' => true,
         'show_ui'      => true,
         'show_in_rest' => true,
         // 'show_admin_column' => true,
         // 'query_var'         => true,
     );
-    register_taxonomy( 'abteilung', array('grlp_person'), $args );
+    register_taxonomy( 'abteilung', array( 'grlp_person' ), $args );
 }
+
 
 /**
  * Change columns on admin-page of grlp_person
@@ -198,12 +216,13 @@ function grlp_create_person_taxonomy()
  * @return None
  *
  */
-add_filter( 'manage_grlp_person_posts_columns', 'grlp_setup_admin_page_columns' );
-function grlp_setup_admin_page_columns( $columns ) { 
-    $columns['title'] = __('Name der Person', 'green_persons');
+add_filter( 'manage_grlp_person_posts_columns', 'grlp_admin_page_columns' );
+
+function grlp_admin_page_columns( $columns ) { 
+    $columns['title'] = __( 'Name der Person', 'green_persons' );
     return array_merge(
         $columns, [
-            'abteilung' => __('Abteilung', 'green_persons'),
+            'abteilung' => __( 'Abteilung', 'green_persons' ),
         ]
     );
 }
@@ -216,20 +235,26 @@ function grlp_setup_admin_page_columns( $columns ) {
  * @return None
  *
  */
-add_action( 'manage_grlp_person_posts_custom_column', 'grlp_manage_custom_column', 10, 2 );
+add_action(
+    'manage_grlp_person_posts_custom_column',
+    'grlp_manage_custom_column',
+    10, 2
+);
+
 function grlp_manage_custom_column( $column_key, $post_id ) {
 	if ( $column_key == 'abteilung' ) {
         $term_obj_list = get_the_terms( $post_id, 'abteilung' );
         $num_items = ! empty( $term_obj_list ) ? count( $term_obj_list ) : 0;
-        if ( $num_items > 0 ){
-            for( $i=0; $i < $num_items; $i++ ){
+        if ( $num_items > 0 ) {
+            for( $i=0; $i < $num_items; $i++ ) {
                 $url = admin_url(
                     'edit.php?abteilung='
                     . $term_obj_list[ $i ]->slug
                     . '&post_type=grlp_person'
                 );
-                echo '<a href="' . $url . '">' . $term_obj_list[$i]->name . '</a>';
-                if ( $i < $num_items -1 ){
+                echo '<a href="' . $url . '">'
+                    . $term_obj_list[$i]->name . '</a>';
+                if ( $i < $num_items -1 ) {
                     echo ', ';
                 }
             }
@@ -253,16 +278,18 @@ function grlp_load_single_person_template( $template )
     global $post;
     /* Checks for single template by post type */
     if ( $post->post_type == 'grlp_person' ) {
-        if ( file_exists( plugin_dir_path( __FILE__ ) . 'templates/single-grlp_person.php' )) {
-            return plugin_dir_path( __FILE__ ) . 'templates/single-grlp_person.php';
+        $path = plugin_dir_path( __FILE__ )
+            . 'templates/single-grlp_person.php';
+        if ( file_exists( $path )) {
+            return $path;
         }
     }
     return $template;
 }
 
+
 // TODO: learn about this function and how to really use it
 // flush_rewrite_rules();
-
 
 /**
  * Add shortcodes
@@ -271,6 +298,7 @@ function grlp_load_single_person_template( $template )
  *
  */
 add_action( 'init', 'grlp_shortcodes_init' );
+
 function grlp_shortcodes_init()
 {
     add_shortcode( 'team', 'grlp_team_anzeigen' );
@@ -350,6 +378,7 @@ function grlp_uninstall_plugin()
 }
 register_uninstall_hook( __FILE__, 'grlp_uninstall_plugin' );
 
+
 /**
  * Register Meta during 'init'
  *
@@ -357,20 +386,12 @@ register_uninstall_hook( __FILE__, 'grlp_uninstall_plugin' );
 add_action( 'init', 'grlp_register_meta' );
 function grlp_register_meta()
 {
-    // FIXME: this is a description of all allowed arguments for 'register_post_meta'
-    //        We want to get rid of it at times.
-    // $args = [
-    //     "type" 				=> "string, boolean, integer, number",
-    //     "description" 		=> "human readable string that may be used",
-    //     "single" 			=> 'true / false; whether single value of data or array',
-    //     "sanitize_callback" => 'cb function for sanitizing metadata',
-    //     "auth_callback" 	=> 'cb function to run meta capability checks to determine whether the user can add, edit or delete',
-    //     "show_in_rest" 		=> 'Whether the metadata is considered public and can be shown via the REST API'
-    // ];
-
     register_post_meta( 'grlp_person', 'grlp_person_contact_www', [
         'type'              => 'string',
-        'description'       => __( 'URL der Website der Person (inklusive http...)', 'green_person' ),
+        'description'       => __(
+            'URL der Website der Person (inklusive http...)',
+            'green_person'
+        ),
         'single'            => true,
         'show_in_rest'      => true,
         'sanitize_callback' => function ( $value ) {
@@ -379,7 +400,10 @@ function grlp_register_meta()
     ]);
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_email', [
-        'description'       => __( 'E-Mail Adresse der Person', 'green_person' ),
+        'description'       => __(
+            'E-Mail Adresse der Person',
+            'green_person'
+        ),
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -389,7 +413,10 @@ function grlp_register_meta()
     ]);
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_twitter', [
-        'description'       => __( 'Twitter Name der Person (ohne @!)', 'green_person' ),
+        'description'       => __(
+            'Twitter Name der Person (ohne @!)',
+            'green_person'
+        ),
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -399,7 +426,10 @@ function grlp_register_meta()
     ]);
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_facebook', [
-        'description'       => __( 'Vollstängiger Link zum Facebook Profil', 'green_person' ),
+        'description'       => __(
+            'Vollstängiger Link zum Facebook Profil',
+            'green_person'
+        ),
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -408,7 +438,10 @@ function grlp_register_meta()
         }
     ]);
     register_post_meta( 'grlp_person', 'grlp_person_contact_instagram', [
-        'description'       => __( 'Vollstängiger Link zum Instagram Profil', 'green_person' ),
+        'description'       => __(
+            'Vollstängiger Link zum Instagram Profil',
+            'green_person'
+        ),
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -418,7 +451,10 @@ function grlp_register_meta()
     ]);
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_address', [
-        'description'       => __( 'Platz für Anschrift, Fax oder zusätzl. Tel', 'green_person' ),
+        'description'       => __(
+            'Platz für Anschrift, Fax oder zusätzl. Tel',
+            'green_person'
+        ),
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -428,7 +464,10 @@ function grlp_register_meta()
     ]);
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_phone', [
-        'description'       => __( 'Telefonnummer Form: (06131) 89 243 00', 'green_person' ),
+        'description'       => __(
+            'Telefonnummer Form: (06543) 12 345 99',
+            'green_person'
+        ),
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -438,7 +477,9 @@ function grlp_register_meta()
     ]);
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_mobile', [
-        'description'       => __( 'Mobilfunk Nummer Form: (0176) 123 456 789' ),
+        'description'       => __(
+            'Mobilfunk Nummer Form: (0176) 123 456 789'
+        ),
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
@@ -473,12 +514,22 @@ function grlp_register_meta()
 add_action( 'add_meta_boxes_grlp_person', 'grlp_register_meta_boxes' );
 function grlp_register_meta_boxes( $post )
 {
-    // The following is only relevant if we want to add different meta
-    // boxes with different page-templates. 
-    // $pageTemplate = get_post_meta($post->ID, '_wp_page_template', true);
-
-    add_meta_box( 'grlp_person_contact', __( 'Kontaktdaten' ), 'grlp_person_contact_view', 'grlp_person', 'normal', 'high' );
-    add_meta_box( 'grlp_person_detail', __( 'Infos & Ämter' ), 'grlp_person_detail_view', 'grlp_person', 'normal', 'high' );
+    add_meta_box(
+        'grlp_person_contact',
+        __( 'Kontaktdaten' ),
+        'grlp_person_contact_view',
+        'grlp_person',
+        'normal',
+        'high'
+    );
+    add_meta_box(
+        'grlp_person_detail',
+        __( 'Infos & Ämter' ),
+        'grlp_person_detail_view',
+        'grlp_person',
+        'normal',
+        'high'
+    );
 }
 
 
@@ -495,14 +546,38 @@ function grlp_person_contact_view( $post )
     wp_nonce_field( 'grlp_person_contact_view', 'grlp_nonce_contact' );
     $values = get_post_custom( $post->ID );
 
-    $www        = isset( $values['grlp_person_contact_www'] ) ? esc_attr( $values['grlp_person_contact_www'][0] ) : '';
-    $email      = isset( $values['grlp_person_contact_email'] ) ? esc_attr( $values['grlp_person_contact_email'][0] ) : '';
-    $facebook   = isset( $values['grlp_person_contact_facebook'] ) ? esc_attr( $values['grlp_person_contact_facebook'][0] ) : '';
-    $twitter    = isset( $values['grlp_person_contact_twitter'] ) ? esc_attr( $values['grlp_person_contact_twitter'][0] ) : '';
-    $instagram  = isset( $values['grlp_person_contact_instagram'] ) ? esc_attr( $values['grlp_person_contact_instagram'][0] ) : '';
-    $mobile     = isset( $values['grlp_person_contact_mobile'] ) ? esc_attr( $values['grlp_person_contact_mobile'][0] ) : '';
-    $phone      = isset( $values['grlp_person_contact_phone'] ) ? esc_attr( $values['grlp_person_contact_phone'][0] ) : '';
-    $address    = isset( $values['grlp_person_contact_address'] ) ? $values['grlp_person_contact_address'][0] : '';
+    $www = isset(
+        $values['grlp_person_contact_www'] )
+        ? esc_attr( $values['grlp_person_contact_www'][0] )
+        : '';
+    $email = isset(
+        $values['grlp_person_contact_email'] )
+        ? esc_attr( $values['grlp_person_contact_email'][0] )
+        : '';
+    $facebook = isset(
+        $values['grlp_person_contact_facebook'] )
+        ? esc_attr( $values['grlp_person_contact_facebook'][0] )
+        : '';
+    $twitter = isset(
+        $values['grlp_person_contact_twitter'] )
+        ? esc_attr( $values['grlp_person_contact_twitter'][0] )
+        : '';
+    $instagram = isset(
+        $values['grlp_person_contact_instagram'] )
+        ? esc_attr( $values['grlp_person_contact_instagram'][0] )
+        : '';
+    $mobile = isset(
+        $values['grlp_person_contact_mobile'] )
+        ? esc_attr( $values['grlp_person_contact_mobile'][0] )
+        : '';
+    $phone = isset(
+        $values['grlp_person_contact_phone'] )
+        ? esc_attr( $values['grlp_person_contact_phone'][0] )
+        : '';
+    $address = isset(
+        $values['grlp_person_contact_address'] )
+        ? $values['grlp_person_contact_address'][0]
+        : '';
 ?>
     <table class="form-table">
         <tbody>
@@ -566,18 +641,20 @@ add_action( 'save_post', 'grlp_person_contact_save' );
 function grlp_person_contact_save( $post_id )
 {
     // Bail if we're doing an auto save
-    if ( wp_is_post_autosave( $post_id ))
-    {
+    if ( wp_is_post_autosave( $post_id )) {
         return;
     }
     // if our nonce isn't there, or we can't verify it, bail
-    if ( ! isset( $_POST['grlp_nonce_contact'] ) || ! wp_verify_nonce( $_POST['grlp_nonce_contact'], 'grlp_person_contact_view' ))
-    {
+    if (
+        ! isset( $_POST['grlp_nonce_contact'] )
+        || ! wp_verify_nonce(
+            $_POST['grlp_nonce_contact'],
+            'grlp_person_contact_view'
+        )) {
         return;
     }
     // if our current user can't edit this post, bail
-    if ( ! current_user_can( 'edit_post', $post_id )) 
-    {
+    if ( ! current_user_can( 'edit_post', $post_id )) {
         return;
     }
 
@@ -587,7 +664,7 @@ function grlp_person_contact_save( $post_id )
     
     // Now we can update all meta_keys to the database because the
     // sanitize callbacks are registered inside `grlp_register_meta`.
-    foreach ( $all_meta_keys as $meta_key ){
+    foreach ( $all_meta_keys as $meta_key ) {
         if ( isset( $_POST[ $meta_key ] )) {
             update_post_meta(
                 $post_id,
@@ -611,13 +688,34 @@ function grlp_person_detail_view( $post )
     // We'll use this nonce field later on when saving.
     wp_nonce_field( 'grlp_person_detail_view', 'grlp_nonce_view' );
     $values = get_post_custom( $post->ID );
-    $job = isset( $values['grlp_person_detail_job'] ) ? esc_attr( $values['grlp_person_detail_job'][0] ) : '';
-    $list_pos = isset( $values['grlp_person_detail_list_pos'] ) ? esc_attr( $values['grlp_person_detail_list_pos'][0] ) : '';
-    $custom_order = isset( $values['grlp_person_detail_custom_order'] ) ? esc_attr( $values['grlp_person_detail_custom_order'][0] ) : '';
-    $constituency = isset( $values['grlp_person_detail_constituency'] ) ? esc_attr( $values['grlp_person_detail_constituency'][0] ) : '';
-    $constit_num = isset( $values['grlp_person_detail_constit_num'] ) ? esc_attr( $values['grlp_person_detail_constit_num'][0] ) : '';
-    $grlp_mandate = isset( $values['grlp_person_detail_mandate'] ) ? esc_html( $values['grlp_person_detail_mandate'][0] ) : '';
-    $has_link_to_site = isset( $values['grlp_person_detail_has_link'] ) ? esc_attr( $values['grlp_person_detail_has_link'][0] ) : 'no';
+    $job = isset(
+        $values['grlp_person_detail_job'] )
+        ? esc_attr( $values['grlp_person_detail_job'][0] )
+        : '';
+    $list_pos = isset(
+        $values['grlp_person_detail_list_pos'] )
+        ? esc_attr( $values['grlp_person_detail_list_pos'][0] )
+        : '';
+    $custom_order = isset(
+        $values['grlp_person_detail_custom_order'] )
+        ? esc_attr( $values['grlp_person_detail_custom_order'][0] )
+        : '';
+    $constituency = isset(
+        $values['grlp_person_detail_constituency'] )
+        ? esc_attr( $values['grlp_person_detail_constituency'][0] )
+        : '';
+    $constit_num = isset(
+        $values['grlp_person_detail_constit_num'] )
+        ? esc_attr( $values['grlp_person_detail_constit_num'][0] )
+        : '';
+    $grlp_mandate = isset(
+        $values['grlp_person_detail_mandate'] )
+        ? esc_html( $values['grlp_person_detail_mandate'][0] )
+        : '';
+    $has_link_to_site = isset(
+        $values['grlp_person_detail_has_link'] )
+        ? esc_attr( $values['grlp_person_detail_has_link'][0] )
+        : 'no';
 ?>
 
     <table class="form-table">
@@ -680,7 +778,12 @@ function grlp_person_detail_save( $post_id )
     } 
 
     // if our nonce isn't there, or we can't verify it, bail
-    if ( ! isset( $_POST['grlp_nonce_view'] ) || ! wp_verify_nonce( $_POST['grlp_nonce_view'], 'grlp_person_detail_view' )) {
+    if (
+        ! isset( $_POST['grlp_nonce_view'] )
+        || ! wp_verify_nonce(
+            $_POST['grlp_nonce_view'],
+            'grlp_person_detail_view'
+        )) {
         return;  
     }
 
@@ -744,13 +847,12 @@ function grlp_person_detail_save( $post_id )
         );
     }
     if ( isset( $_POST['grlp_person_detail_has_link'] )) {
-        update_post_meta( $post_id, 'grlp_person_detail_has_link', 'yes' );
+        update_post_meta(
+            $post_id, 'grlp_person_detail_has_link', 'yes'
+        );
     } else {
-        update_post_meta( $post_id, 'grlp_person_detail_has_link', 'no' );
+        update_post_meta(
+            $post_id, 'grlp_person_detail_has_link', 'no'
+        );
     }
-}
-
-function grlp_put_person()
-{
-    echo "<h1>Hi I'm a Person!";
 }
