@@ -10,6 +10,14 @@
 
 defined( 'ABSPATH' ) || exit;
 
+function screen_out( $value, $and_die=true )
+{
+    echo '<pre>' . print_r( $value, true ) . '</pre>';
+    if ($and_die) {
+        die();
+    }
+}
+
 /**
  * Create GRLP settings menu
  * 
@@ -126,6 +134,10 @@ function grlp_create_person_post_type()
         'all_items'           => __('All persons', 'green_persons'),
         'parent_item_colon'   => '',
     );
+    
+    # WARNING: In Order for the custom post-type to work as a custom
+    #          block it needs to support 'custom-field'
+    #        
     $supports = array( 'title', 'editor', 'revisions', 'thumbnail' );
 
     register_post_type(
@@ -186,14 +198,15 @@ function grlp_create_person_taxonomy()
  * @return None
  *
  */
-add_filter( 'manage_grlp_person_posts_columns', function ( $columns ) { 
-    $columns['title'] = 'Name der Person';
+add_filter( 'manage_grlp_person_posts_columns', 'grlp_setup_admin_page_columns' );
+function grlp_setup_admin_page_columns( $columns ) { 
+    $columns['title'] = __('Name der Person', 'green_persons');
     return array_merge(
         $columns, [
             'abteilung' => __('Abteilung', 'green_persons'),
         ]
     );
-});
+}
 
 
 /**
@@ -203,15 +216,21 @@ add_filter( 'manage_grlp_person_posts_columns', function ( $columns ) {
  * @return None
  *
  */
-add_action( 'manage_grlp_person_posts_custom_column', function( $column_key, $post_id ) {
+add_action( 'manage_grlp_person_posts_custom_column', 'grlp_manage_custom_column', 10, 2 );
+function grlp_manage_custom_column( $column_key, $post_id ) {
 	if ( $column_key == 'abteilung' ) {
         $term_obj_list = get_the_terms( $post_id, 'abteilung' );
-        $num_items = ! empty($term_obj_list) ? count($term_obj_list) : 0;
+        $num_items = ! empty( $term_obj_list ) ? count( $term_obj_list ) : 0;
         if ( $num_items > 0 ){
             for( $i=0; $i < $num_items; $i++ ){
-                echo '<a href="/wp-admin/edit.php?abteilung='.$term_obj_list[$i]->slug.'&post_type=grlp_person">'.$term_obj_list[$i]->name.'</a>';
+                $url = admin_url(
+                    'edit.php?abteilung='
+                    . $term_obj_list[ $i ]->slug
+                    . '&post_type=grlp_person'
+                );
+                echo '<a href="' . $url . '">' . $term_obj_list[$i]->name . '</a>';
                 if ( $i < $num_items -1 ){
-                    echo', ';
+                    echo ', ';
                 }
             }
         }
@@ -219,7 +238,7 @@ add_action( 'manage_grlp_person_posts_custom_column', function( $column_key, $po
             echo 'keine Abteilung';
         }
 	}
-}, 10, 2 );
+}
 
 
 /**
@@ -331,27 +350,13 @@ function grlp_uninstall_plugin()
 }
 register_uninstall_hook( __FILE__, 'grlp_uninstall_plugin' );
 
-
 /**
- * Add meta boxes
+ * Register Meta during 'init'
  *
- * Have 2 MetaBoxes for a person. One with contact information and 
- * another with additional and political infos.
- *
- * @return None
- * 
- **/
-add_action( 'add_meta_boxes_grlp_person', 'grlp_register_meta_boxes' );
-function grlp_register_meta_boxes( $post )
+ */
+add_action( 'init', 'grlp_register_meta' );
+function grlp_register_meta()
 {
-    global $post;
-    // The following is only relevant if we want to add different meta
-    // boxes with different page-templates. 
-    // $pageTemplate = get_post_meta($post->ID, '_wp_page_template', true);
-
-    add_meta_box( 'grlp_person_contact', __( 'Kontaktdaten' ), 'grlp_person_contact_view', 'grlp_person', 'normal', 'high' );
-    add_meta_box( 'grlp_person_detail', __( 'Infos & Ämter' ), 'grlp_person_detail_view', 'grlp_person', 'normal', 'high' );
-
     // FIXME: this is a description of all allowed arguments for 'register_post_meta'
     //        We want to get rid of it at times.
     // $args = [
@@ -418,7 +423,7 @@ function grlp_register_meta_boxes( $post )
         'single'            => true,
         'show_in_rest'      => true,
         'sanitize_callback' => function ( $value ) {
-            return wp_strip_all_tags( $value );
+            return wp_kses( $value, ['br' => []] );
         }
     ]);
 
@@ -453,15 +458,29 @@ function grlp_register_meta_boxes( $post )
     //         return wp_strip_all_tags( $value );
     //     }
     // ]);
-
-    // $job = isset($values['grlp_person_detail_job']) ? esc_attr($values['grlp_person_detail_job'][0]) : '';
-    // $list_pos = isset($values['grlp_person_detail_list_pos']) ? esc_attr($values['grlp_person_detail_list_pos'][0]) : '';
-    // $custom_order = isset($values['grlp_person_detail_custom_order']) ? esc_attr($values['grlp_person_detail_custom_order'][0]) : '';
-    // $constituency = isset($values['grlp_person_detail_constituency']) ? esc_attr($values['grlp_person_detail_constituency'][0]) : '';
-    // $constit_num = isset($values['grlp_person_detail_constit_num']) ? esc_attr($values['grlp_person_detail_constit_num'][0]) : '';
-    // $grlp_mandate = isset($values['grlp_person_detail_mandate']) ? esc_html($values['grlp_person_detail_mandate'][0]) : '';
-    // $has_link_to_site = isset($
 }
+
+
+/**
+ * Add meta boxes
+ *
+ * Have 2 MetaBoxes for a person. One with contact information and 
+ * another with additional and political infos.
+ *
+ * @return None
+ * 
+ **/
+add_action( 'add_meta_boxes_grlp_person', 'grlp_register_meta_boxes' );
+function grlp_register_meta_boxes( $post )
+{
+    // The following is only relevant if we want to add different meta
+    // boxes with different page-templates. 
+    // $pageTemplate = get_post_meta($post->ID, '_wp_page_template', true);
+
+    add_meta_box( 'grlp_person_contact', __( 'Kontaktdaten' ), 'grlp_person_contact_view', 'grlp_person', 'normal', 'high' );
+    add_meta_box( 'grlp_person_detail', __( 'Infos & Ämter' ), 'grlp_person_detail_view', 'grlp_person', 'normal', 'high' );
+}
+
 
 /**
  * View fields for 'grlp_person_contact' MetaBox
@@ -547,84 +566,38 @@ add_action( 'save_post', 'grlp_person_contact_save' );
 function grlp_person_contact_save( $post_id )
 {
     // Bail if we're doing an auto save
-    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE )
+    if ( wp_is_post_autosave( $post_id ))
     {
         return;
-    } 
-
+    }
     // if our nonce isn't there, or we can't verify it, bail
     if ( ! isset( $_POST['grlp_nonce_contact'] ) || ! wp_verify_nonce( $_POST['grlp_nonce_contact'], 'grlp_person_contact_view' ))
     {
         return;
     }
-
     // if our current user can't edit this post, bail
     if ( ! current_user_can( 'edit_post', $post_id )) 
     {
         return;
     }
 
-    // Make sure your data is set before trying to save it
-    if ( isset( $_POST['grlp_person_contact_www'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_contact_www',
-            esc_url_raw( $_POST['grlp_person_contact_www'] )
-        );
-    }
-    if ( isset( $_POST['grlp_person_contact_email'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_contact_email',
-            sanitize_email( $_POST['grlp_person_contact_email'] )
-        );
-    }
-    if ( isset( $_POST['grlp_person_contact_facebook'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_contact_facebook',
-            esc_url_raw( $_POST['grlp_person_contact_facebook'] )
-        );
-    }
-    if ( isset( $_POST['grlp_person_contact_twitter'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_contact_twitter',
-            esc_url_raw ( $_POST['grlp_person_contact_twitter'] )
-        );
-    }
-    if ( isset( $_POST['grlp_person_contact_instagram'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_contact_instagram',
-            esc_url_raw( $_POST['grlp_person_contact_instagram'] )
-        );
-    }
-    if ( isset( $_POST['grlp_person_contact_phone'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_contact_phone',
-            wp_strip_all_tags( $_POST['grlp_person_contact_phone'] )
-        );
-    }
-    if ( isset( $_POST['grlp_person_contact_mobile'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_contact_mobile',
-            wp_strip_all_tags( $_POST['grlp_person_contact_mobile'] )
-        );
-    }
-    if ( isset( $_POST['grlp_person_contact_address'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_contact_address',
-            wp_kses(
-                $_POST['grlp_person_contact_address'],
-                array ('a' => array('href'), 'br' => array())
-            )
-        );
+    $all_meta_keys = array_keys(
+        get_registered_meta_keys( 'post', 'grlp_person' )
+    );
+    
+    // Now we can update all meta_keys to the database because the
+    // sanitize callbacks are registered inside `grlp_register_meta`.
+    foreach ( $all_meta_keys as $meta_key ){
+        if ( isset( $_POST[ $meta_key ] )) {
+            update_post_meta(
+                $post_id,
+                $meta_key,
+                $_POST[ $meta_key ]
+            );
+        }
     }
 }
+
 
 /**
  * View fields for 'grlp_person_details' MetaBox
