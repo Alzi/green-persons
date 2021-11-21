@@ -488,6 +488,29 @@ function grlp_register_meta()
         }
     ]);
 
+    register_post_meta( 'grlp_person', 'grlp_person_detail_job', [
+        'description'       => __(
+            'job-detail text'
+        ),
+        'type'              => 'string',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return wp_strip_all_tags( $value );
+        }
+    ]);
+
+    register_post_meta( 'grlp_person', 'grlp_person_detail_list_pos', [
+        'description'       => __(
+            'job-detail text'
+        ),
+        'type'              => 'string',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return intval( $value );
+        }
+    ]);
     // ------------- Person Detail ----------------------------------------
     
     // register_post_meta( 'grlp_person', 'grlp_person_detail_', [
@@ -636,26 +659,34 @@ function grlp_person_contact_view( $post )
 <?php
 }
 
-
-add_action( 'save_post', 'grlp_person_contact_save' );
+add_action( 'save_post_grlp_person', 'grlp_person_contact_save' );
 function grlp_person_contact_save( $post_id )
 {
     // Bail if we're doing an auto save
     if ( wp_is_post_autosave( $post_id )) {
         return;
     }
-    // if our nonce isn't there, or we can't verify it, bail
-    if (
-        ! isset( $_POST['grlp_nonce_contact'] )
-        || ! wp_verify_nonce(
-            $_POST['grlp_nonce_contact'],
-            'grlp_person_contact_view'
-        )) {
+    // Bail if we're doing the revision process.
+    if ( wp_is_post_revision( $post_id )) {
         return;
     }
     // if our current user can't edit this post, bail
     if ( ! current_user_can( 'edit_post', $post_id )) {
         return;
+    }
+
+    // if our nonces aren't there, or we can't verify them, bail
+    if ( ! isset( $_POST['grlp_nonce_contact'] )
+        || ! wp_verify_nonce(
+            $_POST['grlp_nonce_contact'],
+            'grlp_person_contact_view')) {
+                return;
+    }
+    if ( ! isset( $_POST['grlp_nonce_contact'] )
+        || ! wp_verify_nonce(
+            $_POST['grlp_nonce_detail'],
+            'grlp_person_detail_view')) {
+                return;
     }
 
     $all_meta_keys = array_keys(
@@ -665,12 +696,21 @@ function grlp_person_contact_save( $post_id )
     // Now we can update all meta_keys to the database because the
     // sanitize callbacks are registered inside `grlp_register_meta`.
     foreach ( $all_meta_keys as $meta_key ) {
-        if ( isset( $_POST[ $meta_key ] )) {
-            update_post_meta(
-                $post_id,
-                $meta_key,
-                $_POST[ $meta_key ]
-            );
+        $old_value = get_post_meta( $post_id, $meta_key, true );
+        if ( isset( $_POST[ $meta_key ] )) { 
+           if ( ! empty( $_POST[ $meta_key ] )) {
+               if ( $_POST[ $meta_key ] != $old_value ) {
+                    update_post_meta(
+                        $post_id,
+                        $meta_key,
+                        $_POST[ $meta_key ],
+                        $old_value
+                    ); }}
+           else {
+               if ( ! empty( $old_value )) {
+                   delete_post_meta( $post_id, $meta_key );
+               }
+           }
         }
     }
 }
@@ -686,7 +726,7 @@ function grlp_person_contact_save( $post_id )
 function grlp_person_detail_view( $post )
 {
     // We'll use this nonce field later on when saving.
-    wp_nonce_field( 'grlp_person_detail_view', 'grlp_nonce_view' );
+    wp_nonce_field( 'grlp_person_detail_view', 'grlp_nonce_detail' );
     $values = get_post_custom( $post->ID );
     $job = isset(
         $values['grlp_person_detail_job'] )
@@ -769,9 +809,10 @@ function grlp_person_detail_view( $post )
 }
 
 
-add_action( 'save_post', 'grlp_person_detail_save' );
+// add_action( 'save_post', 'grlp_person_detail_save' );
 function grlp_person_detail_save( $post_id )
 {
+    error_log('This should never be called');
     // Bail if we're doing an auto save
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
         return;
@@ -801,13 +842,13 @@ function grlp_person_detail_save( $post_id )
     );
 
     // Make sure your data is set before trying to save it
-    if ( isset( $_POST['grlp_person_detail_job'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_detail_job',
-            esc_html( $_POST['grlp_person_detail_job'] )
-        );
-    }
+    // if ( isset( $_POST['grlp_person_detail_job'] )) {
+    //     update_post_meta(
+    //         $post_id,
+    //         'grlp_person_detail_job',
+    //         esc_html( $_POST['grlp_person_detail_job'] )
+    //     );
+    // }
     if ( isset( $_POST['grlp_person_detail_list_pos'] )) {
         update_post_meta(
             $post_id,
