@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Grüne Personen 
  * Description: Ein Plugin zur Verwaltung von Personen auf GRÜNEN Webseiten. Es ermöglicht Personen anzulegen und sie in Abteilungen zu gruppieren. Sie können dann in verschiedenen Kontexten (Team, Landesliste...) dargestellt werden. Das Plugin arbeitet sehr direkt mit dem <a href="http://sunflower-theme.de">Sunflower-Theme</a> zusammen und basiert auf der Idee der Personen Verwaltung im <a href="https://github.com/kre8tiv/Joseph-knows-best">JKB-Theme</a>.
- * Version: 1.0
+ * Version: 0.1
  * Author: Marc Dietz 
  * Author URI: mailto:technik@gruene-rlp.de
  * Text Domain: green-persons
@@ -488,6 +488,8 @@ function grlp_register_meta()
         }
     ]);
 
+    // ------------- Person Detail ----------------------------------------
+
     register_post_meta( 'grlp_person', 'grlp_person_detail_job', [
         'description'       => __(
             'job-detail text'
@@ -504,24 +506,66 @@ function grlp_register_meta()
         'description'       => __(
             'job-detail text'
         ),
-        'type'              => 'string',
+        'type'              => 'integer',
         'single'            => true,
         'show_in_rest'      => true,
         'sanitize_callback' => function ( $value ) {
             return intval( $value );
         }
     ]);
-    // ------------- Person Detail ----------------------------------------
     
-    // register_post_meta( 'grlp_person', 'grlp_person_detail_', [
-    //     'description'       => __( '' ),
-    //     'type'              => 'string',
-    //     'single'            => true,
-    //     'show_in_rest'      => true,
-    //     'sanitize_callback' => function ( $value ) {
-    //         return wp_strip_all_tags( $value );
-    //     }
-    // ]);
+    register_post_meta( 'grlp_person', 'grlp_person_detail_custom_order', [
+        'description'       => __( 'Sortierreihenfolge [team], [mandate]', 'green_persons' ),
+        'type'              => 'integer',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return intval( $value );
+        }
+    ]);
+    
+    register_post_meta( 'grlp_person', 'grlp_person_detail_constituency', [
+        'description'       => __( 'Name (z.B. Koblenz)', 'green_persons' ),
+        'type'              => 'string',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return wp_strip_all_tags( $value );
+        }
+    ]);
+
+    register_post_meta( 'grlp_person', 'grlp_person_detail_constit_num', [
+        'description'       => __( 'Wahlkreisnummer (z.B. 199)', 'green_persons'),
+        'type'              => 'integer',
+        'single'            => true,
+        'shok_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return intval( $value );
+        }
+    ]);
+
+    register_post_meta( 'grlp_person', 'grlp_person_detail_mandate', [
+        'description'       => __(
+            'Mandat und Beschreibung, z.B. "MdL, Sprecherin für... [mandate]"',
+            'green_persons'
+        ),
+        'type'              => 'string',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return wp_kses( $value, array('br' => array()) );
+        }
+    ]);
+
+    register_post_meta( 'grlp_person', 'grlp_person_detail_has_link', [
+        'description'       => __( 'Button zur Detailseite anzeigen', 'green_persons'),
+        'type'              => 'boolean',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return wp_strip_all_tags( $value );
+        }
+    ]);
 }
 
 
@@ -659,8 +703,8 @@ function grlp_person_contact_view( $post )
 <?php
 }
 
-add_action( 'save_post_grlp_person', 'grlp_person_contact_save' );
-function grlp_person_contact_save( $post_id )
+add_action( 'save_post_grlp_person', 'grlp_person_save' );
+function grlp_person_save( $post_id )
 {
     // Bail if we're doing an auto save
     if ( wp_is_post_autosave( $post_id )) {
@@ -692,25 +736,24 @@ function grlp_person_contact_save( $post_id )
     $all_meta_keys = array_keys(
         get_registered_meta_keys( 'post', 'grlp_person' )
     );
-    
+
     // Now we can update all meta_keys to the database because the
     // sanitize callbacks are registered inside `grlp_register_meta`.
     foreach ( $all_meta_keys as $meta_key ) {
         $old_value = get_post_meta( $post_id, $meta_key, true );
-        if ( isset( $_POST[ $meta_key ] )) { 
-           if ( ! empty( $_POST[ $meta_key ] )) {
-               if ( $_POST[ $meta_key ] != $old_value ) {
-                    update_post_meta(
-                        $post_id,
-                        $meta_key,
-                        $_POST[ $meta_key ],
-                        $old_value
-                    ); }}
-           else {
-               if ( ! empty( $old_value )) {
-                   delete_post_meta( $post_id, $meta_key );
-               }
-           }
+        if (
+            ! isset( $_POST[ $meta_key ] )
+            || ( empty( $_POST[ $meta_key ] ) && ! empty( $old_value ))
+        ) {
+            delete_post_meta( $post_id, $meta_key );
+            continue;
+        }
+        if ( $_POST[ $meta_key ] != $old_value ) {
+            update_post_meta(
+                $post_id,
+                $meta_key,
+                $_POST[ $meta_key ]
+            );
         }
     }
 }
@@ -755,7 +798,7 @@ function grlp_person_detail_view( $post )
     $has_link_to_site = isset(
         $values['grlp_person_detail_has_link'] )
         ? esc_attr( $values['grlp_person_detail_has_link'][0] )
-        : 'no';
+        : 'false';
 ?>
 
     <table class="form-table">
@@ -798,7 +841,7 @@ function grlp_person_detail_view( $post )
                 </td>
                 <th scope="row"><label for="grlp_person_detail_has_link">Link zur Detailseite</label></th>
                 <td>
-                    <input type="checkbox" name="grlp_person_detail_has_link" id="grlp_person_detail_has_link" value="yes" <?php checked($has_link_to_site, 'yes'); ?> />
+                    <input type="checkbox" name="grlp_person_detail_has_link" id="grlp_person_detail_has_link" value="true" <?php checked($has_link_to_site, 'true'); ?> />
                     <br /><span class="description">Link zur Detailseite in der Übersicht anzeigen.</span>
                 </td>
             </tr>
@@ -806,94 +849,4 @@ function grlp_person_detail_view( $post )
     </table>
 
 <?php
-}
-
-
-// add_action( 'save_post', 'grlp_person_detail_save' );
-function grlp_person_detail_save( $post_id )
-{
-    error_log('This should never be called');
-    // Bail if we're doing an auto save
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-        return;
-    } 
-
-    // if our nonce isn't there, or we can't verify it, bail
-    if (
-        ! isset( $_POST['grlp_nonce_view'] )
-        || ! wp_verify_nonce(
-            $_POST['grlp_nonce_view'],
-            'grlp_person_detail_view'
-        )) {
-        return;  
-    }
-
-    // if our current user can't edit this post, bail
-    if ( ! current_user_can( 'edit_post', $post_id )) {
-        return;
-    } 
-
-    // now we can actually save the data
-    $allowed = array(
-        'a' => array( // on allow a tags
-            'href' => array() // and those anchors can only have href attribute
-        ),
-        'br' => array()
-    );
-
-    // Make sure your data is set before trying to save it
-    // if ( isset( $_POST['grlp_person_detail_job'] )) {
-    //     update_post_meta(
-    //         $post_id,
-    //         'grlp_person_detail_job',
-    //         esc_html( $_POST['grlp_person_detail_job'] )
-    //     );
-    // }
-    if ( isset( $_POST['grlp_person_detail_list_pos'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_detail_list_pos',
-            intval( $_POST['grlp_person_detail_list_pos'] )
-        );
-    }
-    if ( isset( $_POST['grlp_person_detail_custom_order'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_detail_custom_order',
-            intval( $_POST['grlp_person_detail_custom_order'] )
-        );
-    }
-    if ( isset( $_POST['grlp_person_detail_constituency'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_detail_constituency',
-            esc_html( $_POST['grlp_person_detail_constituency'] )
-        );
-    }
-    if ( isset( $_POST['grlp_person_detail_constit_num'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_detail_constit_num',
-            intval( $_POST['grlp_person_detail_constit_num'] )
-        );
-    }
-    if ( isset( $_POST['grlp_person_detail_mandate'] )) {
-        update_post_meta(
-            $post_id,
-            'grlp_person_detail_mandate',
-            wp_kses_post(
-                $_POST['grlp_person_detail_mandate'],
-                $allowed
-            )
-        );
-    }
-    if ( isset( $_POST['grlp_person_detail_has_link'] )) {
-        update_post_meta(
-            $post_id, 'grlp_person_detail_has_link', 'yes'
-        );
-    } else {
-        update_post_meta(
-            $post_id, 'grlp_person_detail_has_link', 'no'
-        );
-    }
 }
