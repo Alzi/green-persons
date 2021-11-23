@@ -645,62 +645,127 @@ function grlp_person_contact_view( $post )
         $values['grlp_person_contact_address'] )
         ? $values['grlp_person_contact_address'][0]
         : '';
-?>
+    ?>
     <table class="form-table">
-        <tbody>
-            <tr>
-                <th scope="row"><label for="grlp_person_contact_www">Website</label></th>
-                <td>
-                    <input type="text" name="grlp_person_contact_www" id="grlp_person_contact_www" value="<?php echo $www; ?>" />
-                    <br /><span class="description">Inklusive http:// Beispiel: http://domain.de.</span>
-                </td>
-                <th scope="row"><label for="grlp_person_contact_email">E-Mail</label></th>
-                <td>
-                    <input type="text" name="grlp_person_contact_email" id="grlp_person_contact_email" value="<?php echo $email; ?>" />
-                    <br /><span class="description">vorname.nachname@domain.de</span>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row"><label for="grlp_person_contact_facebook">Facebook</label></th>
-                <td>
-                    <input type="text" name="grlp_person_contact_facebook" id="grlp_person_contact_facebook" value="<?php echo $facebook; ?>" />
-                    <br /><span class="description">Vollständiger Link zum Facebook-Profil, inkl. http://</span>
-                </td>
-                <th scope="row"><label for="grlp_person_contact_twitter">Twitter</label></th>
-                <td>
-                    <input type="text" name="grlp_person_contact_twitter" id="grlp_person_contact_twitter" value="<?php echo $twitter; ?>" />
-                    <br /><span class="description">Nur der Twitter-Nutzername ohne @, z.b. gruenenrw.</span>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row"><label for="grlp_person_contact_instagram">Instagram</label></th>
-                <td>
-                    <input type="text" name="grlp_person_contact_instagram" id="grlp_person_contact_instagram" value="<?php echo $instagram; ?>" />
-                    <br /><span class="description">Vollständiger Link zum Instagram-Profil, inkl. http://</span>
-                </td>
-
-                <th scope="row"><label for="grlp_person_contact_address">Anschrift</label></th>
-                <td>
-                    <textarea name="grlp_person_contact_address" id="grlp_person_contact_address"><?php echo $address; ?></textarea>
-                    <br /><span class="description">Platz für Anschrift, Telefon, Fax, etc.<br />(&lt;br /&gt; -tags für Zeilenumbruch verwenden)</span>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row"><label for="grlp_person_contact_phone">Telefon</label></th>
-                <td>
-                    <input type="text" name="grlp_person_contact_phone" id="grlp_person_contact_phone" value="<?php echo $phone; ?>" />
-                    <br /><span class="description">Telefonnummer, Form: (01234) 89 243 -99</span>
-                </td>
-
-                <th scope="row"><label for="grlp_person_contact_mobile">Mobiltelefon</label></th>
-                <td>
-                    <input type="text" name="grlp_person_contact_mobile" id="grlp_person_contact_mobile" value="<?php echo $mobile; ?>" />
-                    <br /><span class="description">Mobilfunknummer, Form: (0179) 12 345 678</span>
-                </td>
-            </tr>
-        </tbody>
+      <tbody>
+        <tr>
+          <th scope="row">
+            <label for="grlp_person_contact_www">Website</label>
+          </th>
+          <td>
+            <input type="text" name="grlp_person_contact_www"
+              id="grlp_person_contact_www"
+              value="<?php echo $www; ?>">
+            <br>
+            <span class="description">
+              Inklusive http:// Beispiel: http://domain.de.
+            </span>
+          </td>
+          <th scope="row">
+            <label for="grlp_person_contact_email">E-Mail</label>
+          </th>
+          <td>
+            <input
+              type="text"
+              name="grlp_person_contact_email"
+              id="grlp_person_contact_email"
+              value="<?php echo $email; ?>">
+            <br>
+            <span class="description">vorname.nachname@domain.de</span>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <label for="grlp_person_contact_facebook">Facebook</label>
+          </th>
+          <td>
+            <input
+              type="text"
+              name="grlp_person_contact_facebook"
+              id="grlp_person_contact_facebook"
+              value="<?php echo $facebook; ?>">
+            <br>
+            <span class="description">
+              Vollständiger Link zum Facebook-Profil, inkl. http://
+            </span>
+          </td>
+          <th scope="row">
+            <label for="grlp_person_contact_twitter">Twitter</label>
+          </th>
+          <td>
+            <input
+              type="text"
+              name="grlp_person_contact_twitter"
+              id="grlp_person_contact_twitter"
+              value="<?php echo $twitter; ?>">
+            <br>
+            <span class="description"
+              >Nur der Twitter-Nutzername ohne @, z.b. gruenenrw.</span>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <label for="grlp_person_contact_instagram">Instagram</label>
+          </th>
+          <td>
+            <input
+              type="text"
+              name="grlp_person_contact_instagram"
+              id="grlp_person_contact_instagram"
+              value="<?php echo $instagram; ?>">
+            <br>
+            <span class="description">
+              Vollständiger Link zum Instagram-Profil, inkl. http://
+            </span>
+          </td>
+          <th scope="row">
+            <label for="grlp_person_contact_address">Anschrift</label>
+          </th>
+          <td>
+            <textarea
+              name="grlp_person_contact_address"
+              id="grlp_person_contact_address"
+              ><?php echo $address; ?></textarea>
+            <br>
+            <span class="description"
+              >Platz für Anschrift, Telefon, Fax, etc.
+              <br>(&lt;br /&gt; -tags für Zeilenumbruch verwenden)
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <label for="grlp_person_contact_phone">Telefon</label>
+          </th>
+          <td>
+            <input
+              type="text"
+              name="grlp_person_contact_phone"
+              id="grlp_person_contact_phone"
+              value="<?php echo $phone; ?>">
+            <br>
+            <span class="description">
+              Telefonnummer, Form: (01234) 89 243 -99
+            </span>
+          </td>
+          <th scope="row">
+            <label for="grlp_person_contact_mobile">Mobiltelefon</label>
+          </th>
+          <td>
+            <input
+              type="text"
+              name="grlp_person_contact_mobile"
+              id="grlp_person_contact_mobile"
+              value="<?php echo $mobile; ?>">
+            <br>
+            <span class="description">
+              Mobilfunknummer, Form: (0179) 12 345 678
+            </span>
+          </td>
+        </tr>
+      </tbody>
     </table>
-<?php
+    <?php
 }
 
 add_action( 'save_post_grlp_person', 'grlp_person_save' );
@@ -775,6 +840,8 @@ function grlp_person_detail_view( $post )
         $values['grlp_person_detail_job'] )
         ? esc_attr( $values['grlp_person_detail_job'][0] )
         : '';
+    $job_desc = get_registered_metadata('post', $post->ID, 'grlp_person_detail_job');
+    
     $list_pos = isset(
         $values['grlp_person_detail_list_pos'] )
         ? esc_attr( $values['grlp_person_detail_list_pos'][0] )
@@ -799,54 +866,111 @@ function grlp_person_detail_view( $post )
         $values['grlp_person_detail_has_link'] )
         ? esc_attr( $values['grlp_person_detail_has_link'][0] )
         : 'false';
-?>
-
+    ?>
     <table class="form-table">
-        <tbody>
-            <tr>
-                <th scope="row"><label for="grlp_person_detail_job">Tätigkeit</label></th>
-                <td>
-                    <input type="text" name="grlp_person_detail_job" id="grlp_person_detail_job" value="<?php echo $job; ?>" />
-                    <br /><span class="description">z.B. Pressesprecher*in, Landesvorsitzende [team]</span>
-                </td>
-                <th scope="row"><label for="grlp_person_detail_mandate">Mandat</label></th>
-                <td>
-                    <textarea type="text" name="grlp_person_detail_mandate" id="grlp_person_detail_mandate"><?php echo $grlp_mandate; ?></textarea>
-                    <br /><span class="description">Mandat und Beschreibung, z.B. MdL, Sprecher für... [mandate]</span>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row"><label for="grlp_person_detail_list_pos">Listenplatz</label></th>
-                <td>
-                    <input type="text" name="grlp_person_detail_list_pos" id="grlp_person_detail_list_pos" value="<?php echo $list_pos; ?>" />
-                    <br /><span class="description">Der Listenplatz, z.B. '2', '43' [gruene-liste]</span>
-                </td>
-                <th scope="row"><label for="grlp_person_detail_constituency">Wahlkreis</label></th>
-                <td>
-                    <p>
-                        <input type="text" name="grlp_person_detail_constituency" id="grlp_person_detail_constituency" value="<?php echo $constituency; ?>" />
-                        <br /><span class="description">Name (z.B. Koblenz)</span>
-                    </p>
-                    <p>
-                        <input type="text" name="grlp_person_detail_constit_num" id="grlp_person_detail_constit_num" value="<?php echo $constit_num; ?>" />
-                        <br /><span class="description">Wahlkreisnummer (z.B. 199)</span>
-                    </p>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row"><label for="grlp_person_detail_custom_order">Sortierung</label></th>
-                <td>
-                    <input type="text" name="grlp_person_detail_custom_order" id="grlp_person_detail_custom_order" value="<?php echo $custom_order; ?>" />
-                    <br /><span class="description">Sortierreihenfolge [team],[mandate]</span>
-                </td>
-                <th scope="row"><label for="grlp_person_detail_has_link">Link zur Detailseite</label></th>
-                <td>
-                    <input type="checkbox" name="grlp_person_detail_has_link" id="grlp_person_detail_has_link" value="true" <?php checked($has_link_to_site, 'true'); ?> />
-                    <br /><span class="description">Link zur Detailseite in der Übersicht anzeigen.</span>
-                </td>
-            </tr>
-        </tbody>
+      <tbody>
+        <tr>
+          <th scope="row">
+            <label for="grlp_person_detail_job">Tätigkeit</label>
+          </th>
+          <td>
+            <input
+              type="text"
+              name="grlp_person_detail_job"
+              id="grlp_person_detail_job"
+              value="<?php echo $job; ?>">
+            <br>
+            <span class="description">
+                <?php echo $job_desc; ?>
+            </span>
+          </td>
+          <th scope="row">
+            <label for="grlp_person_detail_mandate">Mandat</label></th>
+          <td>
+            <textarea
+              type="text"
+              name="grlp_person_detail_mandate"
+              id="grlp_person_detail_mandate">
+              <?php echo $grlp_mandate; ?>
+            </textarea>
+            <br>
+            <span class="description">
+              Mandat und Beschreibung, z.B. MdL, Sprecher für... [mandate]
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <label for="grlp_person_detail_list_pos">Listenplatz</label>
+          </th>
+          <td>
+            <input
+              type="text"
+              name="grlp_person_detail_list_pos"
+              id="grlp_person_detail_list_pos"
+              value="<?php echo $list_pos; ?>">
+            <br>
+            <span class="description">
+              Der Listenplatz, z.B. '2', '43' [gruene-liste]
+            </span>
+          </td>
+          <th scope="row">
+            <label for="grlp_person_detail_constituency">Wahlkreis</label>
+          </th>
+          <td>
+            <p>
+              <input
+                type="text"
+                name="grlp_person_detail_constituency"
+                id="grlp_person_detail_constituency"
+                value="<?php echo $constituency; ?>">
+              <br>
+              <span class="description">Name (z.B. Koblenz)</span>
+            </p>
+            <p>
+              <input
+                type="text"
+                name="grlp_person_detail_constit_num"
+                id="grlp_person_detail_constit_num"
+                value="<?php echo $constit_num; ?>">
+              <br>
+              <span class="description">Wahlkreisnummer (z.B. 199)</span>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <label for="grlp_person_detail_custom_order">Sortierung</label>
+          </th>
+          <td>
+            <input
+              type="text"
+              name="grlp_person_detail_custom_order"
+              id="grlp_person_detail_custom_order"
+              value="<?php echo $custom_order; ?>">
+            <br>
+            <span class="description">
+              Sortierreihenfolge [team],[mandate]
+            </span>
+          </td>
+          <th scope="row">
+            <label for="grlp_person_detail_has_link">
+              Link zur Detailseite
+            </label>
+          </th>
+          <td>
+              <input
+              type="checkbox"
+              name="grlp_person_detail_has_link"
+              id="grlp_person_detail_has_link"
+              value="true" <?php checked($has_link_to_site, 'true'); ?>>
+            <br>
+            <span class="description">
+              Link zur Detailseite in der Übersicht anzeigen.
+            </span>
+          </td>
+        </tr>
+      </tbody>
     </table>
-
-<?php
+    <?php
 }
