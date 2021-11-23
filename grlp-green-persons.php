@@ -389,7 +389,7 @@ function grlp_register_meta()
     register_post_meta( 'grlp_person', 'grlp_person_contact_www', [
         'type'              => 'string',
         'description'       => __(
-            'URL der Website der Person (inklusive http...)',
+            'URL der Website (inklusive "https://")',
             'green_person'
         ),
         'single'            => true,
@@ -414,7 +414,7 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_twitter', [
         'description'       => __(
-            'Twitter Name der Person (ohne @!)',
+            'Vollstängige URL zum Twitter-Profil',
             'green_person'
         ),
         'type'              => 'string',
@@ -427,7 +427,7 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_facebook', [
         'description'       => __(
-            'Vollstängiger Link zum Facebook Profil',
+            'Vollstängige URL zum Facebook-Profil',
             'green_person'
         ),
         'type'              => 'string',
@@ -439,7 +439,7 @@ function grlp_register_meta()
     ]);
     register_post_meta( 'grlp_person', 'grlp_person_contact_instagram', [
         'description'       => __(
-            'Vollstängiger Link zum Instagram Profil',
+            'Vollstängige URL zum Instagram-Profil',
             'green_person'
         ),
         'type'              => 'string',
@@ -478,7 +478,8 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_mobile', [
         'description'       => __(
-            'Mobilfunk Nummer Form: (0176) 123 456 789'
+            'Mobilfunk Nummer Form: (0176) 123 456 789',
+            'green_persons'
         ),
         'type'              => 'string',
         'single'            => true,
@@ -492,7 +493,8 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_detail_job', [
         'description'       => __(
-            'job-detail text'
+            'Beispiele: "Pressesprecherin", "Landesvorsitzende" [team]',
+            'green_persons'
         ),
         'type'              => 'string',
         'single'            => true,
@@ -504,8 +506,8 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_detail_list_pos', [
         'description'       => __(
-            'job-detail text'
-        ),
+            'Sortierreihenfolge [dk-liste], [landes-liste]',
+            'green_persons'),
         'type'              => 'integer',
         'single'            => true,
         'show_in_rest'      => true,
@@ -515,7 +517,9 @@ function grlp_register_meta()
     ]);
     
     register_post_meta( 'grlp_person', 'grlp_person_detail_custom_order', [
-        'description'       => __( 'Sortierreihenfolge [team], [mandate]', 'green_persons' ),
+        'description'       => __(
+            'Sortierreihenfolge [team], [mandate]',
+            'green_persons' ),
         'type'              => 'integer',
         'single'            => true,
         'show_in_rest'      => true,
@@ -612,6 +616,9 @@ function grlp_person_contact_view( $post )
     // We'll use this nonce field later on when saving.
     wp_nonce_field( 'grlp_person_contact_view', 'grlp_nonce_contact' );
     $values = get_post_custom( $post->ID );
+    global $wp_meta_keys;
+    $meta_keys = $wp_meta_keys['post']['grlp_person'];
+   
 
     $www = isset(
         $values['grlp_person_contact_www'] )
@@ -658,7 +665,7 @@ function grlp_person_contact_view( $post )
               value="<?php echo $www; ?>">
             <br>
             <span class="description">
-              Inklusive http:// Beispiel: http://domain.de.
+              <?php echo $meta_keys['grlp_person_contact_www']['description']; ?>
             </span>
           </td>
           <th scope="row">
@@ -671,7 +678,9 @@ function grlp_person_contact_view( $post )
               id="grlp_person_contact_email"
               value="<?php echo $email; ?>">
             <br>
-            <span class="description">vorname.nachname@domain.de</span>
+            <span class="description">
+              <?php echo $meta_keys['grlp_person_contact_email']['description']; ?>
+            </span>
           </td>
         </tr>
         <tr>
@@ -686,7 +695,7 @@ function grlp_person_contact_view( $post )
               value="<?php echo $facebook; ?>">
             <br>
             <span class="description">
-              Vollständiger Link zum Facebook-Profil, inkl. http://
+              <?php echo $meta_keys['grlp_person_contact_facebook']['description']; ?>
             </span>
           </td>
           <th scope="row">
@@ -699,8 +708,9 @@ function grlp_person_contact_view( $post )
               id="grlp_person_contact_twitter"
               value="<?php echo $twitter; ?>">
             <br>
-            <span class="description"
-              >Nur der Twitter-Nutzername ohne @, z.b. gruenenrw.</span>
+            <span class="description">
+              <?php echo $meta_keys['grlp_person_contact_twitter']['description']; ?>
+            </span>
           </td>
         </tr>
         <tr>
@@ -715,7 +725,7 @@ function grlp_person_contact_view( $post )
               value="<?php echo $instagram; ?>">
             <br>
             <span class="description">
-              Vollständiger Link zum Instagram-Profil, inkl. http://
+              <?php echo $meta_keys['grlp_person_contact_instagram']['description']; ?>
             </span>
           </td>
           <th scope="row">
@@ -724,12 +734,13 @@ function grlp_person_contact_view( $post )
           <td>
             <textarea
               name="grlp_person_contact_address"
-              id="grlp_person_contact_address"
-              ><?php echo $address; ?></textarea>
+              id="grlp_person_contact_address"><?php
+                echo $address;
+              ?>
+            </textarea>
             <br>
-            <span class="description"
-              >Platz für Anschrift, Telefon, Fax, etc.
-              <br>(&lt;br /&gt; -tags für Zeilenumbruch verwenden)
+            <span class="description">
+              <?php echo $meta_keys['grlp_person_contact_address']['description']; ?>
             </span>
           </td>
         </tr>
@@ -745,7 +756,7 @@ function grlp_person_contact_view( $post )
               value="<?php echo $phone; ?>">
             <br>
             <span class="description">
-              Telefonnummer, Form: (01234) 89 243 -99
+              <?php echo $meta_keys['grlp_person_contact_phone']['description']; ?>
             </span>
           </td>
           <th scope="row">
@@ -759,7 +770,7 @@ function grlp_person_contact_view( $post )
               value="<?php echo $mobile; ?>">
             <br>
             <span class="description">
-              Mobilfunknummer, Form: (0179) 12 345 678
+              <?php echo $meta_keys['grlp_person_contact_mobile']['description']; ?>
             </span>
           </td>
         </tr>
@@ -835,13 +846,14 @@ function grlp_person_detail_view( $post )
 {
     // We'll use this nonce field later on when saving.
     wp_nonce_field( 'grlp_person_detail_view', 'grlp_nonce_detail' );
+    global $wp_meta_keys;
+    $meta_keys = $wp_meta_keys['post']['grlp_person'];
+
     $values = get_post_custom( $post->ID );
     $job = isset(
         $values['grlp_person_detail_job'] )
         ? esc_attr( $values['grlp_person_detail_job'][0] )
         : '';
-    $job_desc = get_registered_metadata('post', $post->ID, 'grlp_person_detail_job');
-    
     $list_pos = isset(
         $values['grlp_person_detail_list_pos'] )
         ? esc_attr( $values['grlp_person_detail_list_pos'][0] )
@@ -881,7 +893,7 @@ function grlp_person_detail_view( $post )
               value="<?php echo $job; ?>">
             <br>
             <span class="description">
-                <?php echo $job_desc; ?>
+              <?php echo $meta_keys['grlp_person_detail_job']['description']; ?>
             </span>
           </td>
           <th scope="row">
@@ -890,12 +902,13 @@ function grlp_person_detail_view( $post )
             <textarea
               type="text"
               name="grlp_person_detail_mandate"
-              id="grlp_person_detail_mandate">
-              <?php echo $grlp_mandate; ?>
+              id="grlp_person_detail_mandate"><?php
+                echo $grlp_mandate;
+              ?>
             </textarea>
             <br>
             <span class="description">
-              Mandat und Beschreibung, z.B. MdL, Sprecher für... [mandate]
+              <?php echo $meta_keys['grlp_person_detail_mandate']['description']; ?>
             </span>
           </td>
         </tr>
@@ -911,7 +924,7 @@ function grlp_person_detail_view( $post )
               value="<?php echo $list_pos; ?>">
             <br>
             <span class="description">
-              Der Listenplatz, z.B. '2', '43' [gruene-liste]
+              <?php echo $meta_keys['grlp_person_detail_list_pos']['description']; ?>
             </span>
           </td>
           <th scope="row">
@@ -925,7 +938,9 @@ function grlp_person_detail_view( $post )
                 id="grlp_person_detail_constituency"
                 value="<?php echo $constituency; ?>">
               <br>
-              <span class="description">Name (z.B. Koblenz)</span>
+              <span class="description">
+                <?php echo $meta_keys['grlp_person_detail_constituency']['description']; ?>
+              </span>
             </p>
             <p>
               <input
@@ -934,7 +949,9 @@ function grlp_person_detail_view( $post )
                 id="grlp_person_detail_constit_num"
                 value="<?php echo $constit_num; ?>">
               <br>
-              <span class="description">Wahlkreisnummer (z.B. 199)</span>
+              <span class="description">
+                <?php echo $meta_keys['grlp_person_detail_constit_num']['description']; ?>
+              </span>
             </p>
           </td>
         </tr>
@@ -950,7 +967,7 @@ function grlp_person_detail_view( $post )
               value="<?php echo $custom_order; ?>">
             <br>
             <span class="description">
-              Sortierreihenfolge [team],[mandate]
+              <?php echo $meta_keys['grlp_person_detail_custom_order']['description']; ?>
             </span>
           </td>
           <th scope="row">
@@ -966,7 +983,7 @@ function grlp_person_detail_view( $post )
               value="true" <?php checked($has_link_to_site, 'true'); ?>>
             <br>
             <span class="description">
-              Link zur Detailseite in der Übersicht anzeigen.
+              <?php echo $meta_keys['grlp_person_detail_has_link']['description']; ?>
             </span>
           </td>
         </tr>
