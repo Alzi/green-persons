@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
  * A little debugging helper :)
  *
  * @return None
+ * @todo   Get rid off in PRODUCTION
  *
  */
 function screen_out( $value, $and_die=true )
@@ -33,7 +34,6 @@ function screen_out( $value, $and_die=true )
  * 
  */
 add_action( 'admin_menu', 'grlp_add_menu_item' );
-
 function grlp_add_menu_item()
 {
     add_menu_page(
@@ -111,7 +111,6 @@ function grlp_settings_page()
  *
  */
 add_action( 'plugins_loaded', 'grlp_gp_load_textdomain' );
-
 function grlp_gp_load_textdomain()
 {
     load_plugin_textdomain(
@@ -123,14 +122,13 @@ function grlp_gp_load_textdomain()
 
 
 /**
- * Create 'grlp_person' custom post type
+ * Register 'grlp_person' custom post type
  * 
  * @return None
  *
  */
-add_action( 'init', 'grlp_create_person_post_type' );
-
-function grlp_create_person_post_type()
+add_action( 'init', 'grlp_register_person_post_type' );
+function grlp_register_person_post_type()
 {
     $labels = array(
         'menu_position' => 5,
@@ -162,20 +160,20 @@ function grlp_create_person_post_type()
             'supports'     => $supports,
             'rewrite'      => array('slug' => 'gruene-personen'),
             'show_in_rest' => true,
+            'hierarchical' => false,
         )
     );
 }
 
 
 /**
- * Create taxonomy for 'grlp_persons'
+ * Register taxonomy for 'grlp_persons'
  *
  * @return None
  *
  */
-add_action( 'init', 'grlp_create_person_taxonomy' );
-
-function grlp_create_person_taxonomy()
+add_action( 'init', 'grlp_register_person_taxonomy' );
+function grlp_register_person_taxonomy()
 {
     $labels = array(
         'name'              => _x( 'Divisions', 'general name', 'green_persons' ),
@@ -217,7 +215,6 @@ function grlp_create_person_taxonomy()
  *
  */
 add_filter( 'manage_grlp_person_posts_columns', 'grlp_admin_page_columns' );
-
 function grlp_admin_page_columns( $columns ) { 
     $columns['title'] = __( 'Name der Person', 'green_persons' );
     return array_merge(
@@ -240,9 +237,8 @@ add_action(
     'grlp_manage_custom_column',
     10, 2
 );
-
 function grlp_manage_custom_column( $column_key, $post_id ) {
-	if ( $column_key == 'abteilung' ) {
+    if ( $column_key == 'abteilung' ) {
         $term_obj_list = get_the_terms( $post_id, 'abteilung' );
         $num_items = ! empty( $term_obj_list ) ? count( $term_obj_list ) : 0;
         if ( $num_items > 0 ) {
@@ -262,7 +258,7 @@ function grlp_manage_custom_column( $column_key, $post_id ) {
         else {
             echo 'keine Abteilung';
         }
-	}
+    }
 }
 
 
@@ -279,7 +275,7 @@ function grlp_load_single_person_template( $template )
     /* Checks for single template by post type */
     if ( $post->post_type == 'grlp_person' ) {
         $path = plugin_dir_path( __FILE__ )
-            . 'templates/single-grlp_person.php';
+            . 'templates/person.php';
         if ( file_exists( $path )) {
             return $path;
         }
@@ -288,9 +284,6 @@ function grlp_load_single_person_template( $template )
 }
 
 
-// TODO: learn about this function and how to really use it
-// flush_rewrite_rules();
-
 /**
  * Add shortcodes
  *
@@ -298,13 +291,12 @@ function grlp_load_single_person_template( $template )
  *
  */
 add_action( 'init', 'grlp_shortcodes_init' );
-
 function grlp_shortcodes_init()
 {
-    add_shortcode( 'team', 'grlp_team_anzeigen' );
+    add_shortcode( 'team', 'grlp_sc_team' );
 }
 
-function grlp_team_anzeigen( $atts, $content, $shortcode_tag )
+function grlp_sc_team( $atts, $content, $shortcode_tag )
 {
     $posts = array();
     $o = '';
@@ -990,4 +982,77 @@ function grlp_person_detail_view( $post )
       </tbody>
     </table>
     <?php
+}
+
+
+/**
+ * Add 'page' as CSS class to 'body'-tag in order for the person pages
+ * to look like normal pages
+ *
+ */
+add_filter( 'body_class','grlp_body_classes' );
+function grlp_body_classes( $classes ) {
+    $classes[] = 'page';
+    return $classes;
+}
+
+
+/**
+ * Locate a template for the plugin.
+ * code from: https://www.benmarshall.me/wordpress-plugin-template-files/
+ *
+ * Locate the called template.
+ * Search Order:
+ * 1. /themes/your-theme/your-plugin/$template_name
+ * 2. /themes/your-theme/$template_name
+ * 3. /plugins/your-plugin/templates/$template_name.
+ *
+ * @param   string  $template_name          Template to load.
+ * @param   string  $string $template_path  Path to templates.
+ * @param   string  $default_path           Default path to template files.
+ */
+function grlp_locate_template( $template_name, $template_path = '', $default_path = '' ) {
+    // Set the plugin theme folder (e.g. themes/your-plugin/templates/)
+    if ( ! $template_path ) :
+      $template_path = 'themes/grlp-green-persons/templates/';
+    endif;
+    // Set the default plugin templates location (e.g. plugins/your-plugin/templates/)
+    if ( ! $default_path ) :
+      $default_path = plugin_dir_path( __FILE__ ) . 'templates/';
+    endif;
+    // Search for the template in the theme directory
+    $template = locate_template([
+      $template_path . $template_name,
+      $template_name
+    ]);
+    // If a template couldn't be found, fallback to using the plugin template directory
+    if ( ! $template ) :
+      $template = $default_path . $template_name;
+    endif;
+    return apply_filters( 'grlp_locate_template', $template, $template_name, $template_path, $default_path );
+}
+
+/**
+ * Get the template.
+ *
+ * Search for the template and include the file if found.
+ * code from: https://www.benmarshall.me/wordpress-plugin-template-files/
+ *
+ * @see grlp_locate_template()
+ *
+ * @param string    $template_name          Template to load.
+ * @param array     $args                   Args passed for the template file.
+ * @param string    $string $template_path  Path to templates.
+ * @param string    $default_path           Default path to template files.
+ */
+function grlp_get_template( $template_name, $args = array(), $tempate_path = '', $default_path = '' ) {
+    if ( is_array( $args ) && isset( $args ) ) :
+        extract( $args );
+    endif;
+    $template_file = grlp_locate_template( $template_name, $tempate_path, $default_path );
+    if ( ! file_exists( $template_file ) ) :
+        _doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template_file ), '1.0.0' );
+        return;
+    endif;
+    include $template_file;
 }
