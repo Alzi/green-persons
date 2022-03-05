@@ -20,7 +20,7 @@
 
     <div class="col-12 col-md-10 offset-md-1">
         <div class="entry-meta mb-3">
-            <?php printf( '<p><strong>Email:</strong> %s</p>', $grlp_meta['grlp_person_contact_email'][0] ); ?>
+            <?php grlp_get_template('partials/contact_icons.php', array('grlp_meta'=>$grlp_meta)); ?>
         </div><!-- .entry-meta -->
 
         <div class="entry-content">
