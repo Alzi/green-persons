@@ -294,6 +294,7 @@ add_action( 'init', 'grlp_shortcodes_init' );
 function grlp_shortcodes_init()
 {
     add_shortcode( 'team', 'grlp_sc_team' );
+    add_shortcode( 'teamgrid', 'grlp_sc_teamgrid' );
 }
 
 function grlp_sc_team( $atts, $content, $shortcode_tag )
@@ -349,6 +350,49 @@ function grlp_sc_team( $atts, $content, $shortcode_tag )
         }
         $o .= '</div>' . "\n";
     }
+    return $o;
+}
+
+function grlp_sc_teamgrid( $atts, $content, $shortcode_tag )
+{
+    $posts = array();
+    $o = '';
+    if ( ! empty( $atts )) {
+        if ( isset( $atts['abteilung'] )) {
+            $posts = get_posts(
+                array(
+                    'post_type'     => 'grlp_person',
+                    'numberposts'   => -1,
+                    'abteilung'     => $atts['abteilung'],
+                    // 'post_status'   => 'publish',
+                )
+            );
+        }
+    }
+
+    $count = 0;
+    $num_of_posts = sizeof( $posts );
+    $num_of_columns = @absint( $atts['cols'] ) > 0 ? absint( $atts['cols'] ) : 3;
+
+    $o .= '<div class="grlp-person-container">' . "\n";
+    foreach ( $posts as $post ) {
+        $o .= '<div class="person has-shadow">' . "\n";
+            $o .= '<figure>' . "\n";
+            $o .= !empty(get_the_post_thumbnail( $post->ID ))?get_the_post_thumbnail( $post->ID ):'<img src="https://sunflower-theme.de/demo/wp-content/uploads/sites/6/2021/01/sunflower-flower-summer-blossom-4298808-1024x682.jpg" />';
+            $o .= '</figure>' . "\n";
+            $o .= '<div class="person-info">' . "\n";
+                $o .= '<p class="person-name">' . $post->post_title . '</p>' . "\n";
+                $o .= '<p class="person-description">'. get_post_meta( $post->ID, 'grlp_person_detail_job', true ).'</p>' . "\n";
+                $o .= '<div class="person-contact-info">' . "\n";
+                $o .= '<a href="#"><i class="fab fa-instagram"></i></a>' . "\n";
+                $o .= '<a href="#"><i class="fab fa-facebook"></i></a>' . "\n";
+                $o .= '<a href="#"><i class="fab fa-twitter"></i></a>' . "\n";
+                $o .= '</div>' . "\n";
+                $o .= '<p class="person-description">Tel.: '.get_post_meta( $post->ID,'grlp_person_contact_phone', true ).'</p>' . "\n";
+            $o .= '</div>';
+        $o .= '</div>' . "\n";
+    }
+    $o .= '</div></div>'."\n";
     return $o;
 }
 
