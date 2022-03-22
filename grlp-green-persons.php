@@ -359,11 +359,19 @@ function grlp_sc_teamgrid( $atts, $content, $shortcode_tag )
     $o = '';
     if ( ! empty( $atts )) {
         if ( isset( $atts['abteilung'] )) {
-            $posts = get_posts(
+            $posts = query_posts(
                 array(
                     'post_type'     => 'grlp_person',
+                    'order'         => 'ASC',
                     'numberposts'   => -1,
                     'abteilung'     => $atts['abteilung'],
+                    'orderby'       => 'order_clause',
+                    'meta_query'    => array(
+                        'order_clause' => array(
+                            'key' => 'grlp_person_detail_custom_order',
+                            'type' => 'NUMERIC'
+                        )
+                    )
                     // 'post_status'   => 'publish',
                 )
             );
