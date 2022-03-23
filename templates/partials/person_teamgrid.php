@@ -4,6 +4,7 @@
     $phone = get_post_meta( $person->ID, 'grlp_person_contact_phone', true );
     $mobile = get_post_meta( $person->ID, 'grlp_person_contact_mobile', true );
     $web = get_post_meta( $person->ID, 'grlp_person_contact_www', true );
+    $email = get_post_meta( $person->ID, 'grlp_person_contact_email', true );
     $insta = get_post_meta( $person->ID, 'grlp_person_contact_insta', true );
     $twitter = get_post_meta( $person->ID, 'grlp_person_contact_twitter', true );
     $facebook = get_post_meta( $person->ID, 'grlp_person_contact_facebook', true );
@@ -20,16 +21,32 @@
         <div class="person-info" style="">
             <p class="person-name"><?php echo $person->post_title; ?></p>
             <p class="person-description"><?php echo get_post_meta( $person->ID, 'grlp_person_detail_job', true ); ?></p>
-            <div class="person-contact-info">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
+            <div class="person-contact-info d-flex">
+                <?php if ($web) : ?>
+                <div class="wp-block-sunflower-meta-data">
+                    <a href="<?php echo $web; ?>"><i class="fas fa-globe"></i></a>
+                </div>
+                <?php endif; ?>
+                <?php if ($email) : ?>
+                <div class="wp-block-sunflower-meta-data">
+                    <a href="mailto:<?php echo $email; ?>"><i class="fas fa-envelope"></i></a>
+                </div>
+                <?php endif; ?>
+                <div class="wp-block-sunflower-meta-data">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="wp-block-sunflower-meta-data">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                </div>
+                <div class="wp-block-sunflower-meta-data">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
             </div>
             <?php if ( $phone ) : ?>
-            <p class="person-description">Tel.:<?php echo $phone; ?></p>
+            <p class="person-description">Tel.: <?php echo $phone; ?></p>
             <?php endif; ?>
             <?php if ( $mobile ) : ?>
-            <p class="person-description">Mobil.:<?php echo $mobile; ?></p>
+            <p class="person-description">Mobil.: <?php echo $mobile; ?></p>
             <?php endif; ?>
             <?php if ( $has_detail_link ) : ?>
             <div class="details-button">

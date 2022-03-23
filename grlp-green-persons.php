@@ -355,6 +355,7 @@ function grlp_sc_team( $atts, $content, $shortcode_tag )
 
 function grlp_sc_teamgrid( $atts, $content, $shortcode_tag )
 {
+    $team_posts = array();
     $attributes = array_keys($atts);
     if ( ! empty( $atts )) {
         if ( isset( $atts['abteilung'] )) {
@@ -377,7 +378,6 @@ function grlp_sc_teamgrid( $atts, $content, $shortcode_tag )
         }
     }
 
-    $team_posts = array();
     $output = '';
 
     // $count = 0;
