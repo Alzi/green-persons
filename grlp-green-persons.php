@@ -378,19 +378,12 @@ function grlp_sc_teamgrid( $atts, $content, $shortcode_tag )
         }
     }
 
-    $output = '';
-
-    // $count = 0;
-    // $num_of_posts = sizeof( $team_posts );
-    // $num_of_columns = @absint( $atts['cols'] ) > 0 ? absint( $atts['cols'] ) : 3;
-
     ob_start();
-    grlp_get_template('partials/person_teamgrid.php', array(
+    grlp_get_template('teamgrid.php', array(
         'team_persons' => $team_posts,
         'atts' => $atts,
     ));
-    $output = ob_get_clean();
-    return $output;
+    return ob_get_clean();
 }
 
 //TODO: move to uninstall.php
@@ -538,7 +531,7 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_detail_list_pos', [
         'description'       => __(
-            'Sortierreihenfolge [dk-liste], [landes-liste]',
+            'Sortierreihenfolge [dk-liste], [landesliste]',
             'green_persons'),
         'type'              => 'integer',
         'single'            => true,
@@ -550,7 +543,19 @@ function grlp_register_meta()
     
     register_post_meta( 'grlp_person', 'grlp_person_detail_custom_order', [
         'description'       => __(
-            'Sortierreihenfolge [team], [mandate]',
+            'Sortierreihenfolge [team]',
+            'green_persons' ),
+        'type'              => 'integer',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return intval( $value );
+        }
+    ]);
+
+    register_post_meta( 'grlp_person', 'grlp_person_detail_custom_order_mandate', [
+        'description'       => __(
+            'Sortierreihenfolge [mandate]',
             'green_persons' ),
         'type'              => 'integer',
         'single'            => true,
@@ -627,7 +632,7 @@ function grlp_register_meta_boxes( $post )
     );
     add_meta_box(
         'grlp_person_detail',
-        __( 'Infos & Ämter' ),
+        __( 'Infos' ),
         'grlp_person_detail_view',
         'grlp_person',
         'normal',
@@ -894,6 +899,10 @@ function grlp_person_detail_view( $post )
         $values['grlp_person_detail_custom_order'] )
         ? esc_attr( $values['grlp_person_detail_custom_order'][0] )
         : '';
+    $custom_order_mandate = isset(
+        $values['grlp_person_detail_custom_order_mandate'] )
+        ? esc_attr( $values['grlp_person_detail_custom_order_mandate'][0] )
+        : '';
     $constituency = isset(
         $values['grlp_person_detail_constituency'] )
         ? esc_attr( $values['grlp_person_detail_constituency'][0] )
@@ -992,15 +1001,28 @@ function grlp_person_detail_view( $post )
             <label for="grlp_person_detail_custom_order">Sortierung</label>
           </th>
           <td>
-            <input
-              type="text"
-              name="grlp_person_detail_custom_order"
-              id="grlp_person_detail_custom_order"
-              value="<?php echo $custom_order; ?>">
-            <br>
-            <span class="description">
-              <?php echo $meta_keys['grlp_person_detail_custom_order']['description']; ?>
-            </span>
+            <p>
+                <input
+                type="text"
+                name="grlp_person_detail_custom_order"
+                id="grlp_person_detail_custom_order"
+                value="<?php echo $custom_order; ?>">
+                <br>
+                <span class="description">
+                <?php echo $meta_keys['grlp_person_detail_custom_order']['description']; ?>
+                </span>
+            </p>
+            <p>
+                <input
+                type="text"
+                name="grlp_person_detail_custom_order_mandate"
+                id="grlp_person_detail_custom_order_mandate"
+                value="<?php echo $custom_order_mandate; ?>">
+                <br>
+                <span class="description">
+                <?php echo $meta_keys['grlp_person_detail_custom_order_mandate']['description']; ?>
+                </span>
+            </p>
           </td>
           <th scope="row">
             <label for="grlp_person_detail_has_link">
