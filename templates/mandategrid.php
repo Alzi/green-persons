@@ -1,5 +1,5 @@
 <div class="grlp-person-container">
-    <?php foreach ($team_persons as $person) : ?>
+    <?php foreach ($persons as $person) : ?>
     <?php 
     $phone = get_post_meta( $person->ID, 'grlp_person_contact_phone', true );
     $mobile = get_post_meta( $person->ID, 'grlp_person_contact_mobile', true );
@@ -20,7 +20,7 @@
         </figure>
         <div class="person-info" style="">
             <p class="person-name"><?php echo $person->post_title; ?></p>
-            <p class="person-description"><?php echo get_post_meta( $person->ID, 'grlp_person_detail_job', true ); ?></p>
+            <p class="person-description"><?php echo get_post_meta( $person->ID, 'grlp_person_detail_mandate', true ); ?></p>
             <div class="person-contact-info d-flex">
                 <?php if ($web) : ?>
                 <div class="wp-block-sunflower-meta-data">
@@ -42,12 +42,6 @@
                     <a href="#"><i class="fab fa-twitter"></i></a>
                 </div>
             </div>
-            <?php if ( $phone ) : ?>
-            <p class="person-description">Tel.: <?php echo $phone; ?></p>
-            <?php endif; ?>
-            <?php if ( $mobile ) : ?>
-            <p class="person-description">Mobil.: <?php echo $mobile; ?></p>
-            <?php endif; ?>
             <?php if ( $has_detail_link ) : ?>
             <div class="details-button">
                 <div class="wp-block-button mb-0 mt-3">

@@ -293,8 +293,8 @@ function grlp_load_single_person_template( $template )
 add_action( 'init', 'grlp_shortcodes_init' );
 function grlp_shortcodes_init()
 {
-    add_shortcode( 'team', 'grlp_sc_team' );
-    add_shortcode( 'teamgrid', 'grlp_sc_teamgrid' );
+    add_shortcode( 'team', 'grlp_sc_teamgrid' );
+    add_shortcode( 'mandate', 'grlp_sc_mandategrid' );
 }
 
 function grlp_sc_team( $atts, $content, $shortcode_tag )
@@ -386,6 +386,38 @@ function grlp_sc_teamgrid( $atts, $content, $shortcode_tag )
     return ob_get_clean();
 }
 
+function grlp_sc_mandategrid( $atts, $content, $shortcode_tag )
+{
+    $posts = array();
+    $attributes = array_keys($atts);
+    if ( ! empty( $atts )) {
+        if ( isset( $atts['abteilung'] )) {
+            $posts = get_posts(
+                array(
+                    'post_type'     => 'grlp_person',
+                    'order'         => 'ASC',
+                    'numberposts'   => -1,
+                    'abteilung'     => $atts['abteilung'],
+                    'orderby'       => 'order_clause',
+                    'meta_query'    => array(
+                        'order_clause' => array(
+                            'key' => 'grlp_person_detail_custom_order_mandate',
+                            'type' => 'NUMERIC'
+                    // 'post_status'   => 'publish',
+                        )
+                    )
+                )
+            );
+        }
+    }
+
+    ob_start();
+    grlp_get_template('mandategrid.php', array(
+        'persons' => $posts,
+        'atts' => $atts,
+    ));
+    return ob_get_clean();
+}
 //TODO: move to uninstall.php
 function grlp_uninstall_plugin()
 {
