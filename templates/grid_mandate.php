@@ -22,25 +22,31 @@
             <p class="person-name"><?php echo $person->post_title; ?></p>
             <p class="person-description"><?php echo get_post_meta( $person->ID, 'grlp_person_detail_mandate', true ); ?></p>
             <div class="person-contact-info d-flex">
-                <?php if ($web) : ?>
+                <?php if (! empty($web)) : ?>
                 <div class="wp-block-sunflower-meta-data">
                     <a href="<?php echo $web; ?>"><i class="fas fa-globe"></i></a>
                 </div>
                 <?php endif; ?>
-                <?php if ($email) : ?>
+                <?php if (! empty ($email)) : ?>
                 <div class="wp-block-sunflower-meta-data">
                     <a href="mailto:<?php echo $email; ?>"><i class="fas fa-envelope"></i></a>
                 </div>
                 <?php endif; ?>
+                <?php if (! empty ($insta)) : ?>
                 <div class="wp-block-sunflower-meta-data">
                     <a href="#"><i class="fab fa-instagram"></i></a>
                 </div>
-                <div class="wp-block-sunflower-meta-data">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                </div>
+                <?php endif; ?>
+                <?php if (! empty ($twitter)) : ?>
                 <div class="wp-block-sunflower-meta-data">
                     <a href="#"><i class="fab fa-twitter"></i></a>
                 </div>
+                <?php endif; ?>
+                <?php if (! empty ($facebook)) : ?>
+                <div class="wp-block-sunflower-meta-data">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                </div>
+                <?php endif; ?>
             </div>
             <?php if ( $has_detail_link ) : ?>
             <div class="details-button">

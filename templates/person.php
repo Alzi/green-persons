@@ -12,7 +12,7 @@ get_header();
             <div class="col-12">
                 <main id="primary" class="site-main">
                     <?php
-                        grlp_get_template('content_person.php', array('grlp_meta'=>$grlp_meta));
+                        grlp_get_template('person_content.php', array('grlp_meta'=>$grlp_meta));
                     ?>
                 </main><!-- #main -->
             </div>

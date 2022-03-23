@@ -293,67 +293,11 @@ function grlp_load_single_person_template( $template )
 add_action( 'init', 'grlp_shortcodes_init' );
 function grlp_shortcodes_init()
 {
-    add_shortcode( 'team', 'grlp_sc_teamgrid' );
-    add_shortcode( 'mandate', 'grlp_sc_mandategrid' );
+    add_shortcode( 'team', 'grlp_sc_grid_team' );
+    add_shortcode( 'mandate', 'grlp_sc_grid_mandate' );
 }
 
-function grlp_sc_team( $atts, $content, $shortcode_tag )
-{
-    $posts = array();
-    $o = '';
-    if ( ! empty( $atts )) {
-        if ( isset( $atts['abteilung'] )) {
-            $posts = get_posts(
-                array(
-                    'post_type'     => 'grlp_person',
-                    'numberposts'   => -1,
-                    'abteilung'     => $atts['abteilung'],
-                    // 'post_status'   => 'publish',
-                )
-            );
-        }
-    }
-
-    $count = 0;
-    $num_of_posts = sizeof( $posts );
-    $num_of_columns = @absint( $atts['cols'] ) > 0 ? absint( $atts['cols'] ) : 3;
-
-    $o .= '<div class="wp-block-columns mb-4">' . "\n";
-    foreach ( $posts as $post ) {
-        $o .= '<div class="wp-block-column">' . "\n";
-        $o .= '<div class="wp-block-media-text alignwide is-stacked-on-mobile person has-shadow">' . "\n";
-        $o .= '<figure class="wp-block-media-text__media">' . "\n";
-        $o .= get_the_post_thumbnail( $post->ID );
-        $o .= '</figure>' . "\n";
-        $o .= '<div class="wp-block-media-text__content">' . "\n";
-        $o .= '<p class="person-name">' . $post->post_title . '</p>' . "\n";
-        // FIXME: just for testing we show the url here, but we want to show the persons function.
-        $o .= '<p class="person-description">' . get_post_meta( $post->ID, 'grlp_person_contact_www', true ) . '</p>' . "\n";
-        $o .= '<div class="wp-block-group d-flex p-0"><div class="wp-block-group__inner-container">' . "\n";
-        // $o .= '<a href="">E-Mail</a>' . "\n";
-        $o .= '</div></div>' . "\n";
-        $o .= '</div>';
-        $o .= '</div>';
-        $o .= '</div>' . "\n";
-
-        $count++;
-        if ( $count % $num_of_columns == 0 ) {
-            $o .= '</div>' . "\n";
-            if ( $count < $num_of_posts ) {
-                $o .= '<div class="wp-block-columns mb-4">' . "\n";
-            }
-        }
-    }
-    if ( $count % $num_of_columns != 0 ) {
-        for ( $i = $count % $num_of_columns; $i < $num_of_columns; $i++ ) {
-            $o .= '<div class="wp-block-column"></div>' . "\n";
-        }
-        $o .= '</div>' . "\n";
-    }
-    return $o;
-}
-
-function grlp_sc_teamgrid( $atts, $content, $shortcode_tag )
+function grlp_sc_grid_team( $atts, $content, $shortcode_tag )
 {
     $team_posts = array();
     $attributes = array_keys($atts);
@@ -379,14 +323,14 @@ function grlp_sc_teamgrid( $atts, $content, $shortcode_tag )
     }
 
     ob_start();
-    grlp_get_template('teamgrid.php', array(
+    grlp_get_template('grid_team.php', array(
         'team_persons' => $team_posts,
         'atts' => $atts,
     ));
     return ob_get_clean();
 }
 
-function grlp_sc_mandategrid( $atts, $content, $shortcode_tag )
+function grlp_sc_grid_mandate( $atts, $content, $shortcode_tag )
 {
     $posts = array();
     $attributes = array_keys($atts);
@@ -412,7 +356,7 @@ function grlp_sc_mandategrid( $atts, $content, $shortcode_tag )
     }
 
     ob_start();
-    grlp_get_template('mandategrid.php', array(
+    grlp_get_template('grid_mandate.php', array(
         'persons' => $posts,
         'atts' => $atts,
     ));
