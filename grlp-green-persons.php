@@ -659,11 +659,10 @@ function grlp_person_contact_view( $post )
           </th>
           <td>
             <textarea
-              name="grlp_person_contact_address"
-              id="grlp_person_contact_address"><?php
-                echo $address;
-              ?>
-            </textarea>
+                name="grlp_person_contact_address"
+                id="grlp_person_contact_address"
+                ><?php echo $address;
+            ?></textarea>
             <br>
             <span class="description">
               <?php echo $meta_keys['grlp_person_contact_address']['description']; ?>
@@ -818,11 +817,7 @@ function grlp_person_detail_view( $post )
             <label for="grlp_person_detail_job">Tätigkeit</label>
           </th>
           <td>
-            <input
-              type="text"
-              name="grlp_person_detail_job"
-              id="grlp_person_detail_job"
-              value="<?php echo $job; ?>">
+            <input type="text" name="grlp_person_detail_job" id="grlp_person_detail_job" value="<?php echo $job; ?>">
             <br>
             <span class="description">
               <?php echo $meta_keys['grlp_person_detail_job']['description']; ?>
@@ -832,12 +827,11 @@ function grlp_person_detail_view( $post )
             <label for="grlp_person_detail_mandate">Mandat</label></th>
           <td>
             <textarea
-              type="text"
-              name="grlp_person_detail_mandate"
-              id="grlp_person_detail_mandate"><?php
-                echo $grlp_mandate;
-              ?>
-            </textarea>
+                type="text"
+                name="grlp_person_detail_mandate"
+                id="grlp_person_detail_mandate"
+                ><?php echo $grlp_mandate;
+            ?></textarea>
             <br>
             <span class="description">
               <?php echo $meta_keys['grlp_person_detail_mandate']['description']; ?>
