@@ -11,97 +11,6 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * A little debugging helper :)
- *
- * @return None
- * @todo   Get rid off in PRODUCTION
- *
- */
-function screen_out( $value, $and_die=true )
-{
-    echo '<pre>' . print_r( $value, true ) . '</pre>';
-    if ($and_die) {
-        die();
-    }
-}
-
-/**
- * Create GRLP settings menu
- * 
- * Register the settings menu only for admins
- * 
- * @return None
- * 
- */
-add_action( 'admin_menu', 'grlp_add_menu_item' );
-function grlp_add_menu_item()
-{
-    add_menu_page(
-        'GRLP Settings Page',
-        'GRLP Settings',
-        'manage_options',
-        'grlp-options',
-        'grlp_settings_page',
-        'dashicons-smiley',
-        99
-    );
-}
-
-/**
- * HTML page of GRLP settings menu
- * 
- * @todo This is just for learning - maybe we won't even need 
- *       a settings page, or at least not in this plugin :)
- * 
- * @return None
- * 
- */
-function grlp_settings_page()
-{
-    $args = array(
-        'numberposts'   => -1,
-        'post_type'     => 'grlp_person',
-        'post_status'   => 'publish',
-        // 'abteilung'     => 'lgs',
-        'tax_query'     => array(
-            array(
-                'taxonomy'      => 'abteilung',
-                'field'         => 'slug',
-                'terms'         => 'lgs',
-            )
-        ),
-    );
-
-    $my_posts = get_posts($args);
-
-    echo "<pre>";
-    print_r($my_posts);
-    echo "<h2>Team-LGS:</h2>";
-    foreach ($my_posts as $post) {
-        echo $post->post_title . " " . $post->ID . "\n";
-    }
-
-    $marcs_meta = get_post_meta( 5513 );
-    $marcs_www = get_post_meta( 5513, 'grlp_person_contact_www', true );
-
-    echo get_the_post_thumbnail(5513);
-
-    print_r($marcs_www);
-    print_r($marcs_meta);
-
-    echo "</pre>";
-
-    echo "<h1>Grüne Personen Einstellungen</h1>";
-    echo '<p>Hier kann ich ganz cool irgendwelche Testvariablen oder "
-        . "ähnliches ausgeben, was sehr praktisch ist. :)</p>';
-    echo '<p>In Zukunft kann das dann eine Seite werden, auf der z.B. "
-        . "auch Tutorials zur Verwendung von unserem Wordpress verlinkt "
-        . "sein könnten.</p>';
-    echo '<h2>Überschrift zweiten Grades.</h2>';
-}
-
-
-/**
  * Load textdomain
  * 
  * We write the source in english and provide a german
@@ -362,7 +271,9 @@ function grlp_sc_grid_mandate( $atts, $content, $shortcode_tag )
     ));
     return ob_get_clean();
 }
-//TODO: move to uninstall.php
+
+
+//TODO: Check if that's enough 
 function grlp_uninstall_plugin()
 {
     $args = array(
@@ -381,7 +292,7 @@ register_uninstall_hook( __FILE__, 'grlp_uninstall_plugin' );
 
 
 /**
- * Register Meta during 'init'
+ * Register Meta 
  *
  */
 add_action( 'init', 'grlp_register_meta' );
@@ -622,6 +533,8 @@ function grlp_register_meta_boxes( $post )
  *
  * @param $post Post data
  * @return None
+ *
+ * @todo: think about using a template
  * 
  **/
 function grlp_person_contact_view( $post )
@@ -853,6 +766,8 @@ function grlp_person_save( $post_id )
  * 
  * @param $post Post data
  * @return None
+ *
+ * @todo: think about using a template
  * 
  */
 function grlp_person_detail_view( $post )
