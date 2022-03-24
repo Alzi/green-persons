@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2021-10-05 01:42+0200\n"
-"PO-Revision-Date: 2021-10-05 01:42+0200\n"
+"POT-Creation-Date: 2022-03-24 12:13+0100\n"
+"PO-Revision-Date: 2022-03-24 12:13+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -16,100 +16,184 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: templates/single-grlp_person.php\n"
 
-#: grlp-green-persons.php:81
-msgctxt "post type general name"
+#: grlp-green-persons.php:135
+msgctxt "general name"
 msgid "Persons"
 msgstr "Personen"
 
-#: grlp-green-persons.php:82
-msgctxt "post type singular name"
+#: grlp-green-persons.php:136
+msgctxt "singular name"
 msgid "Person"
 msgstr "Person"
 
-#: grlp-green-persons.php:83
+#: grlp-green-persons.php:137
 msgctxt "person"
 msgid "Add new"
 msgstr "Erstellen"
 
-#: grlp-green-persons.php:84
+#: grlp-green-persons.php:138
 msgid "Add new person"
 msgstr "Neue Person erstellen"
 
-#: grlp-green-persons.php:85
+#: grlp-green-persons.php:139
 msgid "Edit person"
 msgstr "Person bearbeiten"
 
-#: grlp-green-persons.php:86
+#: grlp-green-persons.php:140
 msgid "New person"
 msgstr "Neue Person"
 
-#: grlp-green-persons.php:87
+#: grlp-green-persons.php:141
 msgid "View person"
 msgstr "Person anschauen"
 
-#: grlp-green-persons.php:88
+#: grlp-green-persons.php:142
 msgid "Search person"
 msgstr "Person suchen"
 
-#: grlp-green-persons.php:89
+#: grlp-green-persons.php:143
 msgid "No person found"
 msgstr "Keine Person gefunden"
 
-#: grlp-green-persons.php:90
+#: grlp-green-persons.php:144
 msgid "No person found in trash"
 msgstr "Keine Person im Papierkorb gefunden"
 
-#: grlp-green-persons.php:91
+#: grlp-green-persons.php:145
 msgid "All persons"
 msgstr "Alle Personen"
 
-#: grlp-green-persons.php:114
-msgctxt "taxonomy general name"
+#: grlp-green-persons.php:179
+msgctxt "general name"
 msgid "Divisions"
 msgstr "Abteilungen"
 
-#: grlp-green-persons.php:115
-msgctxt "taxonomy singular name"
+#: grlp-green-persons.php:180
+msgctxt "singular name"
 msgid "Division"
 msgstr "Abteilung"
 
-#: grlp-green-persons.php:116
+#: grlp-green-persons.php:181
 msgid "Search division"
 msgstr "Abteilung suchen"
 
-#: grlp-green-persons.php:117
+#: grlp-green-persons.php:182
 msgid "All divisions"
 msgstr "Alle Abteilungen"
 
-#: grlp-green-persons.php:118
+#: grlp-green-persons.php:183
 msgid "Parent division"
 msgstr "Übergeordnete Abteilung"
 
-#: grlp-green-persons.php:119
+#: grlp-green-persons.php:184
 msgid "Parent division:"
 msgstr "Übergeordnete Abteilung:"
 
-#: grlp-green-persons.php:120
+#: grlp-green-persons.php:185
 msgid "Edit division"
 msgstr "Abteilung bearbeiten"
 
-#: grlp-green-persons.php:121
+#: grlp-green-persons.php:186
 msgid "Update division"
 msgstr "Abteilung aktualisieren"
 
-#: grlp-green-persons.php:122
+#: grlp-green-persons.php:187
 msgid "Add new division"
 msgstr "Neue Abteilung hinzufügen"
 
-#: grlp-green-persons.php:123
+#: grlp-green-persons.php:188
 msgid "Name of division"
 msgstr "Name der Abteilung"
 
-#: grlp-green-persons.php:124
+#: grlp-green-persons.php:189
 msgctxt "menu name"
 msgid "Divisions"
 msgstr "Abteilungen"
 
-#: grlp-green-persons.php:129
+#: grlp-green-persons.php:195
 msgid "You can build groups of people inside divisions."
 msgstr "Mit Abteilungen können Gruppen von Personen gebildet werden."
+
+#: grlp-green-persons.php:219
+msgid "Name der Person"
+msgstr "Name der Person"
+
+#: grlp-green-persons.php:222
+msgid "Abteilung"
+msgstr "Abteilung"
+
+#: grlp-green-persons.php:393
+msgid "URL der Website (inklusive \"https://\")"
+msgstr "URL der Website (inklusive \"https://\")"
+
+#: grlp-green-persons.php:405
+msgid "E-Mail Adresse der Person"
+msgstr "E-Mail Adresse der Person"
+
+#: grlp-green-persons.php:418
+msgid "Vollstängige URL zum Twitter-Profil"
+msgstr "Vollstängige URL zum Twitter-Profil"
+
+#: grlp-green-persons.php:431
+msgid "Vollstängige URL zum Facebook-Profil"
+msgstr "Vollstängige URL zum Facebook-Profil"
+
+#: grlp-green-persons.php:443
+msgid "Vollstängige URL zum Instagram-Profil"
+msgstr "Vollstängige URL zum Instagram-Profil"
+
+#: grlp-green-persons.php:456
+msgid "Platz für Anschrift, Fax oder zusätzl. Tel"
+msgstr "Platz für Anschrift, Fax oder zusätzl. Tel"
+
+#: grlp-green-persons.php:469
+msgid "Telefonnummer Form: (06543) 12 345 99"
+msgstr "Telefonnummer Form: (06543) 12 345 99"
+
+#: grlp-green-persons.php:482
+msgid "Mobilfunk Nummer Form: (0176) 123 456 789"
+msgstr "Mobilfunk Nummer Form: (0176) 123 456 789"
+
+#: grlp-green-persons.php:497
+msgid "Beispiele: \"Pressesprecherin\", \"Landesvorsitzende\" [team]"
+msgstr "Beispiele: \"Pressesprecherin\", \"Landesvorsitzende\" [team]"
+
+#: grlp-green-persons.php:510
+msgid "Sortierreihenfolge [dk-liste], [landesliste]"
+msgstr "Sortierreihenfolge [dk-liste], [landesliste]"
+
+#: grlp-green-persons.php:522
+msgid "Sortierreihenfolge [team]"
+msgstr "Sortierreihenfolge [team]"
+
+#: grlp-green-persons.php:534
+msgid "Sortierreihenfolge [mandate]"
+msgstr "Sortierreihenfolge [mandate]"
+
+#: grlp-green-persons.php:545
+msgid "Name (z.B. Koblenz)"
+msgstr "Name (z.B. Koblenz)"
+
+#: grlp-green-persons.php:555
+msgid "Wahlkreisnummer (z.B. 199)"
+msgstr "Wahlkreisnummer (z.B. 199)"
+
+#: grlp-green-persons.php:566
+msgid "Mandat und Beschreibung, z.B. \"MdL, Sprecherin für... [mandate]\""
+msgstr "Mandat und Beschreibung, z.B. \"MdL, Sprecherin für... [mandate]\""
+
+#: grlp-green-persons.php:578
+msgid "Button zur Detailseite anzeigen"
+msgstr "Button zur Detailseite anzeigen"
+
+#: grlp-green-persons.php:603
+msgid "Kontaktdaten"
+msgstr "Kontaktdaten"
+
+#: grlp-green-persons.php:611
+msgid "Infos"
+msgstr "Infos"
+
+#: vorlagen/blocks.php:36
+msgid "GrüneRLP"
+msgstr "GrüneRLP"
