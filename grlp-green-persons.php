@@ -276,6 +276,27 @@ function grlp_sc_grid_mandate( $atts, $content, $shortcode_tag )
 //TODO: Check if that's enough 
 function grlp_uninstall_plugin()
 {
+    $meta_keys = [
+        'grlp_person_contact_www',
+        'grlp_person_contact_email',
+        'grlp_person_contact_twitter',
+        'grlp_person_contact_facebook',
+        'grlp_person_contact_instagram',
+        'grlp_person_contact_address',
+        'grlp_person_contact_phone',
+        'grlp_person_contact_mobile',
+        'grlp_person_detail_job',
+        'grlp_person_detail_list_pos',
+        'grlp_person_detail_custom_order',
+        'grlp_person_detail_custom_order_mandate',
+        'grlp_person_detail_constituency',
+        'grlp_person_detail_mandate',
+        'grlp_person_detail_has_link',
+    ];
+    foreach ( $meta_keys as $meta_key ) {
+        delete_metadata('post', null, $meta_key, null, true);
+    }
+
     $args = array(
         'post_type' => 'grlp_person',
         'nopaging' => true
@@ -289,6 +310,13 @@ function grlp_uninstall_plugin()
     wp_reset_postdata();
 }
 register_uninstall_hook( __FILE__, 'grlp_uninstall_plugin' );
+
+
+add_action( 'init', 'grlp_remove_all_websitelinks_metadata', 20, 0);
+function grlp_remove_all_websitelinks_metadata()
+{
+    delete_metadata('post', null, 'grlp_person_contact_twitter', null, true);
+}
 
 
 /**
