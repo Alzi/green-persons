@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Grüne Personen 
  * Description: Ein Plugin zur Verwaltung von Personen auf GRÜNEN Webseiten. Es ermöglicht Personen anzulegen und sie in Abteilungen zu gruppieren. Sie können dann in verschiedenen Kontexten (Team, Landesliste...) dargestellt werden. Das Plugin arbeitet sehr direkt mit dem <a href="http://sunflower-theme.de">Sunflower-Theme</a> zusammen und basiert auf der Idee der Personen Verwaltung im <a href="https://github.com/kre8tiv/Joseph-knows-best">JKB-Theme</a>.
- * Version: 0.1
+ * Version: 0.8
  * Author: Marc Dietz 
  * Author URI: mailto:technik@gruene-rlp.de
  * Text Domain: green-persons
@@ -67,7 +67,7 @@ function grlp_register_person_post_type()
             'public'       => true,
             'menu_icon'    => 'dashicons-id-alt',
             'supports'     => $supports,
-            'rewrite'      => array('slug' => 'gruene-personen'),
+            'rewrite'      => array('slug' => 'person'),
             'show_in_rest' => true,
             'hierarchical' => false,
         )
@@ -202,44 +202,43 @@ function grlp_load_single_person_template( $template )
 add_action( 'init', 'grlp_shortcodes_init' );
 function grlp_shortcodes_init()
 {
-    add_shortcode( 'team', 'grlp_sc_grid_team' );
-    add_shortcode( 'mandate', 'grlp_sc_grid_mandate' );
+    add_shortcode( 'personen-team', 'grlp_sc_persons_team' );
+    add_shortcode( 'personen-detail', 'grlp_sc_persons_detail' );
 }
 
-function grlp_sc_grid_team( $atts, $content, $shortcode_tag )
+function grlp_sc_persons_team( $atts, $content, $shortcode_tag )
 {
-    $team_posts = array();
+    $posts = array();
     $attributes = array_keys($atts);
-    if ( ! empty( $atts )) {
-        if ( isset( $atts['abteilung'] )) {
-            $team_posts = get_posts(
-                array(
-                    'post_type'     => 'grlp_person',
-                    'order'         => 'ASC',
-                    'numberposts'   => -1,
-                    'abteilung'     => $atts['abteilung'],
-                    'orderby'       => 'order_clause',
-                    'meta_query'    => array(
-                        'order_clause' => array(
-                            'key' => 'grlp_person_detail_custom_order',
-                            'type' => 'NUMERIC'
-                    // 'post_status'   => 'publish',
-                        )
+    if ( ! empty( $atts['abteilung'] )) {
+        $posts = get_posts(
+            array(
+                'post_type'     => 'grlp_person',
+                'order'         => 'ASC',
+                'numberposts'   => -1,
+                'abteilung'     => $atts['abteilung'],
+                'orderby'       => 'order_clause',
+                // 'post_status'   => 'published',
+                'meta_query'    => array(
+                    'order_clause' => array(
+                        'key' => 'grlp_person_detail_custom_order_team',
+                        'type' => 'NUMERIC'
                     )
                 )
-            );
-        }
+            )
+        );
     }
 
     ob_start();
-    grlp_get_template('grid_team.php', array(
-        'team_persons' => $team_posts,
+    grlp_get_template('persons_grid.php', array(
+        'persons' => $posts,
         'atts' => $atts,
+        'view' => 'team',
     ));
     return ob_get_clean();
 }
 
-function grlp_sc_grid_mandate( $atts, $content, $shortcode_tag )
+function grlp_sc_persons_detail( $atts, $content, $shortcode_tag )
 {
     $posts = array();
     $attributes = array_keys($atts);
@@ -252,11 +251,11 @@ function grlp_sc_grid_mandate( $atts, $content, $shortcode_tag )
                     'numberposts'   => -1,
                     'abteilung'     => $atts['abteilung'],
                     'orderby'       => 'order_clause',
+                    'post_status'   => 'publish',
                     'meta_query'    => array(
                         'order_clause' => array(
-                            'key' => 'grlp_person_detail_custom_order_mandate',
+                            'key' => 'grlp_person_detail_custom_order_detail',
                             'type' => 'NUMERIC'
-                    // 'post_status'   => 'publish',
                         )
                     )
                 )
@@ -265,9 +264,10 @@ function grlp_sc_grid_mandate( $atts, $content, $shortcode_tag )
     }
 
     ob_start();
-    grlp_get_template('grid_mandate.php', array(
+    grlp_get_template('persons_grid.php', array(
         'persons' => $posts,
         'atts' => $atts,
+        'view' => 'detail',
     ));
     return ob_get_clean();
 }
@@ -287,10 +287,10 @@ function grlp_uninstall_plugin()
         'grlp_person_contact_mobile',
         'grlp_person_detail_job',
         'grlp_person_detail_list_pos',
-        'grlp_person_detail_custom_order',
-        'grlp_person_detail_custom_order_mandate',
+        'grlp_person_detail_custom_order_team',
+        'grlp_person_detail_custom_order_detail',
         'grlp_person_detail_constituency',
-        'grlp_person_detail_mandate',
+        'grlp_person_detail_shortinfo',
         'grlp_person_detail_has_link',
     ];
     foreach ( $meta_keys as $meta_key ) {
@@ -433,7 +433,7 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_detail_job', [
         'description'       => __(
-            'Beispiele: "Pressesprecherin", "Landesvorsitzende" [team]',
+            'Beispiele: "Pressesprecherin", "Landesvorsitzende" [personen-team]',
             'green_persons'
         ),
         'type'              => 'string',
@@ -456,9 +456,9 @@ function grlp_register_meta()
         }
     ]);
     
-    register_post_meta( 'grlp_person', 'grlp_person_detail_custom_order', [
+    register_post_meta( 'grlp_person', 'grlp_person_detail_custom_order_team', [
         'description'       => __(
-            'Sortierreihenfolge [team]',
+            'Sortierreihenfolge [personen-team]',
             'green_persons' ),
         'type'              => 'integer',
         'single'            => true,
@@ -468,9 +468,9 @@ function grlp_register_meta()
         }
     ]);
 
-    register_post_meta( 'grlp_person', 'grlp_person_detail_custom_order_mandate', [
+    register_post_meta( 'grlp_person', 'grlp_person_detail_custom_order_detail', [
         'description'       => __(
-            'Sortierreihenfolge [mandate]',
+            'Sortierreihenfolge [personen-detail]',
             'green_persons' ),
         'type'              => 'integer',
         'single'            => true,
@@ -500,9 +500,9 @@ function grlp_register_meta()
         }
     ]);
 
-    register_post_meta( 'grlp_person', 'grlp_person_detail_mandate', [
+    register_post_meta( 'grlp_person', 'grlp_person_detail_shortinfo', [
         'description'       => __(
-            'Mandat und Beschreibung, z.B. "MdL, Sprecherin für... [mandate]"',
+            'Kurzinfos, z.B. "MdL, Sprecherin für... [personen-detail]"',
             'green_persons'
         ),
         'type'              => 'string',
@@ -814,12 +814,12 @@ function grlp_person_detail_view( $post )
         ? esc_attr( $values['grlp_person_detail_list_pos'][0] )
         : '';
     $custom_order = isset(
-        $values['grlp_person_detail_custom_order'] )
-        ? esc_attr( $values['grlp_person_detail_custom_order'][0] )
+        $values['grlp_person_detail_custom_order_team'] )
+        ? esc_attr( $values['grlp_person_detail_custom_order_team'][0] )
         : '';
     $custom_order_mandate = isset(
-        $values['grlp_person_detail_custom_order_mandate'] )
-        ? esc_attr( $values['grlp_person_detail_custom_order_mandate'][0] )
+        $values['grlp_person_detail_custom_order_detail'] )
+        ? esc_attr( $values['grlp_person_detail_custom_order_detail'][0] )
         : '';
     $constituency = isset(
         $values['grlp_person_detail_constituency'] )
@@ -829,9 +829,9 @@ function grlp_person_detail_view( $post )
         $values['grlp_person_detail_constit_num'] )
         ? esc_attr( $values['grlp_person_detail_constit_num'][0] )
         : '';
-    $grlp_mandate = isset(
-        $values['grlp_person_detail_mandate'] )
-        ? esc_html( $values['grlp_person_detail_mandate'][0] )
+    $grlp_shortinfo = isset(
+        $values['grlp_person_detail_shortinfo'] )
+        ? esc_html( $values['grlp_person_detail_shortinfo'][0] )
         : '';
     $has_link_to_site = isset(
         $values['grlp_person_detail_has_link'] )
@@ -852,17 +852,17 @@ function grlp_person_detail_view( $post )
             </span>
           </td>
           <th scope="row">
-            <label for="grlp_person_detail_mandate">Mandat</label></th>
+            <label for="grlp_person_detail_shortinfo">Kurzinfo</label></th>
           <td>
             <textarea
                 type="text"
-                name="grlp_person_detail_mandate"
-                id="grlp_person_detail_mandate"
-                ><?php echo $grlp_mandate;
+                name="grlp_person_detail_shortinfo"
+                id="grlp_person_detail_shortinfo"
+                ><?php echo $grlp_shortinfo;
             ?></textarea>
             <br>
             <span class="description">
-              <?php echo $meta_keys['grlp_person_detail_mandate']['description']; ?>
+              <?php echo $meta_keys['grlp_person_detail_shortinfo']['description']; ?>
             </span>
           </td>
         </tr>
@@ -911,29 +911,29 @@ function grlp_person_detail_view( $post )
         </tr>
         <tr>
           <th scope="row">
-            <label for="grlp_person_detail_custom_order">Sortierung</label>
+            <label for="grlp_person_detail_custom_order_team">Sortierung</label>
           </th>
           <td>
             <p>
                 <input
                 type="text"
-                name="grlp_person_detail_custom_order"
-                id="grlp_person_detail_custom_order"
+                name="grlp_person_detail_custom_order_team"
+                id="grlp_person_detail_custom_order_team"
                 value="<?php echo $custom_order; ?>">
                 <br>
                 <span class="description">
-                <?php echo $meta_keys['grlp_person_detail_custom_order']['description']; ?>
+                <?php echo $meta_keys['grlp_person_detail_custom_order_team']['description']; ?>
                 </span>
             </p>
             <p>
                 <input
                 type="text"
-                name="grlp_person_detail_custom_order_mandate"
-                id="grlp_person_detail_custom_order_mandate"
+                name="grlp_person_detail_custom_order_detail"
+                id="grlp_person_detail_custom_order_detail"
                 value="<?php echo $custom_order_mandate; ?>">
                 <br>
                 <span class="description">
-                <?php echo $meta_keys['grlp_person_detail_custom_order_mandate']['description']; ?>
+                <?php echo $meta_keys['grlp_person_detail_custom_order_detail']['description']; ?>
                 </span>
             </p>
           </td>

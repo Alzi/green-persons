@@ -1,0 +1,4 @@
+.gitignore  export-ignore
+.gitattributes export-ignore
+templates/partials/ export-ignore
+templates/sunflower/ export-ignore
