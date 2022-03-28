@@ -19,8 +19,8 @@ defined( 'ABSPATH' ) || exit;
  * @return None
  *
  */
-add_action( 'plugins_loaded', 'grlp_gp_load_textdomain' );
-function grlp_gp_load_textdomain()
+add_action( 'plugins_loaded', 'grlp_load_textdomain' );
+function grlp_load_textdomain()
 {
     load_plugin_textdomain(
         'green_persons',
@@ -271,45 +271,6 @@ function grlp_sc_persons_detail( $atts, $content, $shortcode_tag )
     ));
     return ob_get_clean();
 }
-
-
-//TODO: Check if that's enough 
-function grlp_uninstall_plugin()
-{
-    $meta_keys = [
-        'grlp_person_contact_www',
-        'grlp_person_contact_email',
-        'grlp_person_contact_twitter',
-        'grlp_person_contact_facebook',
-        'grlp_person_contact_instagram',
-        'grlp_person_contact_address',
-        'grlp_person_contact_phone',
-        'grlp_person_contact_mobile',
-        'grlp_person_detail_job',
-        'grlp_person_detail_list_pos',
-        'grlp_person_detail_custom_order_team',
-        'grlp_person_detail_custom_order_detail',
-        'grlp_person_detail_constituency',
-        'grlp_person_detail_shortinfo',
-        'grlp_person_detail_has_link',
-    ];
-    foreach ( $meta_keys as $meta_key ) {
-        delete_metadata('post', null, $meta_key, null, true);
-    }
-
-    $args = array(
-        'post_type' => 'grlp_person',
-        'nopaging' => true
-    );
-    $query = new WP_Query($args);
-    while ( $query->have_posts() ) {
-        $query->the_post();
-        $id = get_the_ID();
-        wp_delete_post( $id, true );
-    }
-    wp_reset_postdata();
-}
-register_uninstall_hook( __FILE__, 'grlp_uninstall_plugin' );
 
 
 add_action( 'init', 'grlp_remove_all_websitelinks_metadata', 20, 0);
@@ -1031,3 +992,32 @@ function grlp_get_template( $template_name, $args = array(), $tempate_path = '',
     endif;
     include $template_file;
 }
+
+/**
+ * Activate the plugin.
+ */
+function grlp_activate_plugin() {
+
+    grlp_load_textdomain();
+    grlp_register_person_post_type();
+    grlp_register_meta();
+    grlp_register_person_taxonomy();
+    
+    // Clear the permalinks after the post type has been registered.
+    flush_rewrite_rules(); 
+}
+register_activation_hook( __FILE__, 'grlp_activate_plugin' );
+
+
+/**
+ * Deactivate the plugin
+ *
+ * @return void
+ */
+function grlp_deactivate_plugin() {
+    unregister_post_type('grlp_person');
+    // unregister_taxonomy('abteilung');
+    
+    flush_rewrite_rules();
+}
+register_deactivation_hook('__FILE__', 'grlp_deactivate_plugin');
