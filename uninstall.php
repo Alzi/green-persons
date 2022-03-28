@@ -3,7 +3,7 @@
     if ( ! defined('WP_UNINSTALL_PLUGIN') ) {
         die;
     }
-    global $wbdb;
+    global $wpdb;
 
     $meta_keys = [
         'grlp_person_contact_www',
