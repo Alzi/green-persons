@@ -315,7 +315,7 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_twitter', [
         'description'       => __(
-            'Vollstängige URL zum Twitter-Profil',
+            'Vollständige URL zum Twitter-Profil',
             'green_person'
         ),
         'type'              => 'string',
@@ -328,7 +328,7 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_facebook', [
         'description'       => __(
-            'Vollstängige URL zum Facebook-Profil',
+            'Vollständige URL zum Facebook-Profil',
             'green_person'
         ),
         'type'              => 'string',
@@ -340,7 +340,7 @@ function grlp_register_meta()
     ]);
     register_post_meta( 'grlp_person', 'grlp_person_contact_instagram', [
         'description'       => __(
-            'Vollstängige URL zum Instagram-Profil',
+            'Vollständige URL zum Instagram-Profil',
             'green_person'
         ),
         'type'              => 'string',
@@ -366,7 +366,7 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_phone', [
         'description'       => __(
-            'Telefonnummer 1 Bsp: Tel.: (06543) 12 345 99',
+            'Telefonnummer 1 Bsp.: Tel.: (06543) 12 345 99',
             'green_person'
         ),
         'type'              => 'string',
@@ -949,22 +949,22 @@ function grlp_body_classes( $classes ) {
  */
 function grlp_locate_template( $template_name, $template_path = '', $default_path = '' ) {
     // Set the plugin theme folder (e.g. themes/your-plugin/templates/)
-    if ( ! $template_path ) :
+    if ( ! $template_path ) {
       $template_path = 'themes/grlp-green-persons/templates/';
-    endif;
+    }
     // Set the default plugin templates location (e.g. plugins/your-plugin/templates/)
-    if ( ! $default_path ) :
+    if ( ! $default_path ) {
       $default_path = plugin_dir_path( __FILE__ ) . 'templates/';
-    endif;
+    }
     // Search for the template in the theme directory
     $template = locate_template([
       $template_path . $template_name,
       $template_name
     ]);
     // If a template couldn't be found, fallback to using the plugin template directory
-    if ( ! $template ) :
+    if ( ! $template ) {
       $template = $default_path . $template_name;
-    endif;
+    }
     return apply_filters( 'grlp_locate_template', $template, $template_name, $template_path, $default_path );
 }
 
@@ -982,14 +982,14 @@ function grlp_locate_template( $template_name, $template_path = '', $default_pat
  * @param string    $default_path           Default path to template files.
  */
 function grlp_get_template( $template_name, $args = array(), $tempate_path = '', $default_path = '' ) {
-    if ( is_array( $args ) && isset( $args ) ) :
+    if ( is_array( $args ) && isset( $args ) ) {
         extract( $args );
-    endif;
+    }
     $template_file = grlp_locate_template( $template_name, $tempate_path, $default_path );
-    if ( ! file_exists( $template_file ) ) :
+    if ( ! file_exists( $template_file ) ) {
         _doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $template_file ), '1.0.0' );
         return;
-    endif;
+    }
     include $template_file;
 }
 
@@ -1015,9 +1015,8 @@ register_activation_hook( __FILE__, 'grlp_activate_plugin' );
  * @return void
  */
 function grlp_deactivate_plugin() {
+
     unregister_post_type('grlp_person');
-    // unregister_taxonomy('abteilung');
-    
     flush_rewrite_rules();
 }
 register_deactivation_hook('__FILE__', 'grlp_deactivate_plugin');
