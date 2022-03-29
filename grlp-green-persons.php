@@ -353,7 +353,7 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_address', [
         'description'       => __(
-            'Platz für Anschrift, Fax oder zusätzl. Tel',
+            'Platz für Anschrift (erscheint über den Telefonnummern)',
             'green_person'
         ),
         'type'              => 'string',
@@ -366,7 +366,7 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_phone', [
         'description'       => __(
-            'Telefonnummer Form: (06543) 12 345 99',
+            'Telefonnummer 1 Bsp: Tel.: (06543) 12 345 99',
             'green_person'
         ),
         'type'              => 'string',
@@ -379,7 +379,7 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_contact_mobile', [
         'description'       => __(
-            'Mobilfunk Nummer Form: (0176) 123 456 789',
+            'Telefonnummer 2 Bsp.: Mobil: (0176) 123 456 789',
             'green_persons'
         ),
         'type'              => 'string',

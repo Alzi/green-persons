@@ -76,22 +76,22 @@
                     <?php endif; ?>
                 </div>
 
-                <?php if( $settings['show_phonenumbers'] ) : ?>
-                    <?php if ( $phone ) : ?>
-                    <p class="person-description">Tel.: <?php echo $phone; ?></p>
-                    <?php endif; ?>
-                    <?php if ( $mobile ) : ?>
-                    <p class="person-description">Mobil.: <?php echo $mobile; ?></p>
-                    <?php endif; ?>
+                <?php if(! empty($address) ) : ?>
+                    <p class="person-description mb-2"><?php echo $address; ?></p>
                 <?php endif; ?>
 
-                <?php if(! empty($address) ) : ?>
-                    <p class="person-description"><?php echo $address; ?></p>
+                <?php if( $settings['show_phonenumbers'] ) : ?>
+                    <?php if ( $phone ) : ?>
+                    <p class="person-description"><?php echo $phone; ?></p>
+                    <?php endif; ?>
+                    <?php if ( $mobile ) : ?>
+                    <p class="person-description"><?php echo $mobile; ?></p>
+                    <?php endif; ?>
                 <?php endif; ?>
 
                 <?php if ( $show_detail_button ) : ?>
                 <div class="details-button">
-                    <div class="wp-block-button mb-0 mt-1">
+                    <div class="wp-block-button mb-0 mt-2">
                         <a class="wp-block-button__link" href="<?php printf("/person/%s", $person->post_name); ?>">Details</a>
                     </div>
                 </div>
