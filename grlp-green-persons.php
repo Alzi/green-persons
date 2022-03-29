@@ -218,7 +218,6 @@ function grlp_sc_persons_team( $atts, $content, $shortcode_tag )
                 'numberposts'   => -1,
                 'abteilung'     => $atts['abteilung'],
                 'orderby'       => 'order_clause',
-                // 'post_status'   => 'published',
                 'meta_query'    => array(
                     'order_clause' => array(
                         'key' => 'grlp_person_detail_custom_order_team',
@@ -251,7 +250,6 @@ function grlp_sc_persons_detail( $atts, $content, $shortcode_tag )
                     'numberposts'   => -1,
                     'abteilung'     => $atts['abteilung'],
                     'orderby'       => 'order_clause',
-                    'post_status'   => 'publish',
                     'meta_query'    => array(
                         'order_clause' => array(
                             'key' => 'grlp_person_detail_custom_order_detail',
