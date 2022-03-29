@@ -22,12 +22,14 @@
     <?php 
     $phone = get_post_meta( $person->ID, 'grlp_person_contact_phone', true );
     $mobile = get_post_meta( $person->ID, 'grlp_person_contact_mobile', true );
+    $address = get_post_meta( $person->ID, 'grlp_person_contact_address', true );
     $web = get_post_meta( $person->ID, 'grlp_person_contact_www', true );
     $email = get_post_meta( $person->ID, 'grlp_person_contact_email', true );
     $insta = get_post_meta( $person->ID, 'grlp_person_contact_insta', true );
     $twitter = get_post_meta( $person->ID, 'grlp_person_contact_twitter', true );
     $facebook = get_post_meta( $person->ID, 'grlp_person_contact_facebook', true );
     $show_detail_button = $settings['show_detail_button'] && get_post_meta( $person->ID, 'grlp_person_detail_has_link', true);
+    
     ?>
     <div class="person has-shadow">
         <figure>
@@ -82,6 +84,10 @@
                 <?php if ( $mobile ) : ?>
                 <p class="person-description">Mobil.: <?php echo $mobile; ?></p>
                 <?php endif; ?>
+            <?php endif; ?>
+
+            <?php if(! empty($address) ) : ?>
+                <p class="person-description">Tel.: <?php echo $address; ?></p>
             <?php endif; ?>
 
             <?php if ( $show_detail_button ) : ?>

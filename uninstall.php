@@ -39,22 +39,22 @@
 
     /** Delete All the Taxonomies */
     foreach ( array( 'abteilung' ) as $taxonomy ) {
-	
+    
         // Prepare & excecute SQL
-	$terms = $wpdb->get_results( $wpdb->prepare( "SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy IN ('%s') ORDER BY t.name ASC", $taxonomy ) );
-  
+        $terms = $wpdb->get_results( $wpdb->prepare( "SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.taxonomy IN ('%s') ORDER BY t.name ASC", $taxonomy ) );
+
         // Delete Terms
-	if ( $terms ) {
-		foreach ( $terms as $term ) {
+        if ( $terms ) {
+        foreach ( $terms as $term ) {
             $wpdb->delete( $wpdb->term_relationships, array( 'term_taxonomy_id' => $term->term_taxonomy_id ) );
-			$wpdb->delete( $wpdb->term_taxonomy, array( 'term_taxonomy_id' => $term->term_taxonomy_id ) );
-			$wpdb->delete( $wpdb->terms, array( 'term_id' => $term->term_id ) );
-			delete_option( $taxonomy.'_children' );
-		}
-	}
-	
-	// Delete Taxonomy
-	$wpdb->delete( $wpdb->term_taxonomy, array( 'taxonomy' => $taxonomy ), array( '%s' ) );
+            $wpdb->delete( $wpdb->term_taxonomy, array( 'term_taxonomy_id' => $term->term_taxonomy_id ) );
+            $wpdb->delete( $wpdb->terms, array( 'term_id' => $term->term_id ) );
+            delete_option( $taxonomy.'_children' );
+        }
+    }
+    
+    // Delete Taxonomy
+    $wpdb->delete( $wpdb->term_taxonomy, array( 'taxonomy' => $taxonomy ), array( '%s' ) );
 }
 
 ?>
