@@ -87,7 +87,7 @@
             <?php if ( $show_detail_button ) : ?>
             <div class="details-button">
                 <div class="wp-block-button mb-0 mt-1">
-                    <a class="wp-block-button__link" href="/gruene_personen/<?php echo $person->post_name; ?>">Details</a>
+                    <a class="wp-block-button__link" href="<?php printf("/person/%s", $person->post_name); ?>">Details</a>
                 </div>
             </div>
             <?php endif; ?>
