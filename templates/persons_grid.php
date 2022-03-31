@@ -60,17 +60,17 @@
                     <?php endif; ?>
                     <?php if (! empty ($insta)) : ?>
                     <div class="wp-block-sunflower-meta-data">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="<?php echo $instagram; ?>"><i class="fab fa-instagram"></i></a>
                     </div>
                     <?php endif; ?>
                     <?php if (! empty ($twitter)) : ?>
                     <div class="wp-block-sunflower-meta-data">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="<?php echo $twitter; ?>"><i class="fab fa-twitter"></i></a>
                     </div>
                     <?php endif; ?>
                     <?php if (! empty ($facebook)) : ?>
                     <div class="wp-block-sunflower-meta-data">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="<?php echo $facebook; ?>"><i class="fab fa-facebook"></i></a>
                     </div>
                     <?php endif; ?>
                 </div>
