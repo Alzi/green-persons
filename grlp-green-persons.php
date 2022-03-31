@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Grüne Personen 
  * Description: Ein Plugin zur Verwaltung von Personen auf GRÜNEN Webseiten. Es ermöglicht Personen anzulegen und sie in Abteilungen zu gruppieren. Sie können dann in verschiedenen Kontexten (Team, Landesliste...) dargestellt werden. Das Plugin arbeitet sehr direkt mit dem <a href="http://sunflower-theme.de">Sunflower-Theme</a> zusammen und basiert auf der Idee der Personen Verwaltung im <a href="https://github.com/kre8tiv/Joseph-knows-best">JKB-Theme</a>.
- * Version: 0.8.2
+ * Version: 0.8.3
  * Author: Marc Dietz 
  * Author URI: mailto:technik@gruene-rlp.de
  * Text Domain: green-persons
@@ -211,29 +211,44 @@ function grlp_sc_persons_team( $atts, $content, $shortcode_tag )
     $posts = array();
     $attributes = array_keys($atts);
     if ( ! empty( $atts['abteilung'] )) {
-        $posts = get_posts(
+
+        // Read all persons that have custom_order set first
+        $query = new WP_Query(
             array(
-                'post_type'     => 'grlp_person',
-                'order'         => 'ASC',
-                'numberposts'   => -1,
-                'abteilung'     => $atts['abteilung'],
-                'orderby'       => 'order_clause',
-                'meta_query'    => array(
-                    'order_clause' => array(
-                        'key' => 'grlp_person_detail_custom_order_team',
-                        'type' => 'NUMERIC'
-                    )
-                )
+                'post_type' => 'grlp_person',
+                'abteilung' => $atts['abteilung'],
+                'meta_key' => 'grlp_person_detail_custom_order_team',
+                'order_by' => 'meta_value_num',
+                'order' => 'ASC',
             )
         );
+
+        $persons = $query->get_posts();
+
+        // In case the custom_order field is empty, we append
+        // all persons that at least fit our taxonomy, ordered by title
+
+        $query = new WP_Query(
+            array(
+                'post_type' => 'grlp_person',
+                'abteilung' => $atts['abteilung'],
+                'meta_key' => 'grlp_person_detail_custom_order_team',
+                'meta_compare' => 'NOT EXISTS',
+                'order_by' => 'title',
+                'order' => 'DESC',
+            )
+        );
+
+        $persons = array_merge($persons, $query->get_posts());
     }
 
     ob_start();
     grlp_get_template('persons_grid.php', array(
-        'persons' => $posts,
+        'persons' => $persons,
         'atts' => $atts,
         'view' => 'team',
     ));
+    wp_reset_postdata();
     return ob_get_clean();
 }
 
@@ -241,29 +256,41 @@ function grlp_sc_persons_detail( $atts, $content, $shortcode_tag )
 {
     $posts = array();
     $attributes = array_keys($atts);
-    if ( ! empty( $atts )) {
-        if ( isset( $atts['abteilung'] )) {
-            $posts = get_posts(
-                array(
-                    'post_type'     => 'grlp_person',
-                    'order'         => 'ASC',
-                    'numberposts'   => -1,
-                    'abteilung'     => $atts['abteilung'],
-                    'orderby'       => 'order_clause',
-                    'meta_query'    => array(
-                        'order_clause' => array(
-                            'key' => 'grlp_person_detail_custom_order_detail',
-                            'type' => 'NUMERIC'
-                        )
-                    )
-                )
-            );
-        }
+    if ( ! empty( $atts['abteilung'] )) {
+
+        // Read all persons that have custom_order set first
+        $query = new WP_Query(
+            array(
+                'post_type' => 'grlp_person',
+                'abteilung' => $atts['abteilung'],
+                'meta_key' => 'grlp_person_detail_custom_order_detail',
+                'order_by' => 'meta_value_num',
+                'order' => 'ASC',
+            )
+        );
+
+        $persons = $query->get_posts();
+
+        // In case the custom_order field is empty, we append
+        // all persons that at least fit our taxonomy, ordered by title
+
+        $query = new WP_Query(
+            array(
+                'post_type' => 'grlp_person',
+                'abteilung' => $atts['abteilung'],
+                'meta_key' => 'grlp_person_detail_custom_order_detail',
+                'meta_compare' => 'NOT EXISTS',
+                'order_by' => 'name',
+                'order' => 'DESC',
+            )
+        );
+
+        $persons = array_merge($persons, $query->get_posts());
     }
 
     ob_start();
     grlp_get_template('persons_grid.php', array(
-        'persons' => $posts,
+        'persons' => $persons,
         'atts' => $atts,
         'view' => 'detail',
     ));

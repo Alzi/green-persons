@@ -39,7 +39,6 @@
                 <?php endif; ?>
             </figure>
             <div class="person-info">
-                
                 <p class="person-name"><?php echo $person->post_title; ?></p>
                 <?php if( $settings['show_job'] ) : ?>
                     <p class="person-description"><?php echo get_post_meta( $person->ID, 'grlp_person_detail_job', true ); ?></p>

@@ -10,3 +10,12 @@ It is based on the WordPress-Theme [Joseph-knows-best](https://github.com/kre8ti
 It will probably fit best with the WordPress-Theme [sunflower](https://github.com/codeispoetry/sunflower)
 
 
+## Release Notes
+
+__Version 0.8.3__
+
+- Alle Personen einer Abteilung, die keinen Wert im Feld 'Sortierung' (team oder detail) haben, werden
+  nach Titel sortiert (Vorname) an die Liste derer mit einem Wert angehängt.
+
+
+
