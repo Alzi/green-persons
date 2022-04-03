@@ -1045,3 +1045,17 @@ function grlp_deactivate_plugin() {
     flush_rewrite_rules();
 }
 register_deactivation_hook('__FILE__', 'grlp_deactivate_plugin');
+
+
+
+// register jquery and style on initialization
+add_action('init', 'register_script');
+function register_script(){
+	wp_register_style( 'grlp-person-style', plugins_url('/css/grlp-person-style.css', __FILE__), array('sunflower-style'), '1.0.0', 'all' );
+}
+
+// use the registered jquery and style above
+add_action('wp_enqueue_scripts', 'enqueue_style');
+function enqueue_style(){
+	wp_enqueue_style( 'grlp-person-style' );
+}

@@ -12,11 +12,15 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 ## Release Notes
 
-__Version 0.8.4__
+## 0.8.5
 
 - Alle Personen einer Abteilung, die keinen Wert im Feld 'Sortierung' (team oder detail) haben, werden
   nach Titel sortiert (Vorname) an die Liste derer mit einem Wert angehängt.
 
-__Version 0.8.3__
+## 0.8.4
+
+- Have css styles within the plugin and not with the sunflower-child-theme anymore
+
+## 0.8.3
 
 - Fixes missing links to social media sites
