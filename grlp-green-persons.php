@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Grüne Personen 
  * Description: Ein Plugin zur Verwaltung von Personen auf GRÜNEN Webseiten. Es ermöglicht Personen anzulegen und sie in Abteilungen zu gruppieren. Sie können dann in verschiedenen Kontexten (Team, Landesliste...) dargestellt werden. Das Plugin arbeitet sehr direkt mit dem <a href="http://sunflower-theme.de">Sunflower-Theme</a> zusammen und basiert auf der Idee der Personen Verwaltung im <a href="https://github.com/kre8tiv/Joseph-knows-best">JKB-Theme</a>. <a href="https://github.com/alzi/green-persons">Projektseite</a> auf Github.
- * Version: 0.8.3
+ * Version: 0.8.4
  * Author: Marc Dietz 
  * Author URI: mailto:technik@gruene-rlp.de
  * Text Domain: green-persons
@@ -1018,3 +1018,17 @@ function grlp_deactivate_plugin() {
     flush_rewrite_rules();
 }
 register_deactivation_hook('__FILE__', 'grlp_deactivate_plugin');
+
+
+
+// register jquery and style on initialization
+add_action('init', 'register_script');
+function register_script(){
+	wp_register_style( 'grlp-person-style', plugins_url('/css/grlp-person-style.css', __FILE__), array('sunflower-style'), '1.0.0', 'all' );
+}
+
+// use the registered jquery and style above
+add_action('wp_enqueue_scripts', 'enqueue_style');
+function enqueue_style(){
+	wp_enqueue_style( 'grlp-person-style' );
+}
