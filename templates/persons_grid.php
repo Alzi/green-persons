@@ -25,7 +25,7 @@
         $address = get_post_meta( $person->ID, 'grlp_person_contact_address', true );
         $web = get_post_meta( $person->ID, 'grlp_person_contact_www', true );
         $email = get_post_meta( $person->ID, 'grlp_person_contact_email', true );
-        $insta = get_post_meta( $person->ID, 'grlp_person_contact_insta', true );
+        $instagram = get_post_meta( $person->ID, 'grlp_person_contact_instagram', true );
         $twitter = get_post_meta( $person->ID, 'grlp_person_contact_twitter', true );
         $facebook = get_post_meta( $person->ID, 'grlp_person_contact_facebook', true );
         $show_detail_button = $settings['show_detail_button'] && get_post_meta( $person->ID, 'grlp_person_detail_has_link', true);
@@ -58,12 +58,12 @@
                         <a href="mailto:<?php echo $email; ?>"><i class="fas fa-envelope"></i></a>
                     </div>
                     <?php endif; ?>
-                    <?php if (! empty ($insta)) : ?>
+                    <?php if (! empty ($instagram)) : ?>
                     <div class="wp-block-sunflower-meta-data">
                         <a href="<?php echo $instagram; ?>"><i class="fab fa-instagram"></i></a>
                     </div>
                     <?php endif; ?>
-                    <?php if (! empty ($twitter)) : ?>
+                    <?php  if (! empty ($twitter)) : ?>
                     <div class="wp-block-sunflower-meta-data">
                         <a href="<?php echo $twitter; ?>"><i class="fab fa-twitter"></i></a>
                     </div>
