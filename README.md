@@ -15,9 +15,9 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 ## 0.8.4
 
 - Have css styles within the plugin and not with the sunflower-child-theme anymore
+- Bugfix: twitter-metadata no longer gets deleted
+- Bugfix: instagram link gets displayed in frontend
 
 ## 0.8.3
 
 - Fixes missing links to social media sites
-
-
