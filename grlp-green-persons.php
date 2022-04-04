@@ -270,14 +270,6 @@ function grlp_sc_persons_detail( $atts, $content, $shortcode_tag )
     return ob_get_clean();
 }
 
-
-add_action( 'init', 'grlp_remove_all_websitelinks_metadata', 20, 0);
-function grlp_remove_all_websitelinks_metadata()
-{
-    delete_metadata('post', null, 'grlp_person_contact_twitter', null, true);
-}
-
-
 /**
  * Register Meta 
  *
