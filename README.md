@@ -14,8 +14,7 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 ## 0.8.5
 
-- Alle Personen einer Abteilung, die keinen Wert im Feld 'Sortierung' (team oder detail) haben, werden
-  nach Titel sortiert (Vorname) an die Liste derer mit einem Wert angehängt.
+- Persons lacking a value in custom sort-order field will be ordered by title and apended to list.
 
 ## 0.8.4
 
