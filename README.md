@@ -10,3 +10,15 @@ It is based on the WordPress-Theme [Joseph-knows-best](https://github.com/kre8ti
 It will probably fit best with the WordPress-Theme [sunflower](https://github.com/codeispoetry/sunflower)
 
 
+# Release Notes
+
+## 0.8.4
+
+- Have css styles within the plugin and not with the sunflower-child-theme anymore
+- Bugfix: twitter-metadata no longer gets deleted
+- Bugfix: instagram link gets displayed in frontend
+- Add images to repo for wiki
+
+## 0.8.3
+
+- Fixes missing links to social media sites
