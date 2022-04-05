@@ -1,0 +1,79 @@
+/* ----------------- Team grid layout ------------------------------ */
+
+.grlp-person-container {
+    display: grid;
+    gap: 1.5rem 2rem;
+    margin-bottom:1.5rem;
+    grid-template-columns: repeat(1, 1fr);
+  }
+  
+  @media screen and (min-width: 38em){
+    .grlp-person-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media screen and (min-width: 50em){
+  .grlp-person-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  }
+  
+  @media screen and (min-width: 38em){
+    .gridcols-2 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem 4rem;
+    }
+  }
+  
+  .grlp-person-container .person {
+    background-color: #fff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+  .grlp-person-container .person figure img {
+    width: 100%;
+    height: 300px;
+    max-height: 300px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+  .grlp-person-container .person .person-name {
+    font-size:27px;
+    font-weight:bold;
+  }
+  
+  .grlp-person-container .person-info {
+    padding: 1rem;
+  }
+  
+  .grlp-person-container .person-description {
+    margin: 0;
+  }
+  
+  .grlp-person-container .person-contact-info {
+    margin: 1em 0;
+  }
+  
+  .grlp-person-container .details-button {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .grlp-person-container .details-button button {
+    width:150px;
+    background-color: green;
+    margin-bottom:1em;
+  }
+  .grlp-person-container .details-button button a {
+    color:white;
+    text-decoration:none;
+  }
