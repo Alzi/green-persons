@@ -280,7 +280,7 @@ function grlp_sc_persons_detail( $atts, $content, $shortcode_tag )
                 'abteilung' => $atts['abteilung'],
                 'meta_key' => 'grlp_person_detail_custom_order_detail',
                 'meta_compare' => 'NOT EXISTS',
-                'order_by' => 'name',
+                'order_by' => 'title',
                 'order' => 'DESC',
             )
         );
