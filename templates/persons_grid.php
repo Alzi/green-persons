@@ -5,12 +5,14 @@
             'show_shortinfo'     => false || (  $atts['kurzinfo'] == 'ja'),
             'show_phonenumbers'  => true  && (! $atts['telefon'] == 'nein'),
             'show_detail_button' => false || (  $atts['button'] == 'ja'),
+            'show_address'       => true  && (! $atts['adresse'] == 'nein')
         ),
         'detail' => array (
             'show_job'           => false || (  $atts['jobinfo'] == 'ja'),
             'show_shortinfo'     => true  && (! $atts['kurzinfo'] == 'nein'),
             'show_phonenumbers'  => false || (  $atts['telefon'] == 'ja'),
             'show_detail_button' => true  && (! $atts['button'] == 'nein'),
+            'show_address'       => false || (  $atts['adresse'] == 'ja')
     
         )
     );
@@ -76,7 +78,7 @@
                     <?php endif; ?>
                 </div>
 
-                <?php if(! empty($address) ) : ?>
+                <?php if(! empty($address) && $settings['show_address'] ) : ?>
                     <p class="person-description mb-2"><?php echo $address; ?></p>
                 <?php endif; ?>
 
