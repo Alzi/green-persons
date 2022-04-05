@@ -61,6 +61,7 @@ Durch optionale Parameter kann die Darstellung noch angepasst werden:
 | jobinfo | nein | _optional_ Die Tätigkeitsbeschreibung wird ausgeblendet |
 | kurzinfo | ja | _optional_ Die Kurzinfo wird angezeigt |
 | telefon | nein | _optional_ Die Telefonnummern werden ausgeblendet |
+| adresse | nein | _optional_ Die Adresse wird ausgeblendet |
 | button | ja | _optional_ Der **Details**-Button wird angezeigt |
 
 
@@ -68,7 +69,7 @@ Durch optionale Parameter kann die Darstellung noch angepasst werden:
 
 | Screenshot | Default-Ansicht |
 |---|---|
-|  ![screenshot-5][img-5] | Hier werden angezeigt:<br>- Das **Beitragsbild**<br>- Die **Kurzinfo**<br>- Links zu **Website**, **E-Mail** und **Social-Media-Platformen** als Icons<br>- Die **Adresse** (nur wenn eingetragen)<br>- Der Button **Details** mit Link zur Personenseite |
+|  ![screenshot-5][img-5] | Hier werden angezeigt:<br>- Das **Beitragsbild**<br>- Die **Kurzinfo**<br>- Links zu **Website**, **E-Mail** und **Social-Media-Platformen** als Icons<br>- Der Button **Details** mit Link zur Personenseite |
 
 Durch optionale Parameter kann die Darstellung noch angepasst werden:
 
@@ -78,13 +79,14 @@ Durch optionale Parameter kann die Darstellung noch angepasst werden:
 | jobinfo | ja | _optional_ Die Tätigkeitsbeschreibung wird angezeigt |
 | kurzinfo | nein | _optional_ Die Kurzinfo wird ausgeblendet |
 | telefon | ja | _optional_ Die Telefonnummern werden angezeigt |
+| adresse | ja | _optional_ Die Adresse wird angezeigt |
 | button | nein | _optional_ Der **Details**-Button wird ausgeblendet |
 
 #### Beispiel
 
 | Screenshot | Shortcode mit optionalen Parametern |
 |---|---|
-|  ![screenshot-6][img-6] | `[personen-team abteilung="marc" kurzinfo="ja" button="ja"]` |
+|  ![screenshot-6][img-6] | `[personen-detail abteilung="marc" jobinfo="ja" adresse="ja" telefon="ja"]` |
 
 
 [img-1]:https://github.com/Alzi/green-persons/blob/main/docs/backend_open_person_menu.jpg "Backend, Person bearbeiten"
