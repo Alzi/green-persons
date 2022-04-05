@@ -4,4 +4,4 @@ templates/partials/ export-ignore
 templates/sunflower/ export-ignore
 docs/ export-ignore
 languages/blank-pot.pot export-ignore
-languages/green_persons-de_DE.po
+languages/green_persons-de_DE.po export-ignore

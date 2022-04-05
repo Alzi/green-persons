@@ -23,6 +23,7 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 - Bugfix: twitter-metadata no longer gets deleted
 - Bugfix: instagram link gets displayed in frontend
 - Add images to repo for wiki
+- Have option 'adresse' in shortcodes
 
 ## 0.8.3
 
