@@ -4,3 +4,11 @@
 # additional helper files are not part of repository
 vorlagen/
 mytoken.txt
+
+# ignore affinity-photo files in docs-folder
+docs/*.afphoto
+
+# maybe we use these files later...
+docs/scr_detail*
+docs/scr_sort*
+docs/scr_kurz*
