@@ -39,9 +39,9 @@
         $instagram = get_post_meta( $person->ID, 'grlp_person_contact_instagram', true );
         $twitter = get_post_meta( $person->ID, 'grlp_person_contact_twitter', true );
         $facebook = get_post_meta( $person->ID, 'grlp_person_contact_facebook', true );
-        $list_position = get_post_meta( $person-ID, 'grlp_person_detail_list_pos', true);
-        $constituency = get_post_meta( $person-ID, 'grlp_person_detail_constituency', true);
-        $constit_num = get_post_meta( $person-ID, 'grlp_person_detail_constit_num', true);
+        $list_position = get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true);
+        $constituency = get_post_meta( $person->ID, 'grlp_person_detail_constituency', true);
+        $constit_num = get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true);
         $show_detail_button = $settings['show_detail_button'] && get_post_meta( $person->ID, 'grlp_person_detail_has_link', true);
         ?>
         <div class="person has-shadow">
