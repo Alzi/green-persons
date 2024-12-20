@@ -13,7 +13,16 @@
             'show_phonenumbers'  => false || (  $atts['telefon'] == 'ja'),
             'show_detail_button' => true  && (! $atts['button'] == 'nein'),
             'show_address'       => false || (  $atts['adresse'] == 'ja')
-    
+        ),
+        'candidate_list' => array (
+            'show_job'           => false || ( $atts['jobinfo'] == 'ja'),
+            'show_shortinfo'     => false || ( $atts['kurzinfo'] == 'ja'),
+            'show_phonenumbers'  => false || ( $atts['telefon'] == 'ja'),
+            'show_detail_button' => false || ( $atts['button'] == 'ja'),
+            'show_address'       => false || ( $atts['adresse'] == 'ja'),
+            'show_list_pos'      => true  && ( $atts['listenplatz'] == 'nein'),
+            'show_constituency'  => false || ( $atts['wahlkreis'] == 'ja'),
+            'show_constit_num'   => false || ( $atts['wk-nummer'] == 'ja')
         )
     );
     $settings = $all_settings[$view];
@@ -30,6 +39,9 @@
         $instagram = get_post_meta( $person->ID, 'grlp_person_contact_instagram', true );
         $twitter = get_post_meta( $person->ID, 'grlp_person_contact_twitter', true );
         $facebook = get_post_meta( $person->ID, 'grlp_person_contact_facebook', true );
+        $list_position = get_post_meta( $person-ID, 'grlp_person_detail_list_pos', true);
+        $constituency = get_post_meta( $person-ID, 'grlp_person_detail_constituency', true);
+        $constit_num = get_post_meta( $person-ID, 'grlp_person_detail_constit_num', true);
         $show_detail_button = $settings['show_detail_button'] && get_post_meta( $person->ID, 'grlp_person_detail_has_link', true);
         ?>
         <div class="person has-shadow">
