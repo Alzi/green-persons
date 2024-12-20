@@ -1,28 +1,28 @@
 <?php
     $all_settings = array (
         'team' => array (
-            'show_job'           => true  && (! $atts['jobinfo'] == 'nein'),
-            'show_shortinfo'     => false || (  $atts['kurzinfo'] == 'ja'),
-            'show_phonenumbers'  => true  && (! $atts['telefon'] == 'nein'),
-            'show_detail_button' => false || (  $atts['button'] == 'ja'),
-            'show_address'       => true  && (! $atts['adresse'] == 'nein')
+            'show_job'           => true  && (!($atts['jobinfo'] ?? '') == 'nein'),
+            'show_shortinfo'     => false || (($atts['kurzinfo'] ?? '') == 'ja'),
+            'show_phonenumbers'  => true  && (!($atts['telefon'] ?? '') == 'nein'),
+            'show_detail_button' => false || (($atts['button'] ?? '') == 'ja'),
+            'show_address'       => true  && (!($atts['adresse'] ?? '') == 'nein')
         ),
         'detail' => array (
-            'show_job'           => false || (  $atts['jobinfo'] == 'ja'),
-            'show_shortinfo'     => true  && (! $atts['kurzinfo'] == 'nein'),
-            'show_phonenumbers'  => false || (  $atts['telefon'] == 'ja'),
-            'show_detail_button' => true  && (! $atts['button'] == 'nein'),
-            'show_address'       => false || (  $atts['adresse'] == 'ja')
+            'show_job'           => false || (($atts['jobinfo'] ?? '') == 'ja'),
+            'show_shortinfo'     => true  && (!($atts['kurzinfo'] ?? '') == 'nein'),
+            'show_phonenumbers'  => false || (($atts['telefon'] ?? '') == 'ja'),
+            'show_detail_button' => true  && (!($atts['button'] ?? '') == 'nein'),
+            'show_address'       => false || (($atts['adresse'] ?? '') == 'ja')
         ),
         'candidate_list' => array (
-            'show_job'           => false || ( $atts['jobinfo'] == 'ja'),
-            'show_shortinfo'     => false || ( $atts['kurzinfo'] == 'ja'),
-            'show_phonenumbers'  => false || ( $atts['telefon'] == 'ja'),
-            'show_detail_button' => false || ( $atts['button'] == 'ja'),
-            'show_address'       => false || ( $atts['adresse'] == 'ja'),
-            'show_list_pos'      => true  && ( $atts['listenplatz'] == 'nein'),
-            'show_constituency'  => false || ( $atts['wahlkreis'] == 'ja'),
-            'show_constit_num'   => false || ( $atts['wk-nummer'] == 'ja')
+            'show_job'           => false || (($atts['jobinfo'] ?? '') == 'ja'),
+            'show_shortinfo'     => false || (($atts['kurzinfo'] ?? '') == 'ja'),
+            'show_phonenumbers'  => false || (($atts['telefon'] ?? '') == 'ja'),
+            'show_detail_button' => false || (($atts['button'] ?? '') == 'ja'),
+            'show_address'       => false || (($atts['adresse'] ?? '') == 'ja'),
+            'show_list_pos'      => true  && (($atts['listenplatz'] ?? '') == 'nein'),
+            'show_constituency'  => false || (($atts['wahlkreis'] ?? '') == 'ja'),
+            'show_constit_num'   => false || (($atts['wk-nummer'] ?? '') == 'ja')
         )
     );
     $settings = $all_settings[$view];
