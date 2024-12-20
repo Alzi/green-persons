@@ -40,7 +40,7 @@
             <?php if (! empty($grlp_meta['grlp_person_contact_twitter'] )) : ?>
             <div class="wp-block-sunflower-meta-data">
                 <a href="<?php echo $grlp_meta['grlp_person_contact_twitter'][0]; ?>" target="_blank" rel="noopener">
-                    <i class="fab fa-twitter fa-2x"></i>
+                    <i class="fa-brands fa-x-twitter fa-2x"></i>
                 </a>
             </div>
             <?php endif; ?>

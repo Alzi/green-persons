@@ -31,7 +31,7 @@
         <?php if (! empty( $contact_twitter )) : ?>
         <div class="wp-block-sunflower-meta-data">
             <a href="<?php echo $contact_twitter; ?>" target="_blank" rel="noopener">
-                <i class="fab fa-twitter fa-2x"></i>
+                <i class="fa-brands fa-x-twitter fa-2x"></i>
             </a>
         </div>
         <?php endif; ?>

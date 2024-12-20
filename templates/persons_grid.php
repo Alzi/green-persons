@@ -67,7 +67,7 @@
                     <?php endif; ?>
                     <?php  if (! empty ($twitter)) : ?>
                     <div class="wp-block-sunflower-meta-data">
-                        <a href="<?php echo $twitter; ?>"><i class="fab fa-twitter"></i></a>
+                        <a href="<?php echo $twitter; ?>"><i class="fa-brands fa-x-twitter"></i></a>
                     </div>
                     <?php endif; ?>
                     <?php if (! empty ($facebook)) : ?>

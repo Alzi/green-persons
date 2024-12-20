@@ -12,6 +12,10 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 ## Release Notes
 
+## 0.8.6
+
+- Twitter-Angaben angepasst an X(Twitter)
+
 ## 0.8.5
 
 - Persons lacking a value in custom sort-order field will be ordered by title and apended to list.
