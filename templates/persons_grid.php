@@ -66,8 +66,8 @@
                 <?php if( $settings['show_constituency'] ) : ?>
                     <p class="person-description"><?php 
                         printf( 'Wahlkreis %s (%s)', 
-                            get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true )
-                            get_post_meta( $person->ID, 'grlp_person_detail_constituency', true ),
+                            get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true ),
+                            get_post_meta( $person->ID, 'grlp_person_detail_constituency', true )
                         ); 
                     ?></p>
                 <?php endif; ?>
