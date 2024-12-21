@@ -61,6 +61,10 @@
   .grlp-person-container .person-contact-info {
     margin: 1em 0;
   }
+
+  .grlp-person-container .person-list-pos {
+    color: tanne;
+  }
   
   .grlp-person-container .details-button {
     display:flex;
