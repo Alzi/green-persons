@@ -309,7 +309,7 @@ function grlp_sc_persons_candidate_list( $atts, $content, $shortcode_tag )
             array(
                 'post_type' => 'grlp_person',
                 'abteilung' => $atts['abteilung'],
-                'meta_key' => 'grlp_person_detail_custom_order_detail',
+                'meta_key' => 'grlp_person_detail_list_pos',
                 'orderby' => 'meta_value_num',
                 'order' => 'ASC',
             )
@@ -317,21 +317,6 @@ function grlp_sc_persons_candidate_list( $atts, $content, $shortcode_tag )
 
         $persons = $query->get_posts();
 
-        // In case the custom_order field is empty, we append
-        // all persons that at least fit our taxonomy, ordered by title
-
-        $query = new WP_Query(
-            array(
-                'post_type' => 'grlp_person',
-                'abteilung' => $atts['abteilung'],
-                'meta_key' => 'grlp_person_detail_custom_order_detail',
-                'meta_compare' => 'NOT EXISTS',
-                'orderby' => 'title',
-                'order' => 'ASC',
-            )
-        );
-
-        $persons = array_merge($persons, $query->get_posts());
     }
 
     ob_start();
