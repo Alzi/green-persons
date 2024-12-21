@@ -26,9 +26,9 @@
             'show_phonenumbers'  => false || (($atts['telefon'] ?? '') == 'ja'),
             'show_detail_button' => true  && (!($atts['button'] ?? '') == 'nein'),
             'show_address'       => false || (($atts['adresse'] ?? '') == 'ja'),
-            'show_list_pos'      => true  && (($atts['listenplatz'] ?? '') == 'nein'),
-            'show_constituency'  => false || (($atts['wahlkreis'] ?? '') == 'ja'),
-            'show_constit_num'   => false || (($atts['wk-nummer'] ?? '') == 'ja')
+            'show_list_pos'      => true  && (!($atts['listenplatz'] ?? '') == 'nein'),
+            'show_constituency'  => true  && (!($atts['wahlkreis'] ?? '') == 'nein'),
+            'show_constit_num'   => true  && (!($atts['wk-nummer'] ?? '') == 'nein')
         )
     );
     $settings = $all_settings[$view];
@@ -70,17 +70,13 @@
                     <p class="person-list-pos">Listenplatz: <?php echo get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true ); ?></p>
                 <?php endif; ?>
                 <?php if( $settings['show_constituency'] ) : ?>
-                    <p class="person-description"><?php 
+                    <p class="person-constituency"><?php 
                         printf( 'Wahlkreis %s (%s)', 
                             get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true ),
                             get_post_meta( $person->ID, 'grlp_person_detail_constituency', true )
                         ); 
                     ?></p>
                 <?php endif; ?>
-                <?php if( $settings['show_constit_num'] ) : ?>
-                    <p class="person-description">Wahlkreisnummer: <?php echo get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true ); ?></p>
-                <?php endif; ?>
-
                 <div class="person-contact-info d-flex">
                     <?php if (! empty($web)) : ?>
                     <div class="wp-block-sunflower-meta-data">

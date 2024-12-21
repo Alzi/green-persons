@@ -63,9 +63,14 @@
   }
 
   .grlp-person-container .person-list-pos {
-    color: tanne;
+    color: var(--color-tanne);
   }
-  
+     
+  .grlp-person-container .person-constituency {
+    font-size: 0.8em;
+    margin: 0;
+  }
+    
   .grlp-person-container .details-button {
     display:flex;
     justify-content: center;
