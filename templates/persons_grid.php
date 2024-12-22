@@ -55,6 +55,8 @@
         $instagram = get_post_meta( $person->ID, 'grlp_person_contact_instagram', true );
         $twitter = get_post_meta( $person->ID, 'grlp_person_contact_twitter', true );
         $facebook = get_post_meta( $person->ID, 'grlp_person_contact_facebook', true );
+        $bluesky = get_post_meta( $person->ID, 'grlp_person_contact_bluesky', true );
+        $threads = get_post_meta( $person->ID, 'grlp_person_contact_threads', true );
         $list_position = get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true);
         $constituency = get_post_meta( $person->ID, 'grlp_person_detail_constituency', true);
         $constit_num = get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true);
