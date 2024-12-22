@@ -205,6 +205,7 @@ function grlp_shortcodes_init()
     add_shortcode( 'personen-team', 'grlp_sc_persons_team' );
     add_shortcode( 'personen-detail', 'grlp_sc_persons_detail' );
     add_shortcode( 'personen-landesliste', 'grlp_sc_persons_candidate_list');
+    add_shortcode( 'personen-direktliste', 'grlp_sc_persons_direct_candidate_list');
 }
 
 function grlp_sc_persons_team( $atts, $content, $shortcode_tag )
@@ -328,6 +329,35 @@ function grlp_sc_persons_candidate_list( $atts, $content, $shortcode_tag )
     return ob_get_clean();
 }
 
+function grlp_sc_persons_direct_candidate_list( $atts, $content, $shortcode_tag )
+{
+    $posts = array();
+    $attributes = array_keys($atts);
+    if ( ! empty( $atts['abteilung'] )) {
+
+        // Read all persons that have custom_order set first
+        $query = new WP_Query(
+            array(
+                'post_type' => 'grlp_person',
+                'abteilung' => $atts['abteilung'],
+                'meta_key' => 'grlp_person_detail_constit_num',
+                'orderby' => 'meta_value_num',
+                'order' => 'ASC',
+            )
+        );
+
+        $persons = $query->get_posts();
+
+    }
+
+    ob_start();
+    grlp_get_template('persons_grid.php', array(
+        'persons' => $persons,
+        'atts' => $atts,
+        'view' => 'direct_candidate_list',
+    ));
+    return ob_get_clean();
+}
 
 
 /**
@@ -388,9 +418,23 @@ function grlp_register_meta()
             return esc_url_raw( $value );
         }
     ]);
+
     register_post_meta( 'grlp_person', 'grlp_person_contact_instagram', [
         'description'       => __(
             'Vollständige URL zum Instagram-Profil',
+            'green_person'
+        ),
+        'type'              => 'string',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return esc_url_raw( $value );
+        }
+    ]);
+
+    register_post_meta( 'grlp_person', 'grlp_person_contact_bluesky', [
+        'description'       => __(
+            'Vollständige URL zum Bluesky-Profil',
             'green_person'
         ),
         'type'              => 'string',
@@ -413,7 +457,7 @@ function grlp_register_meta()
             return wp_kses( $value, ['br' => []] );
         }
     ]);
-
+    
     register_post_meta( 'grlp_person', 'grlp_person_contact_phone', [
         'description'       => __(
             'Telefonnummer 1 Bsp.: Tel.: (06543) 12 345 99',
@@ -605,6 +649,14 @@ function grlp_person_contact_view( $post )
         $values['grlp_person_contact_instagram'] )
         ? esc_attr( $values['grlp_person_contact_instagram'][0] )
         : '';
+    $bluesky = isset(
+        $values['grlp_person_contact_bluesky'] )
+        ? esc_attr( $values['grlp_person_contact_bluesky'][0] )
+        : '';
+    $threads = isset(
+        $values['grlp_person_contact_threads'] )
+        ? esc_attr( $values['grlp_person_contact_threads'][0] )
+        : '';
     $mobile = isset(
         $values['grlp_person_contact_mobile'] )
         ? esc_attr( $values['grlp_person_contact_mobile'][0] )
@@ -676,6 +728,24 @@ function grlp_person_contact_view( $post )
             <span class="description">
               <?php echo $meta_keys['grlp_person_contact_twitter']['description']; ?>
             </span>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <label for="grlp_person_contact_bluesky">BlueSky</label>
+          </th>
+          <td>
+            <input type="text" name="grlp_person_contact_bluesky" id="grlp_person_contact_bluesky" value="<?php echo $bluesky; ?>">
+            <br>
+            <span class="description"><?php echo $meta_keys['grlp_person_contact_bluesky']['description']; ?></span>
+          </td>
+          <th scope="row">
+            <label for="grlp_person_contact_threads">Threads</label>
+          </th>
+          <td>
+            <input type="text" name="grlp_person_contact_threads" id="grlp_person_contact_threads" value="<?php echo $threads; ?>">
+            <br>
+            <span class="description"><?php echo $meta_keys['grlp_person_contact_threads']['description']; ?></span>
           </td>
         </tr>
         <tr>

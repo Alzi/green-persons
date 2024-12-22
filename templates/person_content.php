@@ -10,13 +10,13 @@
     </header><!-- .entry-header -->
 	<?php sunflower_post_thumbnail(false, true); ?>
 
-    <h3><?php echo $grlp_meta['grlp_person_detail_mandate'][0]; ?></h3>
+    <h3><?php echo ($grlp_meta['grlp_person_detail_mandate'][0] ?? ''); ?></h3>
     <div class="wp-block-group d-flex p-0 my-3">
         <div class="wp-block-group__inner-container">
             <?php if (! empty($grlp_meta['grlp_person_contact_email'])) : ?>
             <div class="wp-block-sunflower-meta-data">
                 <a href="#" data-unscramble="<?php echo strrev($grlp_meta['grlp_person_contact_email'][0]); ?>" target="_blank" rel="noopener">
-                    <i class="fas fa-envelope fa-2x"></i>
+                    <i class="fa-solid fa-envelope fa-2x"></i>
                 </a>
             </div>
             <?php endif; ?>
@@ -24,7 +24,7 @@
             <?php if (! empty($grlp_meta['grlp_person_contact_www'])) : ?>
             <div class="wp-block-sunflower-meta-data">
                 <a href="<?php echo $grlp_meta['grlp_person_contact_www'][0]; ?>" target="_blank" rel="noopener">
-                    <i class="fas fa-globe fa-2x"></i>
+                    <i class="fa-solid fa-globe fa-2x"></i>
                 </a>
             </div>
             <?php endif; ?>
@@ -32,7 +32,7 @@
             <?php if (! empty($grlp_meta['grlp_person_contact_instagram'] )) : ?>
             <div class="wp-block-sunflower-meta-data">
                 <a href="<?php echo $grlp_meta['grlp_person_contact_instagram'][0]; ?>" target="_blank" rel="noopener">
-                    <i class="fab fa-instagram fa-2x"></i>
+                    <i class="fa-brands fa-instagram fa-2x"></i>
                 </a>
             </div>
             <?php endif; ?>
@@ -48,7 +48,23 @@
             <?php if (! empty($grlp_meta['grlp_person_contact_facebook'] )) : ?>
             <div class="wp-block-sunflower-meta-data">
                 <a href="<?php echo $grlp_meta['grlp_person_contact_facebook'][0]; ?>" target="_blank" rel="noopener">
-                    <i class="fab fa-facebook fa-2x"></i>
+                    <i class="fa-brands fa-facebook fa-2x"></i>
+                </a>
+            </div>
+            <?php endif; ?>
+
+            <?php if (! empty($grlp_meta['grlp_person_contact_bluesky'] )) : ?>
+            <div class="wp-block-sunflower-meta-data">
+                <a href="<?php echo $grlp_meta['grlp_person_contact_bluesky'][0]; ?>" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-bluesky fa-2x"></i>
+                </a>
+            </div>
+            <?php endif; ?>
+
+            <?php if (! empty($grlp_meta['grlp_person_contact_threads'] )) : ?>
+            <div class="wp-block-sunflower-meta-data">
+                <a href="<?php echo $grlp_meta['grlp_person_contact_threads'][0]; ?>" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-threads fa-2x"></i>
                 </a>
             </div>
             <?php endif; ?>

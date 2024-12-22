@@ -12,9 +12,15 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 ## Release Notes
 
-## 0.8.6
+## 0.8.7
 
-- Twitter-Angaben angepasst an X(Twitter)
+- Added shortcode 'personen-direktliste'
+- Added social-media-fields for Threads and BlueSky
+
+## 0.8.62
+
+- Twitter related things renamed to: X(Twitter)
+- Added shortcode 'personen-landesliste'
 
 ## 0.8.5
 

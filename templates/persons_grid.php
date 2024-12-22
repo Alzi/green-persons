@@ -29,6 +29,16 @@
             'show_list_pos'      => true  && (!($atts['listenplatz'] ?? '') == 'nein'),
             'show_constituency'  => true  && (!($atts['wahlkreis'] ?? '') == 'nein'),
             'show_constit_num'   => true  && (!($atts['wk-nummer'] ?? '') == 'nein')
+        ),
+        'direct_candidate_list' => array (
+            'show_job'           => false || (($atts['jobinfo'] ?? '') == 'ja'),
+            'show_shortinfo'     => false || (($atts['kurzinfo'] ?? '') == 'ja'),
+            'show_phonenumbers'  => false || (($atts['telefon'] ?? '') == 'ja'),
+            'show_detail_button' => true  && (!($atts['button'] ?? '') == 'nein'),
+            'show_address'       => false || (($atts['adresse'] ?? '') == 'ja'),
+            'show_list_pos'      => true  && (!($atts['listenplatz'] ?? '') == 'nein'),
+            'show_constituency'  => true  && (!($atts['wahlkreis'] ?? '') == 'nein'),
+            'show_constit_num'   => true  && (!($atts['wk-nummer'] ?? '') == 'nein')
         )
     );
     $settings = $all_settings[$view];
@@ -66,31 +76,51 @@
                 <?php if( $settings['show_shortinfo'] ) : ?>
                     <p class="person-description"><?php echo get_post_meta( $person->ID, 'grlp_person_detail_shortinfo', true ); ?></p>
                 <?php endif; ?>
-                <?php if( $settings['show_list_pos'] ) : ?>
-                    <p class="person-list-pos">Listenplatz: <?php echo get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true ); ?></p>
-                <?php endif; ?>
-                <?php if( $settings['show_constituency'] ) : ?>
-                    <p class="person-constituency"><?php 
-                        printf( 'Wahlkreis %s (%s)', 
-                            get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true ),
-                            get_post_meta( $person->ID, 'grlp_person_detail_constituency', true )
-                        ); 
-                    ?></p>
+                <!-- Direktliste -->
+                <?php if ( $view == 'direct_candidate_list' ) : ?>
+                    <div class="person-direct-candidate-container">
+                    <?php if( $settings['show_constituency'] ) : ?>
+                        <p class="person-constituency"><?php 
+                            printf( 'Wahlkreis %s (%s)', 
+                                get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true ),
+                                get_post_meta( $person->ID, 'grlp_person_detail_constituency', true )
+                            ); 
+                        ?></p>
+                    <?php endif; ?>
+                    <?php if( $settings['show_list_pos'] && get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true ) != '' ) : ?>
+                        <p class="person-list-pos">Listenplatz <?php echo get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true ); ?></p>
+                    <?php endif; ?>
+                    </div>
+                <!-- Landesliste -->
+                <?php elseif ( $view == 'candidate_list' ) : ?>
+                    <div class="person-candidate-container">
+                    <?php if( $settings['show_list_pos'] ) : ?>
+                        <p class="person-list-pos">Listenplatz <?php echo get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true ); ?></p>
+                    <?php endif; ?>
+                    <?php if( $settings['show_constituency'] ) : ?>
+                        <p class="person-constituency"><?php 
+                            printf( 'Wahlkreis %s (%s)', 
+                                get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true ),
+                                get_post_meta( $person->ID, 'grlp_person_detail_constituency', true )
+                            ); 
+                            ?></p>
+                        <?php endif; ?>
+                    </div>
                 <?php endif; ?>
                 <div class="person-contact-info d-flex">
                     <?php if (! empty($web)) : ?>
                     <div class="wp-block-sunflower-meta-data">
-                        <a href="<?php echo $web; ?>"><i class="fas fa-globe"></i></a>
+                        <a href="<?php echo $web; ?>"><i class="fa-solid fa-globe"></i></a>
                     </div>
                     <?php endif; ?>
                     <?php if (! empty ($email)) : ?>
                     <div class="wp-block-sunflower-meta-data">
-                        <a href="mailto:<?php echo $email; ?>"><i class="fas fa-envelope"></i></a>
+                        <a href="mailto:<?php echo $email; ?>"><i class="fa-solid fa-envelope"></i></a>
                     </div>
                     <?php endif; ?>
                     <?php if (! empty ($instagram)) : ?>
                     <div class="wp-block-sunflower-meta-data">
-                        <a href="<?php echo $instagram; ?>"><i class="fab fa-instagram"></i></a>
+                        <a href="<?php echo $instagram; ?>"><i class="fa-brands fa-instagram"></i></a>
                     </div>
                     <?php endif; ?>
                     <?php  if (! empty ($twitter)) : ?>
@@ -100,7 +130,17 @@
                     <?php endif; ?>
                     <?php if (! empty ($facebook)) : ?>
                     <div class="wp-block-sunflower-meta-data">
-                        <a href="<?php echo $facebook; ?>"><i class="fab fa-facebook"></i></a>
+                        <a href="<?php echo $facebook; ?>"><i class="fa-brands fa-facebook"></i></a>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (! empty ($bluesky)) : ?>
+                    <div class="wp-block-sunflower-meta-data">
+                        <a href="<?php echo $bluesky; ?>"><i class="fa-brands fa-bluesky"></i></a>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (! empty ($threads)) : ?>
+                    <div class="wp-block-sunflower-meta-data">
+                        <a href="<?php echo $threads; ?>"><i class="fa-brands fa-threads"></i></a>
                     </div>
                     <?php endif; ?>
                 </div>
