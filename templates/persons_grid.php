@@ -91,6 +91,8 @@
                     <?php endif; ?>
                     <?php if( $settings['show_list_pos'] && get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true ) != '' ) : ?>
                         <p class="person-list-pos">Listenplatz <?php echo get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true ); ?></p>
+                    <?php else : ?>
+                        <p>&nbsp;</p>
                     <?php endif; ?>
                     </div>
                 <!-- Landesliste -->
