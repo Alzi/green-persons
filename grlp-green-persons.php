@@ -445,6 +445,19 @@ function grlp_register_meta()
         }
     ]);
 
+    register_post_meta( 'grlp_person', 'grlp_person_contact_threads', [
+        'description'       => __(
+            'Vollständige URL zum Threads-Profil',
+            'green_person'
+        ),
+        'type'              => 'string',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return esc_url_raw( $value );
+        }
+    ]);
+
     register_post_meta( 'grlp_person', 'grlp_person_contact_address', [
         'description'       => __(
             'Platz für Anschrift (erscheint über den Telefonnummern)',
@@ -745,7 +758,7 @@ function grlp_person_contact_view( $post )
           <td>
             <input type="text" name="grlp_person_contact_threads" id="grlp_person_contact_threads" value="<?php echo $threads; ?>">
             <br>
-            <span class="description"><?php echo $meta_keys['grlp_person_contact_threads']['description']; ?></span>
+            <span class="description"><?php echo ($meta_keys['grlp_person_contact_threads']['description'] ?? ''); ?></span>
           </td>
         </tr>
         <tr>
