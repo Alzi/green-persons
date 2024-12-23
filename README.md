@@ -17,6 +17,7 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 - Fix: Max number of persons in shortcodes 'personen-landesliste' and 
   'personen-direktliste' are not limited to 10 anymore.
 - Fix: Empty constituency-field will not display "Wahkreis()" anymore.
+- Fix: 'personen-detail' and 'personen-team' can display more than 10 persons now.
 
 ## 0.8.7
 
