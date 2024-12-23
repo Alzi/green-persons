@@ -101,7 +101,7 @@
                     <?php if( $settings['show_list_pos'] ) : ?>
                         <p class="person-list-pos">Listenplatz <?php echo get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true ); ?></p>
                     <?php endif; ?>
-                    <?php if( $settings['show_constituency'] ) : ?>
+                    <?php if( $settings['show_constituency'] && get_post_meta( $person->ID, 'grlp_person_detail_constituency', true ) != '' ) : ?>
                         <p class="person-constituency"><?php 
                             printf( 'Wahlkreis %s (%s)', 
                                 get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true ),
