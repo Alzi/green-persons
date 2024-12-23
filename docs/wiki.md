@@ -116,6 +116,23 @@ Durch optionale Parameter kann die Darstellung noch angepasst werden:
 
 Die Abteilung "marc" besteht nur aus einer Person.
 
+### \[personen-landesliste\]
+
+| Screenshot | Default-Ansicht |
+|---|---|
+|  ![screenshot-5][img-5] | Hier werden angezeigt:<br>- Das **Beitragsbild**<br>- Der **Listenplatz**<br>-Falls die Person direkt aufgestellt ist, wird auch der Wahlkreis angezeigt<br>- Links zu **Website**, **E-Mail** und **Social-Media-Platformen** als Icons<br>- Der Button **Details** mit Link zur Personenseite |
+
+Durch optionale Parameter kann die Darstellung noch angepasst werden:
+
+| Parameter | möglicher Wert | Erklärung
+|---|---|---|
+| abteilung | \<Titel der Abteilung\> | _obligatorisch_ Welche Abteilung soll angezeigt werden? |
+| jobinfo | ja | _optional_ Die Tätigkeitsbeschreibung wird angezeigt |
+| kurzinfo | nein | _optional_ Die Kurzinfo wird ausgeblendet |
+| telefon | ja | _optional_ Die Telefonnummern werden angezeigt |
+| adresse | ja | _optional_ Die Adresse wird angezeigt |
+| button | nein | _optional_ Der **Details**-Button wird ausgeblendet |
+
 
 
 
@@ -125,3 +142,5 @@ Die Abteilung "marc" besteht nur aus einer Person.
 [img-4]:https://github.com/Alzi/green-persons/blob/main/docs/scr_person_team.jpg "Frontend Darstellung einer Person in der Ansicht \"Team\""
 [img-5]:https://github.com/Alzi/green-persons/blob/main/docs/scr_person_detail.jpg "Frontend Darstellung einer Person in der Ansicht \"Detail\""
 [img-6]:https://github.com/Alzi/green-persons/blob/main/docs/scr_person_team_extra.jpg "Frontend Darstellung einer Person in der Ansicht \"Team\" mit zusätzlichen Infos"
+[img-7]:https://github.com/Alzi/green-persons/blob/main/docs/scr_person_landesliste.jpg "Frontend Darstellung einer Person in der Ansicht \"Landesliste\""
+[img-8]:https://github.com/Alzi/green-persons/blob/main/docs/scr_person_direktliste.jpg "Frontend Darstellung einer Person in der Ansicht \"Direktliste\""

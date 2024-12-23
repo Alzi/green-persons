@@ -16,6 +16,7 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 - Added shortcode 'personen-direktliste'
 - Added social-media-fields for Threads and BlueSky
+- Wiki updated
 
 ## 0.8.62
 
