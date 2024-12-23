@@ -12,6 +12,11 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 ## Release Notes
 
+## 0.8.7.1
+
+- Fix: Max number of persons in shortcodes 'personen-landesliste' and 
+  'personen-direktliste' are not limited to 10 anymore.
+
 ## 0.8.7
 
 - Added shortcode 'personen-direktliste'

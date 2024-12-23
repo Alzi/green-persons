@@ -313,6 +313,7 @@ function grlp_sc_persons_candidate_list( $atts, $content, $shortcode_tag )
                 'meta_key' => 'grlp_person_detail_list_pos',
                 'orderby' => 'meta_value_num',
                 'order' => 'ASC',
+                'posts_per_page' => -1,
             )
         );
 
@@ -343,6 +344,7 @@ function grlp_sc_persons_direct_candidate_list( $atts, $content, $shortcode_tag 
                 'meta_key' => 'grlp_person_detail_constit_num',
                 'orderby' => 'meta_value_num',
                 'order' => 'ASC',
+                'posts_per_page' => -1,
             )
         );
 
