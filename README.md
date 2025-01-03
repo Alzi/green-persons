@@ -12,6 +12,10 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 ## Release Notes
 
+## 0.8.8
+
+- Add meta-data fields for image copyright informations.
+
 ## 0.8.7.2
 
 - Fix: Max number of persons in shortcodes 'personen-landesliste' and 

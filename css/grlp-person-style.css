@@ -45,6 +45,13 @@
   border-bottom-right-radius: 0;
 }
 
+.grlp-person-container .person figure .img_copyright {
+  font-size: 0.5em;
+  padding: 0.4em 0.6em;
+  margin-bottom: -2.35em;
+  color: gray;
+}
+
 .grlp-person-container .person .person-name {
   font-size:27px;
   font-weight:bold;

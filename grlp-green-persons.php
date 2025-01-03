@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Grüne Personen 
  * Description: Ein Plugin zur Verwaltung von Personen auf GRÜNEN Webseiten. Es ermöglicht Personen anzulegen und sie in Abteilungen zu gruppieren. Sie können dann in verschiedenen Kontexten (Team, Landesliste...) dargestellt werden. Das Plugin arbeitet sehr direkt mit dem <a href="http://sunflower-theme.de">Sunflower-Theme</a> zusammen und basiert auf der Idee der Personen Verwaltung im <a href="https://github.com/kre8tiv/Joseph-knows-best">JKB-Theme</a>. <a href="https://github.com/alzi/green-persons">Projektseite</a> auf Github.
- * Version: 0.8.7.2
+ * Version: 0.8.8
  * Author: Marc Dietz 
  * Author URI: mailto:technik@gruene-rlp.de
  * Text Domain: green-persons
@@ -594,6 +594,52 @@ function grlp_register_meta()
             return wp_strip_all_tags( $value );
         }
     ]);
+
+   register_post_meta( 'grlp_person', 'grlp_person_meta_img_author', [
+        'description'       => __( 'Fotograf (Foto von ...)', 'green_persons' ),
+        'type'              => 'string',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return wp_strip_all_tags( $value );
+        }
+    ]);
+
+    register_post_meta( 'grlp_person', 'grlp_person_meta_img_author_url', [
+        'description'       => __(
+            'Vollständige URL zur Seite der Fotografin',
+            'green_person'
+        ),
+        'type'              => 'string',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return esc_url_raw( $value );
+        }
+    ]);
+
+    register_post_meta( 'grlp_person', 'grlp_person_meta_img_platform_name', [
+        'description'       => __( 'Platform Bildquelle (Unsplash, Pixelio ..)', 'green_persons' ),
+        'type'              => 'string',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return wp_strip_all_tags( $value );
+        }
+    ]);
+
+    register_post_meta( 'grlp_person', 'grlp_person_meta_img_platform_url', [
+        'description'       => __(
+            'Vollständige URL zur Seite der Platform',
+            'green_person'
+        ),
+        'type'              => 'string',
+        'single'            => true,
+        'show_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return esc_url_raw( $value );
+        }
+    ]);
 }
 
 
@@ -621,6 +667,14 @@ function grlp_register_meta_boxes( $post )
         'grlp_person_detail',
         __( 'Infos' ),
         'grlp_person_detail_view',
+        'grlp_person',
+        'normal',
+        'high'
+    );
+    add_meta_box(
+        'grlp_person_meta',
+        __( 'Bildquelle' ),
+        'grlp_person_meta_view',
         'grlp_person',
         'normal',
         'high'
@@ -853,12 +907,19 @@ function grlp_person_save( $post_id )
             'grlp_person_contact_view')) {
                 return;
     }
-    if ( ! isset( $_POST['grlp_nonce_contact'] )
+    if ( ! isset( $_POST['grlp_nonce_detail'] )
         || ! wp_verify_nonce(
             $_POST['grlp_nonce_detail'],
             'grlp_person_detail_view')) {
                 return;
     }
+    if ( ! isset( $_POST['grlp_nonce_meta'] )
+    || ! wp_verify_nonce(
+        $_POST['grlp_nonce_meta'],
+        'grlp_person_meta_view')) {
+            return;
+    }
+}
 
     $all_meta_keys = array_keys(
         get_registered_meta_keys( 'post', 'grlp_person' )
@@ -1050,6 +1111,87 @@ function grlp_person_detail_view( $post )
             <span class="description">
               <?php echo $meta_keys['grlp_person_detail_has_link']['description']; ?>
             </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <?php
+}
+
+
+/**
+ * View fields for 'grlp_person_meta' MetaBox
+ * 
+ * @param $post Post data
+ * @return None
+ *
+ * @todo: think about using a template
+ * 
+ */
+function grlp_person_meta_view( $post )
+{
+    // We'll use this nonce field later on when saving.
+    wp_nonce_field( 'grlp_person_meta_view', 'grlp_nonce_meta' );
+    global $wp_meta_keys;
+    $meta_keys = $wp_meta_keys['post']['grlp_person'];
+
+    $values = get_post_custom( $post->ID );
+    $img_author = isset(
+        $values['grlp_person_meta_img_author'] )
+        ? esc_attr( $values['grlp_person_meta_img_author'][0] )
+        : '';
+    $img_author_url = isset(
+        $values['grlp_person_meta_img_author_url'] )
+        ? esc_attr( $values['grlp_person_meta_img_author_url'][0] )
+        : '';
+    $img_platform_name = isset(
+        $values['grlp_person_meta_img_platform_name'] )
+        ? esc_attr( $values['grlp_person_meta_img_platform_name'][0] )
+        : '';
+    $img_platform_url = isset(
+        $values['grlp_person_meta_img_platform_url'] )
+        ? esc_attr( $values['grlp_person_meta_img_platform_url'][0] )
+        : '';
+    ?>
+    <table class="form-table">
+      <tbody>
+        <tr>
+          <th scope="row">
+            <label for="grlp_person_meta_img_author">Fotograf*in</label>
+          </th>
+          <td>
+            <p>
+              <input type="text" name="grlp_person_meta_img_author" id="grlp_person_meta_img_author" value="<?php echo $img_author; ?>">
+              <br>
+              <span class="description">
+              <?php echo $meta_keys['grlp_person_meta_img_author']['description']; ?>
+              </span>
+            </p>
+            <p>
+              <input type="text" name="grlp_person_meta_img_author_url" id="grlp_person_meta_img_author_url" value="<?php echo $img_author_url; ?>">
+              <br>
+              <span class="description">
+              <?php echo $meta_keys['grlp_person_meta_img_author_url']['description']; ?>
+              </span>
+            </p>
+          </td>
+          <th scope="row">
+            <label for="grlp_person_meta_img_platform_name">Platform</label></th>
+          <td>
+            <p>
+              <input type="text" name="grlp_person_meta_img_platform_name" id="grlp_person_meta_img_platform_name" value="<?php echo $img_platform_name; ?>">
+              <br>
+              <span class="description">
+              <?php echo $meta_keys['grlp_person_meta_img_platform_name']['description']; ?>
+              </span>
+            </p>
+            <p>
+              <input type="text" name="grlp_person_meta_img_platform_url" id="grlp_person_meta_img_platform_url" value="<?php echo $img_platform_url; ?>">
+              <br>
+              <span class="description">
+              <?php echo $meta_keys['grlp_person_meta_img_platform_url']['description']; ?>
+              </span>
+            </p>            
           </td>
         </tr>
       </tbody>

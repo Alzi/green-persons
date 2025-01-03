@@ -60,7 +60,29 @@
         $list_position = get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true);
         $constituency = get_post_meta( $person->ID, 'grlp_person_detail_constituency', true);
         $constit_num = get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true);
+        $img_author = get_post_meta( $person->ID, 'grlp_person_meta_img_author', true);
+        $img_author_url = get_post_meta( $person->ID, 'grlp_person_meta_img_author_url', true);
+        $img_platform_name = get_post_meta( $person->ID, 'grlp_person_meta_img_platform_name', true);
+        $img_platform_url = get_post_meta( $person->ID, 'grlp_person_meta_img_platform_url', true);
         $show_detail_button = $settings['show_detail_button'] && get_post_meta( $person->ID, 'grlp_person_detail_has_link', true);
+        $copyright_row = '';
+        if (! empty($img_author) ) {
+            $copyright_row = '<p class="img_copyright">Foto von ';
+            if ( !empty($img_author_url) ) {
+                $copyright_row .= '<a href="' . $img_author_url . '">' . $img_author . '</a>';
+            } else {
+                $copyright_row .= $img_author;
+            }
+            if ( !empty ($img_platform_name) ) {
+                $copyright_row .= ' auf ';
+                if ( !empty ($img_platform_url) ) {
+                    $copyright_row .= '<a href="' . $img_platform_url . '">' . $img_platform_name . '</a>';
+                } else {
+                    $copyright_row .= $img_platform_name;
+                }
+            } 
+            $copyright_row .= '</p>';
+        }
         ?>
         <div class="person has-shadow">
             <figure>
@@ -69,6 +91,7 @@
                 <?php else : ?>
                 <img src="https://sunflower-theme.de/demo/wp-content/uploads/sites/6/2021/01/sunflower-flower-summer-blossom-4298808-1024x682.jpg" />
                 <?php endif; ?>
+                <?php if (!empty($copyright_row)) echo $copyright_row; ?>
             </figure>
             <div class="person-info">
                 <p class="person-name"><?php echo $person->post_title; ?></p>
