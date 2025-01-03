@@ -919,8 +919,7 @@ function grlp_person_save( $post_id )
         'grlp_person_meta_view')) {
             return;
     }
-}
-
+    
     $all_meta_keys = array_keys(
         get_registered_meta_keys( 'post', 'grlp_person' )
     );
