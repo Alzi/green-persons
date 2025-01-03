@@ -12,7 +12,7 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 ## Release Notes
 
-## 0.8.8
+## 0.8.7.3
 
 - Add meta-data fields for image copyright informations.
 
