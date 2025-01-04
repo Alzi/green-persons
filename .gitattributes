@@ -6,3 +6,4 @@ docs/ export-ignore
 languages/blank-pot.pot export-ignore
 languages/green_persons-de_DE.po export-ignore
 .exclude.lst export-ignore
+uninstall.php export-ignore

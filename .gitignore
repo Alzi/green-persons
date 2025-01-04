@@ -12,3 +12,5 @@ docs/*.afphoto
 docs/scr_detail*
 docs/scr_sort*
 docs/scr_kurz*
+
+wordpress/*
