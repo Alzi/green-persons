@@ -14,3 +14,6 @@ docs/scr_sort*
 docs/scr_kurz*
 
 wordpress/*
+
+# Wir haben ein separates Repo für das Wiki
+docs/*.jpg

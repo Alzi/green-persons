@@ -1312,3 +1312,24 @@ add_action('wp_enqueue_scripts', 'enqueue_style');
 function enqueue_style(){
 	wp_enqueue_style( 'grlp-person-style' );
 }
+
+
+// custom quick-edit-fields
+add_action('quick_edit_custom_box', 'grlp_quick_edit_fields', 10, 2);
+function grlp_quick_edit_fields($column_name, $post_type) {
+    echo ('<h1>' . $post_type . '<h1>');
+    switch($column_name) {
+        case 'grlp_person_detail_custom_order_team':
+            ?>
+            <fieldset class="inline-edit-col-right">
+                <div class="inline-edit-col">
+                    <label>
+                        <span class="title">Reihenfolge Team</span>
+                        <input type="text" name="mein_feld" value="">
+                    </label>
+                </div>
+            </fieldset>
+            <?php
+            break;
+    }
+}
