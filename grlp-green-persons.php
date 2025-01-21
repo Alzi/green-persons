@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Grüne Personen 
  * Description: Ein Plugin zur Verwaltung von Personen auf GRÜNEN Webseiten. Es ermöglicht Personen anzulegen und sie in Abteilungen zu gruppieren. Sie können dann in verschiedenen Kontexten (Team, Landesliste...) dargestellt werden. Das Plugin arbeitet sehr direkt mit dem <a href="http://sunflower-theme.de">Sunflower-Theme</a> zusammen und basiert auf der Idee der Personen Verwaltung im <a href="https://github.com/kre8tiv/Joseph-knows-best">JKB-Theme</a>. <a href="https://github.com/alzi/green-persons">Projektseite</a> auf Github.
- * Version: 0.9.0
+ * Version: 0.9.1
  * Author: Marc Dietz 
  * Author URI: mailto:technik@gruene-rlp.de
  * Text Domain: green-persons
@@ -462,6 +462,32 @@ function grlp_register_meta()
         }
     ]);
 
+    register_post_meta( 'grlp_person', 'grlp_person_contact_linkedin', [
+      'description'       => __(
+          'Vollständige URL zum LinkedIn-Profil',
+          'green_person'
+      ),
+      'type'              => 'string',
+      'single'            => true,
+      'show_in_rest'      => true,
+      'sanitize_callback' => function ( $value ) {
+          return esc_url_raw( $value );
+      }
+    ]);
+
+    register_post_meta( 'grlp_person', 'grlp_person_contact_tiktok', [
+      'description'       => __(
+          'Vollständige URL zum TikTok-Profil',
+          'green_person'
+      ),
+      'type'              => 'string',
+      'single'            => true,
+      'show_in_rest'      => true,
+      'sanitize_callback' => function ( $value ) {
+          return esc_url_raw( $value );
+      }
+    ]);
+
     register_post_meta( 'grlp_person', 'grlp_person_contact_address', [
         'description'       => __(
             'Platz für Anschrift (erscheint über den Telefonnummern)',
@@ -728,6 +754,14 @@ function grlp_person_contact_view( $post )
         $values['grlp_person_contact_threads'] )
         ? esc_attr( $values['grlp_person_contact_threads'][0] )
         : '';
+    $linkedin = isset(
+          $values['grlp_person_contact_linkedin'] )
+          ? esc_attr( $values['grlp_person_contact_linkedin'][0] )
+          : '';
+    $tiktok = isset(
+          $values['grlp_person_contact_tiktok'] )
+          ? esc_attr( $values['grlp_person_contact_tiktok'][0] )
+          : '';
     $mobile = isset(
         $values['grlp_person_contact_mobile'] )
         ? esc_attr( $values['grlp_person_contact_mobile'][0] )
@@ -817,6 +851,24 @@ function grlp_person_contact_view( $post )
             <input type="text" name="grlp_person_contact_threads" id="grlp_person_contact_threads" value="<?php echo $threads; ?>">
             <br>
             <span class="description"><?php echo ($meta_keys['grlp_person_contact_threads']['description'] ?? ''); ?></span>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">
+            <label for="grlp_person_contact_linkedin">LinkedIn</label>
+          </th>
+          <td>
+            <input type="text" name="grlp_person_contact_linkedin" id="grlp_person_contact_linkedin" value="<?php echo $linkedin; ?>">
+            <br>
+            <span class="description"><?php echo $meta_keys['grlp_person_contact_linkedin']['description']; ?></span>
+          </td>
+          <th scope="row">
+            <label for="grlp_person_contact_tiktok">TikTok</label>
+          </th>
+          <td>
+            <input type="text" name="grlp_person_contact_tiktok" id="grlp_person_contact_tiktok" value="<?php echo $tiktok; ?>">
+            <br>
+            <span class="description"><?php echo ($meta_keys['grlp_person_contact_tiktok']['description'] ?? ''); ?></span>
           </td>
         </tr>
         <tr>
@@ -1311,25 +1363,4 @@ function register_script(){
 add_action('wp_enqueue_scripts', 'enqueue_style');
 function enqueue_style(){
 	wp_enqueue_style( 'grlp-person-style' );
-}
-
-
-// custom quick-edit-fields
-add_action('quick_edit_custom_box', 'grlp_quick_edit_fields', 10, 2);
-function grlp_quick_edit_fields($column_name, $post_type) {
-    echo ('<h1>' . $post_type . '<h1>');
-    switch($column_name) {
-        case 'grlp_person_detail_custom_order_team':
-            ?>
-            <fieldset class="inline-edit-col-right">
-                <div class="inline-edit-col">
-                    <label>
-                        <span class="title">Reihenfolge Team</span>
-                        <input type="text" name="mein_feld" value="">
-                    </label>
-                </div>
-            </fieldset>
-            <?php
-            break;
-    }
 }

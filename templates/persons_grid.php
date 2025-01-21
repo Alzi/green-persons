@@ -57,6 +57,8 @@
         $facebook = get_post_meta( $person->ID, 'grlp_person_contact_facebook', true );
         $bluesky = get_post_meta( $person->ID, 'grlp_person_contact_bluesky', true );
         $threads = get_post_meta( $person->ID, 'grlp_person_contact_threads', true );
+        $linkedin = get_post_meta( $person->ID, 'grlp_person_contact_linkedin', true );
+        $tiktok = get_post_meta( $person->ID, 'grlp_person_contact_tiktok', true );
         $list_position = get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true);
         $constituency = get_post_meta( $person->ID, 'grlp_person_detail_constituency', true);
         $constit_num = get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true);
@@ -168,6 +170,16 @@
                     <?php if (! empty ($threads)) : ?>
                     <div class="wp-block-sunflower-meta-data">
                         <a href="<?php echo $threads; ?>"><i class="fa-brands fa-threads"></i></a>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (! empty ($linkedin)) : ?>
+                    <div class="wp-block-sunflower-meta-data">
+                        <a href="<?php echo $linkedin; ?>"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (! empty ($tiktok)) : ?>
+                    <div class="wp-block-sunflower-meta-data">
+                        <a href="<?php echo $tiktok; ?>"><i class="fa-brands fa-tiktok"></i></a>
                     </div>
                     <?php endif; ?>
                 </div>

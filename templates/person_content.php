@@ -68,6 +68,22 @@
                 </a>
             </div>
             <?php endif; ?>
+
+            <?php if (! empty($grlp_meta['grlp_person_contact_linkedin'] )) : ?>
+            <div class="wp-block-sunflower-meta-data">
+                <a href="<?php echo $grlp_meta['grlp_person_contact_linkedin'][0]; ?>" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-linkedin fa-2x"></i>
+                </a>
+            </div>
+            <?php endif; ?>
+
+            <?php if (! empty($grlp_meta['grlp_person_contact_tiktok'] )) : ?>
+            <div class="wp-block-sunflower-meta-data">
+                <a href="<?php echo $grlp_meta['grlp_person_contact_tiktok'][0]; ?>" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-tiktok fa-2x"></i>
+                </a>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 	<div class="entry-content">
