@@ -7,3 +7,5 @@ templates/sunflower/*
 docs/*
 languages/blank-pot.pot
 languages/green_persons-de_DE.po
+wordpress/*
+uninstall.php
