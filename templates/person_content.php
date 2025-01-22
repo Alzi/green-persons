@@ -8,9 +8,13 @@
     <header class="entry-header text-center <?php echo (has_post_thumbnail()) ? 'has-post-thumbnail' : 'has-no-post-thumbnail'; ?>">
         <?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
     </header><!-- .entry-header -->
-	<?php sunflower_post_thumbnail(false, true); ?>
-
-    <h3><?php echo ($grlp_meta['grlp_person_detail_mandate'][0] ?? ''); ?></h3>
+	<?php sunflower_post_thumbnail(false, false); ?>
+    <?php if (! empty($copyright_row) ): ?>
+        <?php echo $copyright_row; ?>
+    <?php endif; ?>
+    <?php if (! empty( $grlp_meta['grlp_person_detail_mandate'][0] )) {
+        echo '<h3>' . $grlp_meta['grlp_person_detail_mandate'][0] . '</h3>';
+    }?>
     <div class="wp-block-group d-flex p-0 my-3">
         <div class="wp-block-group__inner-container">
             <?php if (! empty($grlp_meta['grlp_person_contact_email'])) : ?>

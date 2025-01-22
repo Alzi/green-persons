@@ -12,6 +12,10 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 ## Release Notes
 
+## 0.9.2
+
+-- Fix: image copyright informations rendered on person-detail page
+
 ## 0.9.1
 
 -- Add social-media-fields for LinkedIn and TikTok
