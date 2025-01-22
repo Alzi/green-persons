@@ -52,6 +52,13 @@
   color: gray;
 }
 
+.post-thumbnail + .img_copyright {
+  font-size: 0.8em;
+  color: gray;
+  margin-top: -3em;
+  margin-bottom: 2em;
+}
+
 .grlp-person-container .person .person-name {
   font-size:27px;
   font-weight:bold;
