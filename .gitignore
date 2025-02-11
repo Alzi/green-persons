@@ -17,3 +17,11 @@ wordpress/*
 
 # Wir haben ein separates Repo für das Wiki
 docs/*.jpg
+
+# Der Vendor-Folder kommt von phpcs.
+vendor/*
+
+# VS-Code spezifisch
+composer.json
+composer.lock
+.vscode/*

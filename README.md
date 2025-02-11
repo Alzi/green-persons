@@ -12,6 +12,10 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 ## Release Notes
 
+## 0.9.3
+
+-- Fix: Have more than 10 Posts from query with sc_team.
+
 ## 0.9.2
 
 -- Fix: image copyright informations rendered on person-detail page
