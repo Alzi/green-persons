@@ -966,11 +966,11 @@ function grlp_person_contact_view( $post )
             <label for="grlp_person_contact_newsletter">Newsletter</label>
           </th>
           <td>
-            <textarea
+            <input
+				type="text"
                 name="grlp_person_contact_newsletter"
                 id="grlp_person_contact_newsletter"
-                ><?php echo $newsletter;
-            ?></textarea>
+				value="<?php echo $newsletter; ?>">
             <br>
             <span class="description">
               <?php echo $meta_keys['grlp_person_contact_newsletter']['description']; ?>
