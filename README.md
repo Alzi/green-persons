@@ -15,7 +15,12 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 ## 0.9.4
 
 - Feature: Have shortcodes for listing landtag- and bundestag- members with a
-   custom order for each.
+   custom order for each. Plus shortcode for elavo-members.
+   ```
+   [personen-landtag]
+   [personen-bundestag]
+   [personen-elavo]
+   ```
 - Loose Address-field (makes more sense to format it properly on persons site.)
 - Have newsletter-url as contact info (open envelope icon)
 

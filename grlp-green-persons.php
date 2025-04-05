@@ -208,6 +208,7 @@ function grlp_shortcodes_init()
     add_shortcode( 'personen-direktliste', 'grlp_sc_persons_direct_candidate_list');
 	add_shortcode( 'personen-bundestag', 'grlp_sc_persons_bundestag' );
 	add_shortcode( 'personen-landtag', 'grlp_sc_persons_landtag' );
+	add_shortcode( 'personen-elavo', 'grlp_sc_persons_elavo');
 }
 
 function grlp_sc_persons_team( $atts, $content, $shortcode_tag )
@@ -415,6 +416,32 @@ function grlp_sc_persons_landtag( $atts, $content, $shortcode_tag )
     grlp_get_template('persons_grid.php', array(
         'persons' => $persons,
         'atts' => $atts,
+        'view' => 'detail',
+    ));
+    return ob_get_clean();
+}
+
+function grlp_sc_persons_elavo( $atts, $content, $shortcode_tag )
+{
+    $posts = array();
+	$query = new WP_Query(
+		array(
+			'post_type' => 'grlp_person',
+			'abteilung' => 'elavo',
+			'meta_key' => 'grlp_person_detail_order_elavo',
+			'orderby' => 'meta_value_num',
+			'order' => 'ASC',
+			'posts_per_page' => -1,
+		)
+	);
+
+	$persons = $query->get_posts();
+
+
+    ob_start();
+    grlp_get_template('persons_grid.php', array(
+        'persons' => $persons,
+        'atts' => array('button'=>'nein'),
         'view' => 'detail',
     ));
     return ob_get_clean();
@@ -655,7 +682,7 @@ function grlp_register_meta()
     ]);
 
     register_post_meta( 'grlp_person', 'grlp_person_detail_order_bundestag', [
-        'description'       => __( 'Sortierreihenfolge Bundestag', 'green_persons'),
+        'description'       => __( 'Sortierreihenfolge [personen-bundestag]', 'green_persons'),
         'type'              => 'integer',
         'single'            => true,
         'shok_in_rest'      => true,
@@ -665,7 +692,17 @@ function grlp_register_meta()
     ]);
 
 	register_post_meta( 'grlp_person', 'grlp_person_detail_order_landtag', [
-        'description'       => __( 'Sortierreihenfolge Landtag', 'green_persons'),
+        'description'       => __( 'Sortierreihenfolge [personen-landtag]', 'green_persons'),
+        'type'              => 'integer',
+        'single'            => true,
+        'shok_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return intval( $value );
+        }
+    ]);
+
+	register_post_meta( 'grlp_person', 'grlp_person_detail_order_elavo', [
+        'description'       => __( 'Sortierreihenfolge [personen-elavo]', 'green_persons'),
         'type'              => 'integer',
         'single'            => true,
         'shok_in_rest'      => true,
@@ -676,7 +713,7 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_detail_shortinfo', [
         'description'       => __(
-            'Kurzinfos, z.B. "MdL, Sprecherin für... [personen-detail]"',
+            'Kurzinfos, z.B. "MdL, Sprecherin für... (wird bei allen shortcodes außer [personen-team] angezeigt)"',
             'green_persons'
         ),
         'type'              => 'string',
@@ -1123,6 +1160,10 @@ function grlp_person_detail_view( $post )
         $values['grlp_person_detail_order_landtag'] )
         ? esc_attr( $values['grlp_person_detail_order_landtag'][0] )
         : '';
+    $order_elavo = isset(
+        $values['grlp_person_detail_order_elavo'] )
+        ? esc_attr( $values['grlp_person_detail_order_elavo'][0] )
+        : '';
     $grlp_shortinfo = isset(
         $values['grlp_person_detail_shortinfo'] )
         ? esc_html( $values['grlp_person_detail_shortinfo'][0] )
@@ -1250,6 +1291,17 @@ function grlp_person_detail_view( $post )
                 <br>
                 <span class="description">
                 <?php echo $meta_keys['grlp_person_detail_order_bundestag']['description']; ?>
+                </span>
+            </p>
+			<p>
+                <input
+                type="text"
+                name="grlp_person_detail_order_elavo"
+                id="grlp_person_detail_order_elavo"
+                value="<?php echo $order_elavo; ?>">
+                <br>
+                <span class="description">
+                <?php echo $meta_keys['grlp_person_detail_order_elavo']['description']; ?>
                 </span>
             </p>
           </td>
