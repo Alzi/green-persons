@@ -5,7 +5,6 @@
             'show_shortinfo'     => false || (($atts['kurzinfo'] ?? '') == 'ja'),
             'show_phonenumbers'  => true  && (!($atts['telefon'] ?? '') == 'nein'),
             'show_detail_button' => false || (($atts['button'] ?? '') == 'ja'),
-            'show_address'       => true  && (!($atts['adresse'] ?? '') == 'nein'),
             'show_list_pos'      => false,
             'show_constituency'  => false,
             'show_constit_num'   => false
@@ -15,7 +14,6 @@
             'show_shortinfo'     => true  && (!($atts['kurzinfo'] ?? '') == 'nein'),
             'show_phonenumbers'  => false || (($atts['telefon'] ?? '') == 'ja'),
             'show_detail_button' => true  && (!($atts['button'] ?? '') == 'nein'),
-            'show_address'       => false || (($atts['adresse'] ?? '') == 'ja'),
             'show_list_pos'      => false,
             'show_constituency'  => false,
             'show_constit_num'   => false
@@ -25,7 +23,6 @@
             'show_shortinfo'     => false || (($atts['kurzinfo'] ?? '') == 'ja'),
             'show_phonenumbers'  => false || (($atts['telefon'] ?? '') == 'ja'),
             'show_detail_button' => true  && (!($atts['button'] ?? '') == 'nein'),
-            'show_address'       => false || (($atts['adresse'] ?? '') == 'ja'),
             'show_list_pos'      => true  && (!($atts['listenplatz'] ?? '') == 'nein'),
             'show_constituency'  => true  && (!($atts['wahlkreis'] ?? '') == 'nein'),
             'show_constit_num'   => true  && (!($atts['wk-nummer'] ?? '') == 'nein')
@@ -35,7 +32,6 @@
             'show_shortinfo'     => false || (($atts['kurzinfo'] ?? '') == 'ja'),
             'show_phonenumbers'  => false || (($atts['telefon'] ?? '') == 'ja'),
             'show_detail_button' => true  && (!($atts['button'] ?? '') == 'nein'),
-            'show_address'       => false || (($atts['adresse'] ?? '') == 'ja'),
             'show_list_pos'      => true  && (!($atts['listenplatz'] ?? '') == 'nein'),
             'show_constituency'  => true  && (!($atts['wahlkreis'] ?? '') == 'nein'),
             'show_constit_num'   => true  && (!($atts['wk-nummer'] ?? '') == 'nein')
@@ -46,10 +42,9 @@
 
 <div class="grlp-person-container<?php echo isset($atts['cols'])?' gridcols-'.$atts['cols']:'' ?>">
     <?php foreach ($persons as $person) : ?>
-        <?php 
+        <?php
         $phone = get_post_meta( $person->ID, 'grlp_person_contact_phone', true );
         $mobile = get_post_meta( $person->ID, 'grlp_person_contact_mobile', true );
-        $address = get_post_meta( $person->ID, 'grlp_person_contact_address', true );
         $web = get_post_meta( $person->ID, 'grlp_person_contact_www', true );
         $email = get_post_meta( $person->ID, 'grlp_person_contact_email', true );
         $instagram = get_post_meta( $person->ID, 'grlp_person_contact_instagram', true );
@@ -59,6 +54,7 @@
         $threads = get_post_meta( $person->ID, 'grlp_person_contact_threads', true );
         $linkedin = get_post_meta( $person->ID, 'grlp_person_contact_linkedin', true );
         $tiktok = get_post_meta( $person->ID, 'grlp_person_contact_tiktok', true );
+        $newsletter = get_post_meta( $person->ID, 'grlp_person_contact_newsletter', true );
         $list_position = get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true);
         $constituency = get_post_meta( $person->ID, 'grlp_person_detail_constituency', true);
         $constit_num = get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true);
@@ -82,7 +78,7 @@
                 } else {
                     $copyright_row .= $img_platform_name;
                 }
-            } 
+            }
             $copyright_row .= '</p>';
         }
         ?>
@@ -107,11 +103,11 @@
                 <?php if ( $view == 'direct_candidate_list' ) : ?>
                     <div class="person-direct-candidate-container">
                     <?php if( $settings['show_constituency'] ) : ?>
-                        <p class="person-constituency"><?php 
-                            printf( 'Wahlkreis %s (%s)', 
+                        <p class="person-constituency"><?php
+                            printf( 'Wahlkreis %s (%s)',
                                 get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true ),
                                 get_post_meta( $person->ID, 'grlp_person_detail_constituency', true )
-                            ); 
+                            );
                         ?></p>
                     <?php endif; ?>
                     <?php if( $settings['show_list_pos'] && get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true ) != '' ) : ?>
@@ -127,11 +123,11 @@
                         <p class="person-list-pos">Listenplatz <?php echo get_post_meta( $person->ID, 'grlp_person_detail_list_pos', true ); ?></p>
                     <?php endif; ?>
                     <?php if( $settings['show_constituency'] && get_post_meta( $person->ID, 'grlp_person_detail_constituency', true ) != '' ) : ?>
-                        <p class="person-constituency"><?php 
-                            printf( 'Wahlkreis %s (%s)', 
+                        <p class="person-constituency"><?php
+                            printf( 'Wahlkreis %s (%s)',
                                 get_post_meta( $person->ID, 'grlp_person_detail_constit_num', true ),
                                 get_post_meta( $person->ID, 'grlp_person_detail_constituency', true )
-                            ); 
+                            );
                             ?></p>
                         <?php endif; ?>
                     </div>
@@ -182,11 +178,12 @@
                         <a href="<?php echo $tiktok; ?>"><i class="fa-brands fa-tiktok"></i></a>
                     </div>
                     <?php endif; ?>
+					<?php if (! empty ($newsletter)) : ?>
+                    <div class="wp-block-sunflower-meta-data">
+                        <a href="<?php echo $newsletter; ?>"><i class="fa-solid fa-envelope-open-text"></i></a>
+                    </div>
+                    <?php endif; ?>
                 </div>
-
-                <?php if(! empty($address) && $settings['show_address'] ) : ?>
-                    <p class="person-description mb-2"><?php echo $address; ?></p>
-                <?php endif; ?>
 
                 <?php if( $settings['show_phonenumbers'] ) : ?>
                     <?php if ( $phone ) : ?>

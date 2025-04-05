@@ -12,6 +12,13 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 ## Release Notes
 
+## 0.9.4
+
+- Feature: Have shortcodes for listing landtag- and bundestag- members with a
+   custom order for each.
+- Loose Address-field (makes more sense to format it properly on persons site.)
+- Have newsletter-url as contact info (open envelope icon)
+
 ## 0.9.3
 
 -- Fix: Have more than 10 Posts from query with sc_team.
@@ -31,7 +38,7 @@ It will probably fit best with the WordPress-Theme [sunflower](https://github.co
 
 ## 0.8.7.2
 
-- Fix: Max number of persons in shortcodes 'personen-landesliste' and 
+- Fix: Max number of persons in shortcodes 'personen-landesliste' and
   'personen-direktliste' are not limited to 10 anymore.
 - Fix: Empty constituency-field will not display "Wahkreis()" anymore.
 - Fix: 'personen-detail' and 'personen-team' can display more than 10 persons now.

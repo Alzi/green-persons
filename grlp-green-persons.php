@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Grüne Personen 
+ * Plugin Name: Grüne Personen
  * Description: Ein Plugin zur Verwaltung von Personen auf GRÜNEN Webseiten. Es ermöglicht Personen anzulegen und sie in Abteilungen zu gruppieren. Sie können dann in verschiedenen Kontexten (Team, Landesliste...) dargestellt werden. Das Plugin arbeitet sehr direkt mit dem <a href="http://sunflower-theme.de">Sunflower-Theme</a> zusammen und basiert auf der Idee der Personen Verwaltung im <a href="https://github.com/kre8tiv/Joseph-knows-best">JKB-Theme</a>. <a href="https://github.com/alzi/green-persons">Projektseite</a> auf Github.
- * Version: 0.9.3
- * Author: Marc Dietz 
+ * Version: 0.9.4
+ * Author: Marc Dietz
  * Author URI: mailto:technik@gruene-rlp.de
  * Text Domain: green-persons
  */
@@ -12,10 +12,10 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * Load textdomain
- * 
+ *
  * We write the source in english and provide a german
  * translation file.
- * 
+ *
  * @return None
  *
  */
@@ -32,7 +32,7 @@ function grlp_load_textdomain()
 
 /**
  * Register 'grlp_person' custom post type
- * 
+ *
  * @return None
  *
  */
@@ -54,10 +54,10 @@ function grlp_register_person_post_type()
         'all_items'           => __( 'All persons', 'green_persons' ),
         'parent_item_colon'   => '',
     );
-    
+
     # WARNING: In Order for the custom post-type to work as a custom
     #          block it needs to support 'custom-field'
-    #        
+    #
     $supports = array( 'title', 'editor', 'revisions', 'thumbnail' );
 
     register_post_type(
@@ -124,7 +124,7 @@ function grlp_register_person_taxonomy()
  *
  */
 add_filter( 'manage_grlp_person_posts_columns', 'grlp_admin_page_columns' );
-function grlp_admin_page_columns( $columns ) { 
+function grlp_admin_page_columns( $columns ) {
     $columns['title'] = __( 'Name der Person', 'green_persons' );
     return array_merge(
         $columns, [
@@ -136,7 +136,7 @@ function grlp_admin_page_columns( $columns ) {
 
 /**
  * Print the terms as links. They GET all persons that belong to that
- * particular taxonomy term. 
+ * particular taxonomy term.
  *
  * @return None
  *
@@ -206,6 +206,8 @@ function grlp_shortcodes_init()
     add_shortcode( 'personen-detail', 'grlp_sc_persons_detail' );
     add_shortcode( 'personen-landesliste', 'grlp_sc_persons_candidate_list');
     add_shortcode( 'personen-direktliste', 'grlp_sc_persons_direct_candidate_list');
+	add_shortcode( 'personen-bundestag', 'grlp_sc_persons_bundestag' );
+	add_shortcode( 'personen-landtag', 'grlp_sc_persons_landtag' );
 }
 
 function grlp_sc_persons_team( $atts, $content, $shortcode_tag )
@@ -364,9 +366,62 @@ function grlp_sc_persons_direct_candidate_list( $atts, $content, $shortcode_tag 
     return ob_get_clean();
 }
 
+function grlp_sc_persons_bundestag( $atts, $content, $shortcode_tag )
+{
+    $posts = array();
+    $attributes = array_keys($atts);
+	$query = new WP_Query(
+		array(
+			'post_type' => 'grlp_person',
+			'abteilung' => 'bundestag',
+			'meta_key' => 'grlp_person_detail_order_bundestag',
+			'orderby' => 'meta_value_num',
+			'order' => 'ASC',
+			'posts_per_page' => -1,
+		)
+	);
+
+	$persons = $query->get_posts();
+
+
+    ob_start();
+    grlp_get_template('persons_grid.php', array(
+        'persons' => $persons,
+        'atts' => $atts,
+        'view' => 'detail',
+    ));
+    return ob_get_clean();
+}
+
+function grlp_sc_persons_landtag( $atts, $content, $shortcode_tag )
+{
+    $posts = array();
+    $attributes = array_keys($atts);
+	$query = new WP_Query(
+		array(
+			'post_type' => 'grlp_person',
+			'abteilung' => 'landtag',
+			'meta_key' => 'grlp_person_detail_order_landtag',
+			'orderby' => 'meta_value_num',
+			'order' => 'ASC',
+			'posts_per_page' => -1,
+		)
+	);
+
+	$persons = $query->get_posts();
+
+
+    ob_start();
+    grlp_get_template('persons_grid.php', array(
+        'persons' => $persons,
+        'atts' => $atts,
+        'view' => 'detail',
+    ));
+    return ob_get_clean();
+}
 
 /**
- * Register Meta 
+ * Register Meta
  *
  */
 add_action( 'init', 'grlp_register_meta' );
@@ -489,19 +544,19 @@ function grlp_register_meta()
       }
     ]);
 
-    register_post_meta( 'grlp_person', 'grlp_person_contact_address', [
+    register_post_meta( 'grlp_person', 'grlp_person_contact_newsletter', [
         'description'       => __(
-            'Platz für Anschrift (erscheint über den Telefonnummern)',
+            'Vollständige URL zum Newsletter',
             'green_person'
         ),
         'type'              => 'string',
         'single'            => true,
         'show_in_rest'      => true,
         'sanitize_callback' => function ( $value ) {
-            return wp_kses( $value, ['br' => []] );
+			return esc_url_raw( $value );
         }
     ]);
-    
+
     register_post_meta( 'grlp_person', 'grlp_person_contact_phone', [
         'description'       => __(
             'Telefonnummer 1 Bsp.: Tel.: (06543) 12 345 99',
@@ -554,7 +609,7 @@ function grlp_register_meta()
             return intval( $value );
         }
     ]);
-    
+
     register_post_meta( 'grlp_person', 'grlp_person_detail_custom_order_team', [
         'description'       => __(
             'Sortierreihenfolge [personen-team]',
@@ -578,7 +633,7 @@ function grlp_register_meta()
             return intval( $value );
         }
     ]);
-    
+
     register_post_meta( 'grlp_person', 'grlp_person_detail_constituency', [
         'description'       => __( 'Name (z.B. Koblenz)', 'green_persons' ),
         'type'              => 'string',
@@ -591,6 +646,26 @@ function grlp_register_meta()
 
     register_post_meta( 'grlp_person', 'grlp_person_detail_constit_num', [
         'description'       => __( 'Wahlkreisnummer (z.B. 199)', 'green_persons'),
+        'type'              => 'integer',
+        'single'            => true,
+        'shok_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return intval( $value );
+        }
+    ]);
+
+    register_post_meta( 'grlp_person', 'grlp_person_detail_order_bundestag', [
+        'description'       => __( 'Sortierreihenfolge Bundestag', 'green_persons'),
+        'type'              => 'integer',
+        'single'            => true,
+        'shok_in_rest'      => true,
+        'sanitize_callback' => function ( $value ) {
+            return intval( $value );
+        }
+    ]);
+
+	register_post_meta( 'grlp_person', 'grlp_person_detail_order_landtag', [
+        'description'       => __( 'Sortierreihenfolge Landtag', 'green_persons'),
         'type'              => 'integer',
         'single'            => true,
         'shok_in_rest'      => true,
@@ -673,11 +748,11 @@ function grlp_register_meta()
 /**
  * Add meta boxes
  *
- * Have 2 MetaBoxes for a person. One with contact information and 
+ * Have 2 MetaBoxes for a person. One with contact information and
  * another with additional and political infos.
  *
  * @return None
- * 
+ *
  **/
 add_action( 'add_meta_boxes_grlp_person', 'grlp_register_meta_boxes' );
 function grlp_register_meta_boxes( $post )
@@ -716,7 +791,7 @@ function grlp_register_meta_boxes( $post )
  * @return None
  *
  * @todo: think about using a template
- * 
+ *
  **/
 function grlp_person_contact_view( $post )
 {
@@ -725,7 +800,7 @@ function grlp_person_contact_view( $post )
     $values = get_post_custom( $post->ID );
     global $wp_meta_keys;
     $meta_keys = $wp_meta_keys['post']['grlp_person'];
-   
+
 
     $www = isset(
         $values['grlp_person_contact_www'] )
@@ -771,9 +846,9 @@ function grlp_person_contact_view( $post )
         $values['grlp_person_contact_phone'] )
         ? esc_attr( $values['grlp_person_contact_phone'][0] )
         : '';
-    $address = isset(
-        $values['grlp_person_contact_address'] )
-        ? $values['grlp_person_contact_address'][0]
+    $newsletter = isset(
+        $values['grlp_person_contact_newsletter'] )
+        ? $values['grlp_person_contact_newsletter'][0]
         : '';
     ?>
     <table class="form-table">
@@ -888,17 +963,17 @@ function grlp_person_contact_view( $post )
             </span>
           </td>
           <th scope="row">
-            <label for="grlp_person_contact_address">Anschrift</label>
+            <label for="grlp_person_contact_newsletter">Newsletter</label>
           </th>
           <td>
             <textarea
-                name="grlp_person_contact_address"
-                id="grlp_person_contact_address"
-                ><?php echo $address;
+                name="grlp_person_contact_newsletter"
+                id="grlp_person_contact_newsletter"
+                ><?php echo $newsletter;
             ?></textarea>
             <br>
             <span class="description">
-              <?php echo $meta_keys['grlp_person_contact_address']['description']; ?>
+              <?php echo $meta_keys['grlp_person_contact_newsletter']['description']; ?>
             </span>
           </td>
         </tr>
@@ -972,7 +1047,7 @@ function grlp_person_save( $post_id )
         'grlp_person_meta_view')) {
             return;
     }
-    
+
     $all_meta_keys = array_keys(
         get_registered_meta_keys( 'post', 'grlp_person' )
     );
@@ -1001,12 +1076,12 @@ function grlp_person_save( $post_id )
 
 /**
  * View fields for 'grlp_person_details' MetaBox
- * 
+ *
  * @param $post Post data
  * @return None
  *
  * @todo: think about using a template
- * 
+ *
  */
 function grlp_person_detail_view( $post )
 {
@@ -1039,6 +1114,14 @@ function grlp_person_detail_view( $post )
     $constit_num = isset(
         $values['grlp_person_detail_constit_num'] )
         ? esc_attr( $values['grlp_person_detail_constit_num'][0] )
+        : '';
+    $order_bundestag = isset(
+        $values['grlp_person_detail_order_bundestag'] )
+        ? esc_attr( $values['grlp_person_detail_order_bundestag'][0] )
+        : '';
+    $order_landtag = isset(
+        $values['grlp_person_detail_order_landtag'] )
+        ? esc_attr( $values['grlp_person_detail_order_landtag'][0] )
         : '';
     $grlp_shortinfo = isset(
         $values['grlp_person_detail_shortinfo'] )
@@ -1147,6 +1230,28 @@ function grlp_person_detail_view( $post )
                 <?php echo $meta_keys['grlp_person_detail_custom_order_detail']['description']; ?>
                 </span>
             </p>
+			<p>
+                <input
+                type="text"
+                name="grlp_person_detail_order_landtag"
+                id="grlp_person_detail_order_landtag"
+                value="<?php echo $order_landtag; ?>">
+                <br>
+                <span class="description">
+                <?php echo $meta_keys['grlp_person_detail_order_landtag']['description']; ?>
+                </span>
+            </p>
+			<p>
+                <input
+                type="text"
+                name="grlp_person_detail_order_bundestag"
+                id="grlp_person_detail_order_bundestag"
+                value="<?php echo $order_bundestag; ?>">
+                <br>
+                <span class="description">
+                <?php echo $meta_keys['grlp_person_detail_order_bundestag']['description']; ?>
+                </span>
+            </p>
           </td>
           <th scope="row">
             <label for="grlp_person_detail_has_link">
@@ -1173,12 +1278,12 @@ function grlp_person_detail_view( $post )
 
 /**
  * View fields for 'grlp_person_meta' MetaBox
- * 
+ *
  * @param $post Post data
  * @return None
  *
  * @todo: think about using a template
- * 
+ *
  */
 function grlp_person_meta_view( $post )
 {
@@ -1243,7 +1348,7 @@ function grlp_person_meta_view( $post )
               <span class="description">
               <?php echo $meta_keys['grlp_person_meta_img_platform_url']['description']; ?>
               </span>
-            </p>            
+            </p>
           </td>
         </tr>
       </tbody>
@@ -1333,9 +1438,9 @@ function grlp_activate_plugin() {
     grlp_register_person_post_type();
     grlp_register_meta();
     grlp_register_person_taxonomy();
-    
+
     // Clear the permalinks after the post type has been registered.
-    flush_rewrite_rules(); 
+    flush_rewrite_rules();
 }
 register_activation_hook( __FILE__, 'grlp_activate_plugin' );
 
